@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'mifuente';
+    src: url('../font/IronFist-KqrD.ttf') format('opentype');
+}
+
+.container {
+    font-family: 'mifuente';
+}
+
+
+.btn.btn-custom-color {
+    background-color: #01152a;
+    border-color: #01152a;
+    /* Color del borde */
+    color: white;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn.btn-custom-color:hover {
+    color: #860909;
+    /* Color del texto al pasar el ratón */
+}
+
+/* Seccion tabla */
+.btn-agregar {
+    background-color: #860909 !important;
+    border-color: #860909 !important;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: -35% !important;
+}
+
+.btn.btn-agregar:hover {
+    color: black;
+    /* Color del texto al pasar el ratón */
+}
+
+/* Tabla */
+.cuadro-azul {
+    background-color: #01152a;
+    width: 87%;
+    height: 630px;
+    border-radius: 10px;
+}
+
+.table {
+    color: white !important;
+}
+
+.table th,
+.table td {
+    text-align: center;
+    padding: 30px !important;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid white;
+}

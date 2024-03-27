@@ -1,0 +1,68 @@
+{% extends 'html/base.html' %}
+
+{% block title %}
+  Gestor de Operaciones
+{% endblock %}
+
+{% block module_styles %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesGestorOperaciones.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid" style="margin-top: 20px; padding: 0; font-family: 'mifuente';">
+    <div class="row">
+      <div class="col-md-3" style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
+          <!-- Logo y texto "Operaciones" -->
+          <div style="display: flex; align-items: center;">
+            <button type="button" onclick="goBack()" class="btn btn-secondary">Volver</button>
+            <img src="{% static 'images/Operaciones.png' %}" style="margin-left: 20px;" alt="Texto alternativo de la imagen" class="mb-2" width="10%" />
+            <span style="color: white; margin-left: 5px;">Operaciones</span>
+          </div>
+          <div style="display: flex; align-items: center;">
+            <button type="button" class="btn btn-custom-color">Historial de Motonaves</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sección "Agregar Ficha" -->
+    <div class="row mt-4">
+      <div class="col-md-3" style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
+          <!-- Botón "Agregar Ficha" -->
+          <button type="button" class="btn btn-primary btn-agregar">Crear Ficha</button>
+          <!-- Cuadro Azul -->
+          <div class="cuadro-azul">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nominado</th>
+                  <th>En Proceso</th>
+                  <th>Terminado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Aquí puedes agregar filas si es necesario -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block module_scripts %}
+  <!-- Retroceder -->
+  <script>
+    function goBack() {
+      history.back()
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+  <!-- Scripts específicos de la página de menú -->
+  <script src="{% static 'js/scriptGestorOperaciones.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Maritime Services</title>
+    <!-- Agrega tus enlaces a archivos CSS aquí -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'css/stylesHome.css' %}" />
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logopng.png' %}" />
+  </head>
+  <body>
+    <div id="top"></div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top custom-navbar" id="mainNavbar">
+      <a class="navbar-brand" href="#">
+        <div class="logo">
+          <img src="{% static 'images/logopng.png' %}" alt="TuLogo" />
+        </div>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#top">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#informacion">ABOUT US</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contacto">CONTACTO</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'erp:login' %}">INICIAR SESIÓN</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <section class="home">
+      <div class="video-background">
+        <video autoplay loop muted>
+          <source src="{% static 'images/final.mp4' %}" type="video/mp4" />Tu navegador no admite el elemento de video.
+        </video>
+      </div>
+      <div class="title-container">
+        <h1 class="main-title">BIENVENIDOS A</h1>
+        <p class="sub-title">MARITIME SERVICES SpA</p>
+        <div class="arrow-down"></div>
+      </div>
+    </section>
+
+    <section class="informacion mt-4 mb-4">
+      <div class="container">
+        <div class="carousel-container">
+          <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="carousel-content">
+                  <div class="carousel-text">
+                    <h3 style="">NUESTRA COMPAÑIA</h3>
+                    <p>Somos una empresa dinámica, con más de 8 años de experiencia en el negocio, enfocada en ofreciendo servicios calificados y rápidos de mantenimiento para buques de carga granelera y de proyecto.</p>
+                    <p>Contamos con el equipo necesario y especializado para trabajar en puerto y durante la navegación, calificado personal con capacidad de desplazarse rápidamente por todo el país.</p>
+                    <p>Obtenemos los altos estándares requeridos para cada tipo de carga; nuestro compromiso es preparar embarcaciones lo más lo más rápido posible con un alto estándar para su próximo empleo.</p>
+                    <p>Para lograrlo contamos con el personal necesario para trabajar 24 horas al día, 7 días a la semana, en puerto o durante la navegación si necesario.</p>
+                  </div>
+                  <div class="carousel-image">
+                    <img src="{% static 'images/Slide 1.jpg' %}" class="d-block w-100" alt="Imagen de la empresa" />
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="carousel-content">
+                  <div class="carousel-text">
+                    <h3>Otra Información</h3>
+                    <p>Aquí puedes incluir más detalles sobre tu empresa.</p>
+                  </div>
+                  <div class="carousel-image">
+                    <img src="{% static 'images/Slide 2.jpg' %}" class="d-block w-100" alt="Otra imagen de la empresa" />
+                  </div>
+                </div>
+              </div>
+              <!-- Agrega más elementos carousel-item según sea necesario -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contacto">
+      <div class="contacto">
+        <h3>CONTÁCTANOS</h3>
+        <div class="contacto-info">
+          <p>
+            <strong>Phone:</strong> 56 9 9070 4830
+          </p>
+          <p>
+            <strong>E-mail:</strong> acisternas@maritimeservices.cl
+          </p>
+        </div>
+      </div>
+      <div class="oficina">
+        <h3>OFICINA</h3>
+        <p>Bandera 833, of 211</p>
+        <p>Santiago, Región Metropolitana</p>
+      </div>
+      <div class="footer-copy">
+        <p>&copy; 2024 Maritime Services SpA. Los derechos reservados por BTZ ERP Services.</p>
+        <img src="{% static 'images/logoempresa.png' %}" alt="logo de la empresa" />
+      </div>
+    </footer>
+
+    <!-- Aquí los scripts de JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="{% static 'js/scriptHome.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'mifuente';
+  src: url('../font/IronFist-KqrD.ttf') format('opentype');
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.fondo {
+  background-image: url(../images/Fondonew.png);
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  /* Esto evita el scroll */
+}
+
+.content-container {
+  width: 1660px;
+  /* Ancho del fondo */
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+}
+
+/* stylesBase.css u otro archivo de estilos */
+.bg-blue {
+  background-color: #01152a !important;
+}
+
+.btn-personalizado {
+  color: white !important;
+  border: none;
+  /* Cambia el color del texto a blanco */
+  font-family: 'mifuente';
+}
+
+footer {
+  background-color: #01152a;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+  margin-top: auto;
+  font-family: 'mifuente';
+}
