@@ -36,7 +36,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-#-------------------TABLA DE FICHA NAVIO -----------------------------------------------------------------------------------
+#-------------------MOTONAVES ----------------------------------------------------------------------------------------------
+
+class Motonave(models.Model):
+    nombre = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.nombre
+
+
 #----------------------TABLA DE FICHA PERSONAL------------------------------------------------------------------------------   
 
 #----------------------TABLA DE FICHA Herramientas--------------------------------------------------------------------------

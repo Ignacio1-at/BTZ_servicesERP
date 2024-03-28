@@ -2,17 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .models import Motonave
 from .forms import CustomLoginForm
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 #---Excel
-import openpyxl
-from django.http import HttpResponse, JsonResponse
-from openpyxl.utils import get_column_letter
-from openpyxl.styles import Font
 #---------------------------------------------------
 
 def home(request):
@@ -49,8 +42,18 @@ def menu_view(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
     return render(request, 'html/menu.html', {'nombre_usuario': nombre_usuario})
 
-#-----------------Operaciones
+#-----------------Gestor de Operaciones
 @login_required
 def gestorOperaciones(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    return render(request, 'html/gestorOperaciones.html', {'nombre_usuario': nombre_usuario})
+    
+    # Recuperar todas las motonaves de la base de datos
+    motonaves = Motonave.objects.all()
+    
+    return render(request, 'html/gestorOperaciones.html', {'nombre_usuario': nombre_usuario, 'motonaves': motonaves})
+
+#-----------------Ficha Operaciones
+@login_required
+def fichaOperaciones(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    return render(request, 'html/fichaOperaciones.html', {'nombre_usuario': nombre_usuario})

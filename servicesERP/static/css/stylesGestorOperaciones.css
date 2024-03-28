@@ -26,7 +26,7 @@
     background-color: #860909 !important;
     border-color: #860909 !important;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    margin-top: -35% !important;
+    margin-bottom: 550px; 
 }
 
 .btn.btn-agregar:hover {
@@ -37,7 +37,7 @@
 /* Tabla */
 .cuadro-azul {
     background-color: #01152a;
-    width: 87%;
+    width: 85%;
     height: 630px;
     border-radius: 10px;
 }
@@ -54,4 +54,48 @@
 
 .table tbody tr {
     border-bottom: 1px solid white;
+}
+
+/* Estilos para el modal */
+.modal-content {
+  background-color: #001c51 !important;
+  border-radius: 10px;
+  border-width: 1px !important;
+  border-color: #000 !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-header {
+  background-color: #001c51;
+  border-bottom: none;
+}
+
+.modal-title {
+  color: #fff;
+}
+
+.modal-body {
+  color: #fff;
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-close {
+  color: #333;
+}
+
+.btn-close:hover {
+  color: #000;
 }

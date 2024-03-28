@@ -1,0 +1,107 @@
+{% extends 'html/base.html' %}
+
+{% block title %}
+  Ficha de Servicio
+{% endblock %}
+
+{% block module_styles %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesFichaOperaciones.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <h1 style="color: white; font-weight: bold; margin: 20px;">Ficha de Servicio</h1>
+  <div class="imagen-container" style="margin: 20px;">
+    <img src="{% static 'images/lineaRoja.png' %}" alt="Linea Roja" />
+  </div>
+
+  <div class="section" style="overflow-y: auto; max-height: 720px; margin: 20px;">
+    <form id="fichaNavioForm" method="post" action="">
+      {% csrf_token %}
+      <input type="text" class="textbox" name="Nave" placeholder="Nave" />
+      <input type="text" class="textbox" name="Viaje" placeholder="Viaje" />
+      <input type="text" class="textbox" name="Puerto" placeholder="Puerto" />
+      <input type="text" class="textbox" name="Carga" placeholder="Carga" />
+      <input type="text" class="textbox" name="Procedencia" placeholder="Procedencia" />
+      <input type="text" class="textbox" name="TipoServicio" placeholder="Tipo de Servicio" />
+      <input type="text" class="textbox" name="Armador" placeholder="Armador" />
+      <input type="text" class="textbox" name="Agencia" placeholder="Agencia" />
+      <input type="text" class="textbox" name="ProximoPuerto" placeholder="Proximo Puerto" />
+
+      <select class="textbox" name="Encalado">
+        <option value="estadoCivil">Encalado</option>
+        <option value="Si">Si</option>
+        <option value="No">No</option>
+      </select>
+
+      <div class="form-container">
+        <label for="ETA">Fecha ETA:</label>
+        <input type="date" class="textbox" name="ETA" />
+
+        <br />
+
+        <label for="horaRegistroETA">Hora de Registro:</label>
+        <input type="time" class="textbox" name="horaRegistroETA" />
+      </div>
+
+      <select class="textbox" name="Bombasumergible">
+        <option value="estadoCivil">Bomba Sumergible</option>
+        <option value="Si">Si</option>
+        <option value="No">No</option>
+      </select>
+
+      <select class="textbox" name="Cubierta">
+        <option value="estadoCivil">Cubierta</option>
+        <option value="Si">Si</option>
+        <option value="No">No</option>
+      </select>
+
+      <select class="textbox" name="ShapeBox">
+        <option value="estadoCivil">Shape Box</option>
+        <option value="Si">Si</option>
+        <option value="No">No</option>
+      </select>
+
+      <select class="textbox" name="PCR">
+        <option value="PCR">PCR</option>
+        <option value="Si">Si</option>
+        <option value="No">No</option>
+      </select>
+
+      <div class="form-container">
+        <label for="horaRegistroPCR">Hora de PCR:</label>
+        <input type="time" class="textbox" name="horaRegistroPCR" />
+      </div>
+
+      <h1 style="color: white; margin: 10px;">Navegación</h1>
+      <div class="seccion">
+        <div class="rectangulo">
+          <label for="cantidadPersonas">Cantidad de Personas:</label>
+          <input type="number" class="textbox" name="cantidadPersonas" />
+          <span>Personas</span>
+        </div>
+
+        <div class="rectangulo">
+          <label for="CantidadPuerto" style="color: white;">Puerto:</label>
+          <input type="number" class="textbox" name="CantidadPuerto" />
+        </div>
+      </div>
+
+      <h3></h3>
+      <button class="btn btn-personalizado" style="background-color: #a30000;border-radius: 10px; margin: 5px;" type="submit">Guardar Ficha</button>
+      <button class="btn btn-secondary" type="button" onclick="goBack()" style="margin: 20px;">Volver</button>
+      <script>
+        function goBack() {
+          window.history.back()
+        }
+      </script>
+    </form>
+  </div>
+  <!-- Retroceder -->
+{% endblock %}
+
+{% block module_scripts %}
+  <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'js/scriptNavio.js' %}"></script>
+{% endblock %}
