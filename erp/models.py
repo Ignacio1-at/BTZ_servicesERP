@@ -39,10 +39,24 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 #-------------------MOTONAVES ----------------------------------------------------------------------------------------------
 
 class Motonave(models.Model):
+    # Campos existentes
     nombre = models.CharField(max_length=100, unique=True)
+    responsable = models.CharField(max_length=100, default="Sin responsable")
+    descripcion = models.TextField(null=True, blank=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
+    # Nuevo campo para el estado del servicio
+    ESTADOS_SERVICIO = (
+        ('Nominado', 'Nominado'),
+        ('En Proceso', 'En Proceso'),
+        ('Terminado', 'Terminado'),
+        ('Disponible', 'Disponible'),  # Por defecto
+    )
+    estado_servicio = models.CharField(max_length=20, choices=ESTADOS_SERVICIO, default='Disponible')
 
     def __str__(self):
         return self.nombre
+
 
 
 #----------------------TABLA DE FICHA PERSONAL------------------------------------------------------------------------------   

@@ -1,82 +1,80 @@
 @font-face {
-    font-family: 'mifuente';
-    src: url('../font/IronFist-KqrD.ttf') format('opentype');
+  font-family: 'mifuente';
+  src: url('../font/IronFist-KqrD.ttf') format('opentype');
 }
 
 .container {
-    font-family: 'mifuente';
+  font-family: 'mifuente';
 }
 
 
 .btn.btn-custom-color {
-    background-color: #01152a;
-    border-color: #01152a;
-    /* Color del borde */
-    color: white;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #01152a;
+  border-color: #01152a;
+  /* Color del borde */
+  color: white;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn.btn-custom-color:hover {
-    color: #860909;
-    /* Color del texto al pasar el ratón */
+  color: #860909;
+  /* Color del texto al pasar el ratón */
 }
 
 /* Seccion tabla */
 .btn-agregar {
-    background-color: #860909 !important;
-    border-color: #860909 !important;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    margin-bottom: 550px; 
+  background-color: #860909 !important;
+  border-color: #860909 !important;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 550px;
 }
 
 .btn.btn-agregar:hover {
-    color: black;
-    /* Color del texto al pasar el ratón */
+  color: black;
+  /* Color del texto al pasar el ratón */
 }
 
 /* Tabla */
 .cuadro-azul {
-    background-color: #01152a;
-    width: 85%;
-    height: 630px;
-    border-radius: 10px;
+  background-color: #01152a;
+  width: 85%;
+  height: 630px;
+  border-radius: 10px;
 }
 
 .table {
-    color: white !important;
+  color: white !important;
 }
 
 .table th,
 .table td {
-    text-align: center;
-    padding: 30px !important;
+  text-align: center;
+  padding: 30px !important;
 }
 
 .table tbody tr {
-    border-bottom: 1px solid white;
+  border-bottom: 1px solid white;
 }
 
 /* Estilos para el modal */
 .modal-content {
-  background-color: #001c51 !important;
-  border-radius: 10px;
-  border-width: 1px !important;
-  border-color: #000 !important;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+  background-color: #001d43 !important;
 }
 
 .modal-header {
-  background-color: #001c51;
+  background-color: #8d000e;
   border-bottom: none;
 }
 
 .modal-title {
   color: #fff;
+  font-family: 'mifuente';
 }
 
 .modal-body {
   color: #fff;
   padding: 20px;
+  font-family: 'mifuente';
 }
 
 .modal-footer {
@@ -98,4 +96,12 @@
 
 .btn-close:hover {
   color: #000;
+}
+
+/* Estilo para el enlace en estado hover */
+.dropdown-item:hover {
+  color: #fff !important;
+  /* Cambiar color de texto al hacer hover */
+  background-color: #001025 !important;
+  /* Cambiar color de fondo al hacer hover */
 }

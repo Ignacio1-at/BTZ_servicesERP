@@ -8,6 +8,7 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/stylesGestorOperaciones.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
+  
 {% endblock %}
 
 {% block content %}
@@ -22,7 +23,7 @@
             <span style="color: white; margin-left: 5px;">Operaciones</span>
           </div>
           <div style="display: flex; align-items: center;">
-            <button type="button" class="btn btn-custom-color">Historial de Motonaves</button>
+            <button type="button" class="btn btn-custom-color">Historial de Servicios</button>
           </div>
         </div>
       </div>
@@ -31,12 +32,12 @@
     <div class="row mt-4">
       <div class="col-md-3" style="width: 100%;">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
-          <!-- Botón "Crear Ficha" -->
+          <!-- Botón "Crear Motonave" -->
           <div class="dropdown">
-            <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Crear Ficha</button>
+            <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Crear Ficha De</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#">Nueva Motonave</a>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarMotonave">Nueva Motonave</a>
               </li>
               <li>
                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#motonaveExistenteModal">Motonave Existente</a>
@@ -54,7 +55,27 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Aquí puedes agregar filas si es necesario -->
+                {% for motonave in motonaves %}
+                  {% if motonave.estado_servicio == 'Nominado' or motonave.estado_servicio == 'En Proceso' or motonave.estado_servicio == 'Terminado' %}
+                    <tr>
+                      <td>
+                        {% if motonave.estado_servicio == 'Nominado' %}
+                          {{ motonave.nombre }}
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if motonave.estado_servicio == 'En Proceso' %}
+                          {{ motonave.nombre }}
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if motonave.estado_servicio == 'Terminado' %}
+                          {{ motonave.nombre }}
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -63,18 +84,42 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="motonaveExistenteModal" tabindex="-1" aria-labelledby="motonaveExistenteModalLabel" aria-hidden="true">
+  <!-- Modal Agregar Motonave -->
+  <div class="modal fade" id="modalAgregarMotonave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nueva Motonave</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formAgregarMotonave" method="post" action="{% url 'erp:crear_motonave' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <input type="text" class="form-control" name="nombreMotonave" id="nombreMotonave" placeholder="Nombre de la motonave" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Motonave Existente -->
+  <div class="modal fade" id="motonaveExistenteModal" tabindex="-1" aria-labelledby="motonaveExistenteModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" >
           <h5 class="modal-title" id="motonaveExistenteModalLabel">Lista de Motonaves</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <ul>
             {% for motonave in motonaves %}
-              <li>{{ motonave.nombre }}</li>
+              <li>
+                <a class="dropdown-item" style="color: #fff;"href="#" onclick="seleccionarMotonave('{{ motonave.nombre }}')">{{ motonave.nombre }}</a>
+              </li>
             {% endfor %}
           </ul>
         </div>
@@ -84,6 +129,16 @@
       </div>
     </div>
   </div>
+
+  <!-- Panel lateral -->
+  <div id="panelLateral" class="bg-light border-start position-fixed top-0 end-0 vh-100 overflow-auto" style="margin-top:106px ; width: 0; transition: width 0.5s ease;">
+    <div id="detallesMotonave" class="p-4">
+      <!-- Aquí se mostrarán los detalles de la motonave seleccionada -->
+    </div>
+  </div>
+
+  <!-- Div transparente que cubre el área fuera del panel lateral -->
+  <div id="panelOverlay" onclick="cerrarPanelLateral()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: -1;"></div>
 {% endblock %}
 
 {% block module_scripts %}

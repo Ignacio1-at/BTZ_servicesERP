@@ -49,8 +49,23 @@ def gestorOperaciones(request):
     
     # Recuperar todas las motonaves de la base de datos
     motonaves = Motonave.objects.all()
-    
-    return render(request, 'html/gestorOperaciones.html', {'nombre_usuario': nombre_usuario, 'motonaves': motonaves})
+
+    # Obtener las motonaves en formato JSON para usar en JavaScript
+    motonaves_json = [{'nombre': motonave.nombre} for motonave in motonaves]
+
+    return render(request, 'html/gestorOperaciones.html', {'nombre_usuario': nombre_usuario, 'motonaves': motonaves, 'motonaves_json': motonaves_json})
+
+#-----------------Motonaves
+@login_required
+def crear_motonave(request):
+    if request.method == 'POST':
+        nombre_motonave = request.POST.get('nombreMotonave')
+        if nombre_motonave:
+            motonave = Motonave.objects.create(nombre=nombre_motonave)
+            # Redirigir a la página de gestión de operaciones
+            return redirect('erp:gestor-operaciones')
+    # En caso de que la solicitud no sea POST o falte el nombre de la motonave, redirigir a la misma página
+    return redirect('erp:gestor-operaciones')
 
 #-----------------Ficha Operaciones
 @login_required
