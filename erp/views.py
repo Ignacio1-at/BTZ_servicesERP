@@ -116,7 +116,17 @@ def guardar_nuevo_estado(request):
         
         return JsonResponse({'success': True, 'message': 'Estado actualizado correctamente.'})
     else:
-        return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)    
+        return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)
+    
+#-------------------TABLA MOTONAVES
+@login_required
+def obtener_tabla_motonaves(request):
+    # Obtener los datos de la tabla de motonaves, por ejemplo, desde el modelo Motonave
+    motonaves = Motonave.objects.all()
+    # Construir una lista de diccionarios con los datos relevantes de cada motonave
+    data = [{'nombre': motonave.nombre, 'estado_servicio': motonave.estado_servicio} for motonave in motonaves]
+    # Devolver los datos como una respuesta JSON
+    return JsonResponse(data, safe=False)        
     
  #-----------------Ficha Operaciones
 @login_required

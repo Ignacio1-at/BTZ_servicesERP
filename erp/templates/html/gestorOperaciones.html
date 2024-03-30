@@ -45,7 +45,7 @@
           </div>
           <!-- Cuadro Azul -->
           <div class="cuadro-azul">
-            <table class="table">
+            <table id="tablaMotonaves" class="table">
               <thead>
                 <tr>
                   <th>Nominado</th>
@@ -154,5 +154,6 @@
   <script>
     var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
     var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
+    var obtenerTablaMotonavesURL = "{% url 'erp:obtener_tabla_motonaves' %}"
   </script>
 {% endblock %}

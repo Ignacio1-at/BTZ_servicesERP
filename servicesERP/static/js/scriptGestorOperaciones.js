@@ -89,14 +89,57 @@ function guardarNuevoEstado(nombreMotonave) {
         success: function (response) {
             console.log('Nuevo estado guardado correctamente:', response);
             // Realizar un refresh de la página después de guardar el estado
-            setTimeout(function () {
-                location.reload();
-            }, 500);
+            actualizarTablaMotonaves();
         },
         error: function (xhr, status, error) {
             console.error('Error al guardar el nuevo estado:', error);
         }
     });
+}
+
+// Función para actualizar la tabla de motonaves en el frontend
+function actualizarTablaMotonaves() {
+    $.ajax({
+        type: 'GET',
+        url: obtenerTablaMotonavesURL,
+        success: function (data) {
+            // Limpiar la tabla antes de actualizarla
+            $('#tablaMotonaves tbody').empty();
+            // Iterar sobre las motonaves recibidas del servidor
+            data.forEach(function (motonave) {
+                // Verificar si la motonave está en estado "Disponible"
+                if (motonave.estado_servicio !== 'Disponible') {
+                    // Buscar la fila correspondiente a la motonave por su nombre
+                    var filaMotonave = $('#tablaMotonaves tbody').find('tr[data-nombre="' + motonave.nombre + '"]');
+                    // Si la fila no existe, agregar una nueva fila con los datos de la motonave
+                    if (filaMotonave.length === 0) {
+                        $('#tablaMotonaves tbody').append('<tr data-nombre="' + motonave.nombre + '"><td></td><td></td><td></td></tr>');
+                        filaMotonave = $('#tablaMotonaves tbody tr:last');
+                    }
+                    // Actualizar el contenido de la celda correspondiente al estado de la motonave
+                    var estadoColumna = obtenerIndiceColumna(motonave.estado_servicio);
+                    filaMotonave.find('td').eq(estadoColumna).text(motonave.nombre);
+                }
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al obtener la tabla de motonaves:', error);
+        }
+    });
+}
+
+// Función para obtener el índice de la columna según el estado de la motonave
+function obtenerIndiceColumna(estado) {
+    switch (estado) {
+        case 'Nominado':
+            return 0;
+        case 'En Proceso':
+            return 1;
+        case 'Terminado':
+            return 2;
+        default:
+            return -1; // Valor por defecto si el estado no coincide
+    }
 }
 
 // Función para obtener el valor de una cookie por su nombre
@@ -161,5 +204,3 @@ function seleccionarMotonave(nombreMotonave) {
         }
     });
 }
-
-
