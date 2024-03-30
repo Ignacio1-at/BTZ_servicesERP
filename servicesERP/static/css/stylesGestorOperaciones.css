@@ -105,3 +105,35 @@
   background-color: #001025 !important;
   /* Cambiar color de fondo al hacer hover */
 }
+
+
+/* Estilos para el panel lateral */
+.panel-lateral {
+  background-color: #fff;
+  border-left: 1px solid #ccc;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100vh;
+  margin-top:106px;
+  overflow-y: auto;
+  transition: width 0.5s ease;
+}
+
+.detalles-motonave {
+  font-family: 'mifuente';
+  padding: 20px;
+}
+
+/* Estilos para el panel overlay */
+.panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+  transition: width 0.5s ease;
+}

@@ -4,6 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Motonave
 from .forms import CustomLoginForm
+from django.http import JsonResponse
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 #---Excel
 #---------------------------------------------------
@@ -67,8 +70,58 @@ def crear_motonave(request):
     # En caso de que la solicitud no sea POST o falte el nombre de la motonave, redirigir a la misma página
     return redirect('erp:gestor-operaciones')
 
-#-----------------Ficha Operaciones
+#-------------------DETALLES MOTONAVES
+@login_required
+def obtener_detalles_motonave(request):
+    if request.method == 'GET':
+        # Obtener el nombre de la motonave desde la solicitud GET
+        nombre_motonave = request.GET.get('nombre_motonave')
+        if nombre_motonave:
+            try:
+                # Buscar la motonave en la base de datos por su nombre
+                motonave = Motonave.objects.get(nombre=nombre_motonave)
+                # Construir un diccionario con los detalles de la motonave
+                detalles = {
+                    'nombre': motonave.nombre,
+                    'responsable': motonave.responsable,
+                    'descripcion': motonave.descripcion,
+                    'estado_servicio': motonave.estado_servicio,
+                    'fecha_modificacion': motonave.fecha_modificacion.strftime('%Y-%m-%d %H:%M:%S')
+                    # Agrega otros campos según necesites
+                }
+                return JsonResponse(detalles)
+            except Motonave.DoesNotExist:
+                return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
+        else:
+            return JsonResponse({'error': 'El parámetro "nombre_motonave" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
+    
+#-------------------GUARDAR ESTADO DE MOTONAVES
+@login_required
+def guardar_nuevo_estado(request):
+    if request.method == 'POST':
+        nombre_motonave = request.POST.get('nombre_motonave')
+        nuevo_estado = request.POST.get('nuevo_estado')
+        
+        # Obtener la motonave
+        try:
+            motonave = Motonave.objects.get(nombre=nombre_motonave)
+        except Motonave.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'La motonave no existe.'}, status=404)
+        
+        # Actualizar el estado de la motonave
+        motonave.estado_servicio = nuevo_estado
+        motonave.save()
+        
+        return JsonResponse({'success': True, 'message': 'Estado actualizado correctamente.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)    
+    
+ #-----------------Ficha Operaciones
 @login_required
 def fichaOperaciones(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
     return render(request, 'html/fichaOperaciones.html', {'nombre_usuario': nombre_usuario})
+
+

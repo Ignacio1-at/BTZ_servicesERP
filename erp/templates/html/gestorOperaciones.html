@@ -8,7 +8,6 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/stylesGestorOperaciones.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
-  
 {% endblock %}
 
 {% block content %}
@@ -110,7 +109,7 @@
   <div class="modal fade" id="motonaveExistenteModal" tabindex="-1" aria-labelledby="motonaveExistenteModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header" >
+        <div class="modal-header">
           <h5 class="modal-title" id="motonaveExistenteModalLabel">Lista de Motonaves</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -118,7 +117,7 @@
           <ul>
             {% for motonave in motonaves %}
               <li>
-                <a class="dropdown-item" style="color: #fff;"href="#" onclick="seleccionarMotonave('{{ motonave.nombre }}')">{{ motonave.nombre }}</a>
+                <a class="dropdown-item" style="color: #fff;" href="#" onclick="seleccionarMotonave('{{ motonave.nombre }}')">{{ motonave.nombre }}</a>
               </li>
             {% endfor %}
           </ul>
@@ -131,14 +130,14 @@
   </div>
 
   <!-- Panel lateral -->
-  <div id="panelLateral" class="bg-light border-start position-fixed top-0 end-0 vh-100 overflow-auto" style="margin-top:106px ; width: 0; transition: width 0.5s ease;">
-    <div id="detallesMotonave" class="p-4">
+  <div id="panelLateral" class="panel-lateral">
+    <div id="detallesMotonave" class="detalles-motonave">
       <!-- Aquí se mostrarán los detalles de la motonave seleccionada -->
     </div>
   </div>
 
   <!-- Div transparente que cubre el área fuera del panel lateral -->
-  <div id="panelOverlay" onclick="cerrarPanelLateral()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: -1;"></div>
+  <div id="panelOverlay" class="panel-overlay"></div>
 {% endblock %}
 
 {% block module_scripts %}
@@ -152,4 +151,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <!-- Scripts específicos de la página de menú -->
   <script src="{% static 'js/scriptGestorOperaciones.js' %}"></script>
+  <script>
+    var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
+    var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
+  </script>
 {% endblock %}

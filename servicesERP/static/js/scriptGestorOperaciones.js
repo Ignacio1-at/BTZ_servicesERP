@@ -1,54 +1,165 @@
+// Función para validar el nombre de la motonave
+function validarNombreMotonave(nombreMotonave) {
+    var regex = /^[A-Za-z\s]+$/;
+    return nombreMotonave.toUpperCase() === nombreMotonave && regex.test(nombreMotonave);
+}
+
+// Función para convertir el nombre de la motonave a mayúsculas
+function convertirAMayusculas(input) {
+    input.value = input.value.toUpperCase();
+}
+
+// Event listener para convertir a mayúsculas mientras se escribe en el campo de nombre de motonave
+var nombreMotonaveInput = document.getElementById('nombreMotonave');
+nombreMotonaveInput.addEventListener('input', function () {
+    convertirAMayusculas(this);
+});
+
+// Función para verificar si la motonave ya existe en el sistema
+function verificarMotonaveExistente(nombreMotonave) {
+    $.ajax({
+        type: 'GET',
+        url: obtenerDetallesMotonaveURL,
+        data: { 'nombre_motonave': nombreMotonave },
+        success: function (data) {
+            if (data.error) {
+                submitForm(); // Llamar a submitForm solo si la verificación es exitosa
+            } else {
+                alert('La motonave ya existe en el sistema.');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al verificar la existencia de la motonave:', error);
+        }
+    });
+}
+
 // Función para enviar el formulario de agregar motonave mediante AJAX
 function submitForm() {
-    // Envía el formulario usando AJAX
+    var nombreMotonave = $('#nombreMotonave').val();
+    if (!validarNombreMotonave(nombreMotonave)) {
+        alert('El nombre de la motonave no es válido. Debe contener solo letras y estar en mayúsculas.');
+        return;
+    }
     var form = $('#formAgregarMotonave');
     $.ajax({
         type: form.attr('method'),
         url: form.attr('action'),
         data: form.serialize(),
         success: function (data) {
-            // Cierra el modal después de que se haya creado la motonave
             $('#modalAgregarMotonave').modal('hide');
-            // Recargar la página después de 0.5 segundo
             setTimeout(function () {
                 location.reload();
             }, 500);
         },
         error: function (xhr, status, error) {
-            // Manejar errores si es necesario
             console.error(error);
         }
     });
 }
 
-function seleccionarMotonave(nombreMotonave) {
-    // Cerrar el modal
-    $('#motonaveExistenteModal').modal('hide');
-
-    // Abrir el panel lateral
-    abrirPanelLateral(nombreMotonave);
+// Función para abrir el panel lateral y mostrar los detalles de la motonave seleccionada
+function abrirPanelLateral(nombreMotonave, estado) {
+    $('#panelLateral').css('width', '550px');
+    $('#detallesMotonave').html(`
+        <h4>Detalles de la motonave</h4>
+        <p><strong>Nombre:</strong> ${nombreMotonave}</p>
+        <p style="display: inline-block; margin-right: 10px;"><strong>Estado:</strong></p>
+        <select id="nuevoEstadoMotonave" class="form-select" style="width: 300px; display: inline-block;" onchange="guardarNuevoEstado('${nombreMotonave}')">
+            <option value="Disponible" ${estado === 'Disponible' ? 'selected' : ''}>Disponible</option>
+            <option value="Nominado" ${estado === 'Nominado' ? 'selected' : ''}>Nominado</option>
+            <option value="En Proceso" ${estado === 'En Proceso' ? 'selected' : ''}>En Proceso</option>
+            <option value="Terminado" ${estado === 'Terminado' ? 'selected' : ''}>Terminado</option>
+        </select>
+    `);
 }
 
-function abrirPanelLateral(nombreMotonave) {
-    // Mostrar el panel lateral
-    $('#panelLateral').css('width', '550px');
+// Función para guardar el nuevo estado seleccionado en la base de datos
+function guardarNuevoEstado(nombreMotonave) {
+    var nuevoEstado = $('#nuevoEstadoMotonave').val();
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+        type: 'POST',
+        url: nuevoEstadoMotonaveURL,
+        headers: { 'X-CSRFToken': csrftoken },
+        data: {
+            'nombre_motonave': nombreMotonave,
+            'nuevo_estado': nuevoEstado
+        },
+        success: function (response) {
+            console.log('Nuevo estado guardado correctamente:', response);
+            // Realizar un refresh de la página después de guardar el estado
+            setTimeout(function () {
+                location.reload();
+            }, 500);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al guardar el nuevo estado:', error);
+        }
+    });
+}
 
-    // Mostrar los detalles de la motonave seleccionada
-    $('#detallesMotonave').html('Detalles de la motonave: ' + nombreMotonave);
+// Función para obtener el valor de una cookie por su nombre
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 function mostrarDetallesMotonave(nombreMotonave) {
-    // Aquí puedes hacer una petición AJAX al servidor para obtener los detalles de la motonave con el nombre especificado
-    // Por ahora, simplemente actualizaremos el contenido del panel lateral con un mensaje de demostración
-    $('#detallesMotonave').html('Detalles de la motonave ' + nombreMotonave);
-    // Abre el panel lateral
+    // Actualizar el contenido del panel lateral
+    $('#detallesMotonave').html(`
+        <h4>Detalles de la motonave</h4>
+        <p><strong>Nombre:</strong> ${nombreMotonave}</p>
+        <p><strong>Estado:</strong> ${estado}</p>
+    `);
+    // Abrir el panel lateral
     $('#panelLateral').css('width', '550px');
 }
 
-// Función para cerrar el panel lateral al hacer clic fuera de él
+function cerrarPanelLateral() {
+    // Cerrar el panel lateral
+    $('#panelLateral').css('width', '0');
+}
+
 $(document).mouseup(function (e) {
     var panelLateral = $("#panelLateral");
     if (!panelLateral.is(e.target) && panelLateral.has(e.target).length === 0) {
         panelLateral.css('width', '0');
     }
 });
+
+function seleccionarMotonave(nombreMotonave) {
+    // Cerrar el modal
+    $('#motonaveExistenteModal').modal('hide');
+
+    // Realizar una solicitud AJAX para obtener los detalles de la motonave seleccionada
+    $.ajax({
+        type: 'GET',
+        url: obtenerDetallesMotonaveURL,
+        data: { 'nombre_motonave': nombreMotonave },
+        success: function (data) {
+            // Verificar si se recibieron los detalles correctamente
+            if (data.nombre && data.estado_servicio) {
+                // Abrir el panel lateral y mostrar los detalles de la motonave
+                abrirPanelLateral(data.nombre, data.estado_servicio);
+            } else {
+                console.error('No se recibieron los detalles de la motonave correctamente.');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al obtener los detalles de la motonave:', error);
+        }
+    });
+}
+
+
