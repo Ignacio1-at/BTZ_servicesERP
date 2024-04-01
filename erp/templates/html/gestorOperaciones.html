@@ -43,40 +43,26 @@
               </li>
             </ul>
           </div>
-          <!-- Cuadro Azul -->
-          <div class="cuadro-azul">
-            <table id="tablaMotonaves" class="table">
-              <thead>
-                <tr>
-                  <th>Nominado</th>
-                  <th>En Proceso</th>
-                  <th>Terminado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for motonave in motonaves %}
-                  {% if motonave.estado_servicio == 'Nominado' or motonave.estado_servicio == 'En Proceso' or motonave.estado_servicio == 'Terminado' %}
-                    <tr>
-                      <td>
-                        {% if motonave.estado_servicio == 'Nominado' %}
-                          {{ motonave.nombre }}
-                        {% endif %}
-                      </td>
-                      <td>
-                        {% if motonave.estado_servicio == 'En Proceso' %}
-                          {{ motonave.nombre }}
-                        {% endif %}
-                      </td>
-                      <td>
-                        {% if motonave.estado_servicio == 'Terminado' %}
-                          {{ motonave.nombre }}
-                        {% endif %}
-                      </td>
-                    </tr>
-                  {% endif %}
-                {% endfor %}
-              </tbody>
-            </table>
+          <!-- Cuadro Azul (Tablero de Motonaves) -->
+          <div class="cuadro-azul" id="tableroMotonaves">
+            <div id="columnNominado" class="columna">
+              <h3>Nominado</h3>
+              <div class="columna-contenido">
+                <!-- Contenido de la columna "Nominado" -->
+              </div>
+            </div>
+            <div id="columnEnProceso" class="columna">
+              <h3>En Proceso</h3>
+              <div class="columna-contenido">
+                <!-- Contenido de la columna "En Proceso" -->
+              </div>
+            </div>
+            <div id="columnTerminado" class="columna">
+              <h3>Terminado</h3>
+              <div class="columna-contenido">
+                <!-- Contenido de la columna "Terminado" -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -155,5 +141,10 @@
     var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
     var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
     var obtenerTablaMotonavesURL = "{% url 'erp:obtener_tabla_motonaves' %}"
+    
+    document.addEventListener('DOMContentLoaded', function () {
+      // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
+      actualizarTableroMotonaves()
+    })
   </script>
 {% endblock %}
