@@ -134,4 +134,17 @@ def fichaOperaciones(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
     return render(request, 'html/fichaOperaciones.html', {'nombre_usuario': nombre_usuario})
 
+ #-----------------Gestor Personal
+@login_required
+def gestorPersonal(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    return render(request, 'html/gestorPersonal.html', {'nombre_usuario': nombre_usuario})
+
+ #-----------------Ficha Personal
+@login_required
+def fichaPersonal(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    return render(request, 'html/fichaPersonal.html', {'nombre_usuario': nombre_usuario})
+ 
+
 
