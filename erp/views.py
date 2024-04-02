@@ -5,8 +5,6 @@ from django.contrib import messages
 from .models import Motonave
 from .forms import CustomLoginForm
 from django.http import JsonResponse
-from django.http import HttpResponse
-from django.template.loader import render_to_string
 
 #---Excel
 #---------------------------------------------------
@@ -58,16 +56,22 @@ def gestorOperaciones(request):
 
     return render(request, 'html/gestorOperaciones.html', {'nombre_usuario': nombre_usuario, 'motonaves': motonaves, 'motonaves_json': motonaves_json})
 
-#-----------------Motonaves
+#-----------------Crear Motonaves
 @login_required
 def crear_motonave(request):
     if request.method == 'POST':
         nombre_motonave = request.POST.get('nombreMotonave')
-        if nombre_motonave:
-            motonave = Motonave.objects.create(nombre=nombre_motonave)
+        numero_viaje = request.POST.get('numeroViaje')
+        estado_motonave = request.POST.get('estadoMotonave')
+        if nombre_motonave and numero_viaje and estado_motonave:
+            motonave = Motonave.objects.create(
+                nombre=nombre_motonave,
+                viaje=numero_viaje,
+                estado_servicio=estado_motonave
+            )
             # Redirigir a la página de gestión de operaciones
             return redirect('erp:gestor-operaciones')
-    # En caso de que la solicitud no sea POST o falte el nombre de la motonave, redirigir a la misma página
+    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-operaciones')
 
 #-------------------DETALLES MOTONAVES
@@ -80,13 +84,14 @@ def obtener_detalles_motonave(request):
             try:
                 # Buscar la motonave en la base de datos por su nombre
                 motonave = Motonave.objects.get(nombre=nombre_motonave)
-                # Construir un diccionario con los detalles de la motonave
+                # Construir un diccionario con los detalles de la motonave, incluyendo el nuevo campo 'viaje'
                 detalles = {
                     'nombre': motonave.nombre,
                     'responsable': motonave.responsable,
                     'descripcion': motonave.descripcion,
                     'estado_servicio': motonave.estado_servicio,
-                    'fecha_modificacion': motonave.fecha_modificacion.strftime('%Y-%m-%d %H:%M:%S')
+                    'fecha_modificacion': motonave.fecha_modificacion.strftime('%Y-%m-%d %H:%M:%S'),
+                    'viaje': motonave.viaje  # Agrega el campo 'viaje'
                     # Agrega otros campos según necesites
                 }
                 return JsonResponse(detalles)
@@ -96,7 +101,7 @@ def obtener_detalles_motonave(request):
             return JsonResponse({'error': 'El parámetro "nombre_motonave" es obligatorio en la solicitud GET.'}, status=400)
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
-    
+
 #-------------------GUARDAR ESTADO DE MOTONAVES
 @login_required
 def guardar_nuevo_estado(request):

@@ -54,10 +54,11 @@ class Motonave(models.Model):
     )
     estado_servicio = models.CharField(max_length=20, choices=ESTADOS_SERVICIO, default='Disponible')
 
+    # Nuevo campo para el viaje con valor predeterminado 0
+    viaje = models.IntegerField(default=0)
+
     def __str__(self):
         return self.nombre
-
-
 
 #----------------------TABLA DE FICHA PERSONAL------------------------------------------------------------------------------   
 

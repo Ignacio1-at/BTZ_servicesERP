@@ -80,11 +80,27 @@
         <form id="formAgregarMotonave" method="post" action="{% url 'erp:crear_motonave' %}">
           {% csrf_token %}
           <div class="modal-body">
-            <input type="text" class="form-control" name="nombreMotonave" id="nombreMotonave" placeholder="Nombre de la motonave" />
+            <div class="mb-3">
+              <label for="nombreMotonave" class="form-label">Nombre de la Motonave:</label>
+              <input type="text" class="form-control" name="nombreMotonave" id="nombreMotonave" required />
+            </div>
+            <div class="mb-3">
+              <label for="numeroViaje" class="form-label">Viaje:</label>
+              <input type="text" class="form-control" name="numeroViaje" id="numeroViaje" required />
+            </div>
+            <div class="mb-3">
+              <label for="estadoMotonave" class="form-label">Estado:</label>
+              <select class="form-select" name="estadoMotonave" id="estadoMotonave" required>
+                <option value="Disponible">Disponible</option>
+                <option value="Nominado">Nominado</option>
+                <option value="En Proceso">En Proceso</option>
+                <option value="Terminado">Terminado</option>
+              </select>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary" onclick="submitForm()">Agregar</button>
+            <button type="submit" class="btn btn-primary">Agregar</button>
           </div>
         </form>
       </div>
@@ -103,7 +119,7 @@
           <ul>
             {% for motonave in motonaves %}
               <li>
-                <a class="dropdown-item" style="color: #fff;" href="#" onclick="seleccionarMotonave('{{ motonave.nombre }}')">{{ motonave.nombre }}</a>
+                <a class="dropdown-item" style="color: #fff;" href="#" onclick="seleccionarMotonaveDesdeLista('{{ motonave.nombre }}')">{{ motonave.nombre }}</a>
               </li>
             {% endfor %}
           </ul>
@@ -120,6 +136,7 @@
     <div id="detallesMotonave" class="detalles-motonave">
       <!-- Aquí se mostrarán los detalles de la motonave seleccionada -->
     </div>
+    <div id="dragbar"></div>
   </div>
 
   <!-- Div transparente que cubre el área fuera del panel lateral -->

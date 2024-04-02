@@ -9,15 +9,15 @@
 
 
 .btn.btn-custom-color {
-  background-color: #01152a;
-  border-color: #01152a;
+  background-color: #860909;
+  border-color: #860909;
   /* Color del borde */
   color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .btn.btn-custom-color:hover {
-  color: #860909;
+  color: #01152a;
   /* Color del texto al pasar el ratón */
 }
 
@@ -48,22 +48,32 @@
   font-family: 'mifuente';
   border-right: 3px solid #cccccc1f;
   background-color: #01152a;
-  padding: 10px;
   width: 100%;
-  margin-top: 30px;
+  height: 100%;
   margin-bottom: 20px;
 }
 
 .columna h3 {
+  padding: 50px;
   margin-bottom: 30px;
+  border-radius: 5px;
+  border-bottom: 1px solid #ffffff;
+  border-top: 1px solid #ffffff;
+  background-color: #860909c9;
   /* Reducimos el margen inferior del título */
+  height: 10%;
   color: #fff;
+  font-size: 25px;
+  font-weight: bold;
   text-align: center;
+
 }
 
 .columna-contenido {
-  max-height: 500px; /* Altura máxima del contenido antes de que aparezca el scroll */
-  overflow-y: auto; /* Mostrar scroll vertical si el contenido excede la altura máxima */
+  max-height: 500px;
+  /* Altura máxima del contenido antes de que aparezca el scroll */
+  overflow-y: auto;
+  /* Mostrar scroll vertical si el contenido excede la altura máxima */
 }
 
 .ficha-motonave {
@@ -80,7 +90,7 @@
 }
 
 .ficha-motonave:hover {
-  background-color: #c0c0c0;
+  background-color: #003b88;
 }
 
 /* Estilos para el modal */
@@ -133,23 +143,41 @@
   /* Cambiar color de fondo al hacer hover */
 }
 
-
-/* Estilos para el panel lateral */
+/* PANEL LATERAL */
 .panel-lateral {
-  background-color: #fff;
-  border-left: 1px solid #ccc;
+  background-color: #06203d;
   position: fixed;
   top: 0;
-  right: 0;
+  right: 0; /* Mantener right */
   width: 0;
+  min-width: 0;
+  max-width: 32%;
   height: 100vh;
   margin-top: 106px;
   overflow-y: auto;
-  transition: width 0.5s ease;
+}
+
+#dragbar {
+  cursor: ew-resize;
+  width: 8px;
+  height: 100%;
+  background-color: #cccccc1f;
+  position: absolute;
+  top: 0;
+  left: -4px; /* Colocar en el lado izquierdo */
+}
+
+#dragbar:hover {
+  background-color: rgb(0, 89, 255) !important;
 }
 
 .detalles-motonave {
+  margin-left: 20px;
+  color: #fff;
   font-family: 'mifuente';
+}
+
+.detalles-motonave h4 {
   padding: 20px;
 }
 
