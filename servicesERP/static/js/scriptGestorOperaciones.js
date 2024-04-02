@@ -34,7 +34,7 @@ function verificarNombreMotonaveExistente(nombreMotonave) {
 }
 
 // Event listener para convertir el texto a mayúsculas al escribir en el campo del nombre
-$('#nombreMotonave').on('input', function() {
+$('#nombreMotonave').on('input', function () {
     var input = $(this);
     var texto = input.val();
     input.val(texto.toUpperCase());
@@ -67,7 +67,6 @@ $('#formAgregarMotonave').submit(function (event) {
     }
 });
 
-
 // Función para enviar el formulario de agregar motonave mediante AJAX
 function submitForm() {
     var nombreMotonave = $('#nombreMotonave').val();
@@ -98,7 +97,6 @@ function submitForm() {
     });
 }
 
-
 // Función para abrir el panel lateral y mostrar los detalles de la motonave seleccionada
 function abrirPanelLateral(nombreMotonave, estado, viaje, descripcion) {
 
@@ -106,7 +104,7 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, descripcion) {
     $('#detallesMotonave').html(`
         <h4>Detalles de la motonave</h4>
         <p><strong>Nombre:</strong> ${nombreMotonave}</p>
-        <p><strong>Viaje:</strong> <input type="text" id="inputViaje" value="${viaje}" style="margin-left: 10px ;;margin-bottom: 20px; width: 50px; text-align:center;"></p>
+        <p><strong>Viaje:</strong> <input type="text" id="inputViaje" value="${viaje}" style="margin-left: 10px;margin-bottom: 20px; width: 50px; text-align:center;"></p>
         <p style="display: inline-block; margin-right: 20px;"><strong>Estado:</strong></p>
         <select id="nuevoEstadoMotonave" class="form-select" style="width: 300px; display: inline-block; margin-bottom: 20px;" onchange="guardarNuevoEstado('${nombreMotonave}')">
             <option value="Disponible" ${estado === 'Disponible' ? 'selected' : ''}>Disponible</option>
@@ -117,6 +115,44 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, descripcion) {
         <p style="margin-bottom: 10px;"><strong>Descripción:</strong></p>
         <textarea id="inputDescripcion" rows="4" cols="50" style="margin-bottom: 20px;">${descripcion || ''}</textarea>
     `);
+
+    // Agregar evento de cambio al campo de entrada de viaje
+    $('#inputViaje').change(function () {
+        var nuevoViaje = $(this).val();
+        // Verificar si el valor ingresado es un número positivo
+        if (!/^(\d+)$/.test(nuevoViaje)) {
+            alert('Por favor, ingresa solo números en el campo de viaje.');
+            // Restaurar el valor anterior del campo
+            $(this).val(''); // Limpiar el campo
+            return; // Detener la ejecución
+        }
+        // Llamar a la función para guardar automáticamente el nuevo viaje
+        guardarNuevoViaje(nombreMotonave, nuevoViaje);
+    });
+}
+
+// Función para guardar automáticamente el nuevo viaje
+function guardarNuevoViaje(nombreMotonave, nuevoViaje) {
+    // Obtener el token CSRF del campo oculto en el formulario
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: guardarNuevoViajeURL, // Ajusta esta URL según tu configuración
+        data: {
+            'nombreMotonave': nombreMotonave,
+            'nuevoViaje': nuevoViaje,
+            'csrfmiddlewaretoken': csrfToken // Incluir el token CSRF en los datos de la solicitud
+        },
+        success: function (data) {
+            console.log('El nuevo viaje se guardó automáticamente.');
+            actualizarTableroMotonaves();
+            // Puedes hacer algo aquí, como actualizar el tablero de motonaves
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al guardar el nuevo viaje automáticamente:', error);
+        }
+    });
 }
 
 var panel = document.getElementById('panelLateral');
@@ -191,7 +227,11 @@ function actualizarTableroMotonaves() {
 
                 // Crear fichas de motonaves para el estado actual
                 motonavesEstado.forEach(function (motonave) {
-                    var fichaMotonave = $('<div class="ficha-motonave">' + motonave.nombre + '</div>');
+                    // Crear fichas de motonaves para el estado actual
+                    var fichaMotonave = $('<div class="ficha-motonave">' +
+                        '<div class="nombre">' + motonave.nombre + '</div>' +
+                        '<div class="viaje">' + motonave.viaje + '</div>' +
+                        '</div>');
                     contenidoColumna.append(fichaMotonave);
                 });
             });
@@ -257,12 +297,11 @@ function seleccionarMotonaveDesdeLista(nombreMotonave) {
 // Asignar evento de click a las fichas de motonave en el tablero
 function asignarEventoClicFichasMotonave() {
     $('.ficha-motonave').click(function () {
-        var nombreMotonave = $(this).text();
+        var nombreMotonave = $(this).find('.nombre').text();
         console.log('Se ha hecho clic en la ficha de motonave:', nombreMotonave);
         seleccionarMotonaveDesdeTablero(nombreMotonave);
     });
 }
-
 
 function seleccionarMotonaveDesdeTablero(nombreMotonave) {
     // Realizar una solicitud AJAX para obtener los detalles de la motonave seleccionada desde el tablero

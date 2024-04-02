@@ -60,7 +60,32 @@ class Motonave(models.Model):
     def __str__(self):
         return self.nombre
 
-#----------------------TABLA DE FICHA PERSONAL------------------------------------------------------------------------------   
+#----------------------PERSONAL------------------------------------------------------------------------------   
+
+class Personal(models.Model):
+    SUPERVISOR = 'Supervisor'
+    JEFE_DE_CUADRILLA = 'Jefe de Cuadrilla'
+    OPERARIO = 'Operario'
+
+    CARGOS_CHOICES = [
+        (OPERARIO, 'Operario'),
+        (JEFE_DE_CUADRILLA, 'Jefe de Cuadrilla'),
+        (SUPERVISOR, 'Supervisor'),
+    ]
+
+    nombre = models.CharField(max_length=100)
+    rut = models.CharField(max_length=20, unique=True)
+    cargo = models.CharField(max_length=20, choices=CARGOS_CHOICES, default=OPERARIO)
+
+    ESTADOS = [
+        ('Disponible', 'Disponible'),
+        ('No Disponible', 'No Disponible'),
+        ('En Operación', 'En Operación'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
+
+    def __str__(self):
+        return self.nombre
 
 #----------------------TABLA DE FICHA Herramientas--------------------------------------------------------------------------
    

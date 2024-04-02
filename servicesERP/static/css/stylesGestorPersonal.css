@@ -1,0 +1,94 @@
+/* Estilo para el fondo desenfocado cuando el modal está activo */
+.blur-background {
+    backdrop-filter: blur(5px); /* Aplica un desenfoque al fondo */
+    pointer-events: none; /* Permite hacer clic a través del fondo desenfocado */
+    transition: filter 0.3s ease; /* Agrega una transición suave */
+}
+
+/* Estilo del cuerpo de la página cuando el modal está activo */
+.modal-active {
+    overflow: hidden; /* Evita el desplazamiento de la página */
+    position: fixed; /* Fijar posición en la ventana */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%; /* Ocupa toda la altura */
+}
+
+/* Estilo del modal */
+.modal {
+    display: none; /* Por defecto oculto */
+    position: fixed; /* Fijar posición en la ventana */
+    z-index: 1000; /* Asegurar que esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* Fondo semi-transparente */
+}
+
+.modal-contenido {
+    background-color: #01152a;
+    margin: 10% auto;
+    padding: 70px;
+    border-radius: 10px;
+    width: 60%; /* Ancho del modal */
+    max-width: 800px; /* Ancho máximo */
+    height: auto;
+    position: relative; /* Añadido para posicionar el botón de cerrar */
+}
+
+
+.textoModal {
+    color: white;
+    font-family: 'mifuente';
+    text-align: left; /* Alineación del texto a la izquierda */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.titulo-cerrar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.titulo {
+    background-color: #8d000e;
+    color: white;
+    border-width: solid;
+    font-family: 'mifuente';
+    padding: 10px 20px;
+    text-align: left; /* Alineación del texto a la izquierda */
+    width: calc(100% - 40px); /* El ancho del título es el 100% menos el ancho total del botón de cerrar */
+    box-sizing: border-box;
+}
+
+.submit {
+    color: white;
+    background-color: #8d000e;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    align-self: flex-start;
+    width: fit-content; /* Ajustar al contenido */
+    margin-top: 20px;
+    margin-bottom: 20px; /* Agregado para separación */
+}
+
+.cerrar {
+    color: #aaa;
+    font-size: 28px; /* Ajusta el tamaño del botón según sea necesario */
+    font-weight: bold;
+    z-index: 999; /* Ajusta el z-index según sea necesario */
+    position: absolute; /* Posicionamiento absoluto */
+    top: 10px; /* Ajusta la distancia desde la parte superior */
+    right: 10px; /* Ajusta la distancia desde la derecha */
+}
+
+.cerrar:hover,
+.cerrar:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Motonave
+from .models import Motonave, Personal
 from .forms import CustomLoginForm
 from django.http import JsonResponse
 
@@ -123,16 +123,38 @@ def guardar_nuevo_estado(request):
     else:
         return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)
     
-#-------------------TABLA MOTONAVES
+#-------------------GUARDAR NUEVO VIAJE    
+@login_required
+def guardar_nuevo_viaje(request):
+    if request.method == 'POST':
+        nombre_motonave = request.POST.get('nombreMotonave')
+        nuevo_viaje = request.POST.get('nuevoViaje')
+
+        if nombre_motonave and nuevo_viaje:
+            try:
+                # Buscar la motonave por su nombre
+                motonave = Motonave.objects.get(nombre=nombre_motonave)
+                # Actualizar el valor del viaje
+                motonave.viaje = nuevo_viaje
+                motonave.save()
+                return JsonResponse({'success': True})
+            except Motonave.DoesNotExist:
+                return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
+        else:
+            return JsonResponse({'error': 'Se requieren el nombre de la motonave y el nuevo viaje.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)    
+    
+#-------------------TABLERO MOTONAVES
 @login_required
 def obtener_tabla_motonaves(request):
     # Obtener los datos de la tabla de motonaves, por ejemplo, desde el modelo Motonave
     motonaves = Motonave.objects.all()
     # Construir una lista de diccionarios con los datos relevantes de cada motonave
-    data = [{'nombre': motonave.nombre, 'estado_servicio': motonave.estado_servicio} for motonave in motonaves]
+    data = [{'nombre': motonave.nombre, 'estado_servicio': motonave.estado_servicio, 'viaje': motonave.viaje} for motonave in motonaves]
     # Devolver los datos como una respuesta JSON
-    return JsonResponse(data, safe=False)        
-    
+    return JsonResponse(data, safe=False)
+           
  #-----------------Ficha Operaciones
 @login_required
 def fichaOperaciones(request):
@@ -143,13 +165,25 @@ def fichaOperaciones(request):
 @login_required
 def gestorPersonal(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    return render(request, 'html/gestorPersonal.html', {'nombre_usuario': nombre_usuario})
+    # Obtener todos los objetos de Personal desde la base de datos
+    personal_objects = Personal.objects.all()
+    # Pasar los objetos de Personal al contexto
+    return render(request, 'html/gestorPersonal.html', {'nombre_usuario': nombre_usuario, 'personal_list': personal_objects})
 
- #-----------------Ficha Personal
+ #-----------------Crear Personal
 @login_required
-def fichaPersonal(request):
-    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    return render(request, 'html/fichaPersonal.html', {'nombre_usuario': nombre_usuario})
- 
+def crear_personal(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        rut = request.POST.get('rut')
+        cargo = request.POST.get('cargo')
 
+        # Crear una instancia del modelo Personal y guardarla en la base de datos
+        personal = Personal(nombre=nombre, rut=rut, cargo=cargo)
+        personal.save()
 
+        # Redirigir a alguna página de éxito o a donde desees
+        return redirect('erp:gestor-personal')
+
+    # Si la solicitud no es POST, simplemente renderiza la página nuevamente
+    return render(request, 'erp:gestor-personal')

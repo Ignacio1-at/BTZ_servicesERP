@@ -26,18 +26,18 @@
   <div class="container px-4">
     <div class="row">
       <div class="col-md-3" style="width: 25%;">
-        <button type="button" class="btn btn-personalizado" onclick="window.location.href='{% url 'erp:ficha-personal' %}'" style="background-color: #a30000;border-radius: 10px;">+ Agregar Personal</button>
+        <button type="button" class="btn btn-personalizado" onclick="abrirModalAgregarPersonal()" style="background-color: #a30000;border-radius: 10px;">+ Agregar Personal</button>
         <div class="form-check" style="margin-top: 10px;">
-          <input class="form-check-input estado-checkbox" type="checkbox" value="Disponible" id="terminadoCheckbox" data-estado="Disponible" />
+          <input class="form-check-input estado-checkbox" type="checkbox" value="Disponible" id="terminadoCheckbox" data-estado="Disponible" checked/>
           <label class="form-check-label" for="disponibleCheckbox" style="color: white; background-color: transparent;">Disponible</label>
         </div>
         <!-- CheckBox-->
         <div class="form-check">
-          <input class="form-check-input estado-checkbox" type="checkbox" value="En Proceso" id="enOperacionCheckbox" data-estado="En Operacion" />
+          <input class="form-check-input estado-checkbox" type="checkbox" value="En Proceso" id="enOperacionCheckbox" data-estado="En Operacion" checked/>
           <label class="form-check-label" for="enOperacionCheckbox" style="color: white; background-color: transparent;">En Operación</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input estado-checkbox" type="checkbox" value="No Disponible" id="noDisponibleCheckbox" data-estado="No Disponible" />
+          <input class="form-check-input estado-checkbox" type="checkbox" value="No Disponible" id="noDisponibleCheckbox" data-estado="No Disponible" checked/>
           <label class="form-check-label" for="noDisponibleCheckbox" style="color: white; background-color: transparent;">No Disponible</label>
         </div>
 
@@ -59,22 +59,18 @@
                     <th>Acción</th>
                   </tr>
                 </thead>
-                  <tbody class="tabla-filas">
-                    {% for ficha in fichas %}
-                    <tr data-correo="" class="tabla-filas estado-">
-                        <td></td>
-                        <td></td>
-                        <td id="estado">
-                            <div class="estado-container">
-                                <div class="estado-color" style="background-color: ;"></div>
-                                <div class="estado-texto"></div>
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-secondary cambiar-estado" data-id="">Cambiar Estado</button>
-                            <a href="" target="_blank">Descargar</a>
-                            <a href="" onclick="return confirm('¿Estás seguro de eliminar esta ficha?')">Eliminar</a>
-                        </td>
+                  <tbody>
+                    {% for personal in personal_list %}
+                    <tr>
+                      <td>{{ personal.nombre }}</td>
+                      <td>{{ personal.rut }}</td>
+                      <td>{{ personal.cargo }}</td>
+                      <td>{{ personal.estado }}</td>
+                      <td>
+                        <button class="btn btn-secondary cambiar-estado" data-id="">Cambiar Estado</button>
+                        <a href="" target="_blank">Descargar</a>
+                        <a href="" onclick="return confirm('¿Estás seguro de eliminar esta ficha?')">Eliminar</a>
+                      </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -83,7 +79,37 @@
           </div>
         </div>
       </div>
+      
     </div>
+    <div id="modalAgregarPersonal" class="modal" style="backdrop-filter: blur(5px);">
+      <div class="modal-contenido">
+        <div class="titulo-cerrar-container">
+          <label class="titulo">Agregar Personal</label>
+          <span class="cerrar" onclick="cerrarModalAgregarPersonal()">&times;</span>
+        </div>
+        <form method="post" action="{% url 'erp:crear_personal' %}" id="personalForm" onsubmit="return validarFormulario()">
+          {% csrf_token %}
+          <div class="input-container">
+            <label class="textoModal" for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+          </div>
+          <div class="input-container">
+            <label class="textoModal" for="rut">Rut:</label>
+            <input type="text" id="rut" name="rut" required>
+          </div>
+          <div class="input-container">
+            <label class="textoModal" for="cargo">Cargo:</label>
+            <select id="cargo" name="cargo" required>
+                <option value="Operario">Operario</option>
+                <option value="Jefe de Cuadrilla">Jefe de Cuadrilla</option>
+                <option value="Supervisor">Supervisor</option>
+            </select>
+          </div>
+          <input class="submit" type="submit" value="Agregar">
+        </form>
+      </div>
+    </div>
+    
   </div>
 {% endblock %}
 
