@@ -79,7 +79,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
     <div id="modalAgregarPersonal" class="modal" style="backdrop-filter: blur(5px);">
       <div class="modal-contenido">
@@ -91,12 +91,13 @@
           {% csrf_token %}
           <div class="input-container">
             <label class="textoModal" for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
+            <input type="text" id="nombre" style="width: 50%;" name="nombre" required>
           </div>
-          <div class="input-container">
+          <div class="input-container" style="color: white;">
             <label class="textoModal" for="rut">Rut:</label>
-            <input type="text" id="rut" name="rut" required>
-          </div>
+            <input type="text" id="rut" style="width: 100px;" name="rut" maxlength="8" required> -
+            <input type="text" id="digitoVerificador" style="width: 30px;" name="digitoVerificador" maxlength="1" required>
+        </div>        
           <div class="input-container">
             <label class="textoModal" for="cargo">Cargo:</label>
             <select id="cargo" name="cargo" required>
@@ -109,7 +110,7 @@
         </form>
       </div>
     </div>
-    
+
   </div>
 {% endblock %}
 

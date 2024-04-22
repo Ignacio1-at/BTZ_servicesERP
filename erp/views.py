@@ -143,7 +143,32 @@ def guardar_nuevo_viaje(request):
         else:
             return JsonResponse({'error': 'Se requieren el nombre de la motonave y el nuevo viaje.'}, status=400)
     else:
-        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)    
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+    
+#-------------------GUARDAR DESCRIPCION  
+def guardar_descripcion(request):
+    if request.method == 'POST':
+        # Obtener los datos enviados en la solicitud POST
+        nombre_motonave = request.POST.get('nombre_motonave')
+        nueva_descripcion = request.POST.get('descripcion')
+
+        # Buscar la instancia del modelo correspondiente en la base de datos
+        try:
+            motonave = Motonave.objects.get(nombre=nombre_motonave)
+        except Motonave.DoesNotExist:
+            # Manejar el caso en el que la motonave no se encuentre en la base de datos
+            return JsonResponse({'error': 'La motonave especificada no existe'}, status=404)
+
+        # Actualizar la descripción de la motonave y guardar los cambios en la base de datos
+        motonave.descripcion = nueva_descripcion
+        motonave.save()
+
+        # Devolver una respuesta JSON indicando que la descripción se ha guardado correctamente
+        return JsonResponse({'mensaje': 'Descripción guardada correctamente'})
+
+    else:
+        # Manejar solicitudes de otros métodos HTTP
+        return JsonResponse({'error': 'Método HTTP no permitido'}, status=405)        
     
 #-------------------TABLERO MOTONAVES
 @login_required

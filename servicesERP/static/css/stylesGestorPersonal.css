@@ -29,7 +29,6 @@
 .modal-contenido {
     background-color: #01152a;
     margin: 10% auto;
-    padding: 70px;
     border-radius: 10px;
     width: 60%; /* Ancho del modal */
     max-width: 800px; /* Ancho máximo */

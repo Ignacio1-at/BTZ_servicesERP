@@ -21,6 +21,11 @@
   /* Color del texto al pasar el ratón */
 }
 
+.btn.btn-primary{
+  background-color: #01152a;
+  border-color: #01152a;
+}
+
 /* Seccion tabla */
 .btn-agregar {
   background-color: #860909 !important;

@@ -99,7 +99,6 @@ function submitForm() {
 
 // Función para abrir el panel lateral y mostrar los detalles de la motonave seleccionada
 function abrirPanelLateral(nombreMotonave, estado, viaje, descripcion) {
-
     $('#panelLateral').css('width', '550px');
     $('#detallesMotonave').html(`
         <h4>Detalles de la motonave</h4>
@@ -116,6 +115,13 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, descripcion) {
         <textarea id="inputDescripcion" rows="4" cols="50" style="margin-bottom: 20px;">${descripcion || ''}</textarea>
     `);
 
+    // Agregar evento de cambio al campo de descripción
+    $('#inputDescripcion').on('input', function () {
+        var nuevaDescripcion = $(this).val();
+        // Llamar a la función para guardar automáticamente la nueva descripción
+        guardarNuevaDescripcion(nombreMotonave, nuevaDescripcion);
+    });
+
     // Agregar evento de cambio al campo de entrada de viaje
     $('#inputViaje').change(function () {
         var nuevoViaje = $(this).val();
@@ -130,6 +136,32 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, descripcion) {
         guardarNuevoViaje(nombreMotonave, nuevoViaje);
     });
 }
+
+// Función para guardar la nueva descripción en la base de datos
+function guardarNuevaDescripcion(nombreMotonave, nuevaDescripcion) {
+    // Realizar una solicitud AJAX para enviar la nueva descripción al servidor
+    // Obtener el token CSRF del campo oculto en el formulario
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: guardarDescripcionURL,
+        data: {
+            nombre_motonave: nombreMotonave,
+            descripcion: nuevaDescripcion,
+            'csrfmiddlewaretoken': csrfToken // Incluir el token CSRF en los datos de la solicitud
+        },
+        success: function (response) {
+            // Manejar la respuesta del servidor si es necesario
+            console.log('Descripción guardada correctamente.');
+        },
+        error: function (xhr, status, error) {
+            // Manejar errores si es necesario
+            console.error('Error al guardar la descripción.');
+        }
+    });
+}
+
 
 // Función para guardar automáticamente el nuevo viaje
 function guardarNuevoViaje(nombreMotonave, nuevoViaje) {

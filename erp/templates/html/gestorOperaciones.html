@@ -21,6 +21,9 @@
             <img src="{% static 'images/Operaciones.png' %}" style="margin-left: 20px;" alt="Texto alternativo de la imagen" class="mb-2" width="10%" />
             <span style="color: white; margin-left: 5px;">Operaciones</span>
           </div>
+          <div style="display: flex; margin-left: 45%; align-items: center;">
+            <button type="button" class="btn btn-primary">Lista de Motonaves</button>
+          </div>
           <div style="display: flex; align-items: center;">
             <button type="button" class="btn btn-custom-color">Historial de Servicios</button>
           </div>
@@ -36,10 +39,10 @@
             <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Crear Ficha De</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarMotonave">Nueva Motonave</a>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarMotonave">Motonave</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#motonaveExistenteModal">Motonave Existente</a>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#motonaveExistenteModal">Servicio</a>
               </li>
             </ul>
           </div>
@@ -84,23 +87,10 @@
               <label for="nombreMotonave" class="form-label">Nombre de la Motonave:</label>
               <input type="text" class="form-control" name="nombreMotonave" id="nombreMotonave" required />
             </div>
-            <div class="mb-3">
-              <label for="numeroViaje" class="form-label">Viaje:</label>
-              <input type="text" class="form-control" name="numeroViaje" id="numeroViaje" required />
-            </div>
-            <div class="mb-3">
-              <label for="estadoMotonave" class="form-label">Estado:</label>
-              <select class="form-select" name="estadoMotonave" id="estadoMotonave" required>
-                <option value="Disponible">Disponible</option>
-                <option value="Nominado">Nominado</option>
-                <option value="En Proceso">En Proceso</option>
-                <option value="Terminado">Terminado</option>
-              </select>
-            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Agregar</button>
+            <button type="submit" class="btn btn-custom-color">Agregar</button>
           </div>
         </form>
       </div>
@@ -159,6 +149,7 @@
     var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
     var obtenerTablaMotonavesURL = "{% url 'erp:obtener_tabla_motonaves' %}"
     var guardarNuevoViajeURL = "{% url 'erp:guardar_nuevo_viaje' %}"
+    var guardarDescripcionURL = "{% url 'erp:guardar_descripcion' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
