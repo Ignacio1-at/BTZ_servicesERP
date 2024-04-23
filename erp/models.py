@@ -35,13 +35,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
+    
 #-------------------MOTONAVES ----------------------------------------------------------------------------------------------
 
 class Motonave(models.Model):
     # Campos existentes
     nombre = models.CharField(max_length=100, unique=True)
-    responsable = models.CharField(max_length=100, default="Sin responsable")
+    cantidad_servicios = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios realizados
     descripcion = models.TextField(null=True, blank=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
 
@@ -54,13 +54,33 @@ class Motonave(models.Model):
     )
     estado_servicio = models.CharField(max_length=20, choices=ESTADOS_SERVICIO, default='Disponible')
 
-    # Nuevo campo para el viaje con valor predeterminado 0
-    viaje = models.IntegerField(default=0)
-
     def __str__(self):
         return self.nombre
+    
+#----------------------FichaServicio----------------------------------------------------------------------------------------  
+    
+class FichaServicio(models.Model):
+    motonave_nombre = models.CharField(max_length=100)
+    numero_viaje = models.IntegerField()
+    procedencia = models.CharField(max_length=100)
+    tipo_servicio = models.CharField(max_length=100)
+    armador = models.CharField(max_length=100)
+    agencia = models.CharField(max_length=100)
+    arribo = models.DateField()
+    hospedaje_desayuno = models.BooleanField()
+    lancha_grua = models.BooleanField()
+    cantidad_bodegas = models.IntegerField()
+    arriendo_bomba = models.BooleanField()
+    navegacion = models.BooleanField()
+    prox_puerto = models.CharField(max_length=100)
+    loi = models.CharField(max_length=100)
+    fecha_ultima_modificacion = models.DateTimeField(auto_now=True)
+    descripcion = models.TextField()
 
-#----------------------PERSONAL------------------------------------------------------------------------------   
+    def __str__(self):
+        return f"Ficha de Servicio para {self.motonave_nombre}"
+
+#----------------------PERSONAL---------------------------------------------------------------------------------------------   
 
 class Personal(models.Model):
     SUPERVISOR = 'Supervisor'

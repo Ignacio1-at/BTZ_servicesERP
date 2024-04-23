@@ -43,7 +43,7 @@
 .cuadro-azul {
   background-color: #01152a;
   width: 85%;
-  height: 630px;
+  height: 660px;
   border-radius: 10px;
   display: flex;
   /* Utilizamos flexbox para alinear las columnas */
@@ -60,13 +60,11 @@
 
 .columna h3 {
   padding: 50px;
-  margin-bottom: 30px;
   border-radius: 5px;
-  border-bottom: 1px solid #ffffff;
-  border-top: 1px solid #ffffff;
   background-color: #860909c9;
+  box-shadow: 0px 0px 5px rgba(214, 1, 1, 0.9);
   /* Reducimos el margen inferior del título */
-  height: 10%;
+  height: 20%;
   color: #fff;
   font-size: 25px;
   font-weight: bold;
@@ -77,18 +75,20 @@
 .columna-contenido {
   max-height: 500px;
   /* Altura máxima del contenido antes de que aparezca el scroll */
+  margin-top: 5%;
   overflow-y: auto;
   /* Mostrar scroll vertical si el contenido excede la altura máxima */
 }
 
 .ficha-motonave {
   background-color: #001d43;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 2);
   color: #fff;
   text-align: center;
   font-size: 20px;
   border-radius: 5px;
   padding: 60px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   cursor: pointer;
   margin-left: 40px;
   margin-right: 40px;
@@ -98,6 +98,11 @@
   background-color: #003b88;
 }
 
+.modal-dialog {
+  max-width: 600px !important; /* Ancho máximo del modal */
+  min-width: 400px !important; /* Ancho mínimo del modal */
+}
+
 /* Estilos para el modal */
 .modal-content {
   background-color: #001d43 !important;
@@ -105,7 +110,7 @@
 
 .modal-header {
   background-color: #8d000e;
-  border-bottom: none;
+  border-bottom: #8d000e !important;
 }
 
 .modal-title {
@@ -115,12 +120,13 @@
 
 .modal-body {
   color: #fff;
-  padding: 20px;
+  margin-top: 1% !important;
+  margin-right: 5% !important;
   font-family: 'mifuente';
 }
 
-.modal-footer {
-  border-top: none;
+.modal-footer { 
+  border-top: #001d43 !important;
 }
 
 .btn-secondary {

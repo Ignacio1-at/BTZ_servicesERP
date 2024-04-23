@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Motonave, Personal
+from .models import Motonave, Personal, FichaServicio
 from .forms import CustomLoginForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 
 #---Excel
 #---------------------------------------------------
@@ -61,13 +61,9 @@ def gestorOperaciones(request):
 def crear_motonave(request):
     if request.method == 'POST':
         nombre_motonave = request.POST.get('nombreMotonave')
-        numero_viaje = request.POST.get('numeroViaje')
-        estado_motonave = request.POST.get('estadoMotonave')
-        if nombre_motonave and numero_viaje and estado_motonave:
+        if nombre_motonave:
             motonave = Motonave.objects.create(
                 nombre=nombre_motonave,
-                viaje=numero_viaje,
-                estado_servicio=estado_motonave
             )
             # Redirigir a la página de gestión de operaciones
             return redirect('erp:gestor-operaciones')
@@ -87,11 +83,8 @@ def obtener_detalles_motonave(request):
                 # Construir un diccionario con los detalles de la motonave, incluyendo el nuevo campo 'viaje'
                 detalles = {
                     'nombre': motonave.nombre,
-                    'responsable': motonave.responsable,
-                    'descripcion': motonave.descripcion,
                     'estado_servicio': motonave.estado_servicio,
                     'fecha_modificacion': motonave.fecha_modificacion.strftime('%Y-%m-%d %H:%M:%S'),
-                    'viaje': motonave.viaje  # Agrega el campo 'viaje'
                     # Agrega otros campos según necesites
                 }
                 return JsonResponse(detalles)
@@ -122,7 +115,8 @@ def guardar_nuevo_estado(request):
         return JsonResponse({'success': True, 'message': 'Estado actualizado correctamente.'})
     else:
         return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)
-    
+
+"""   
 #-------------------GUARDAR NUEVO VIAJE    
 @login_required
 def guardar_nuevo_viaje(request):
@@ -169,18 +163,47 @@ def guardar_descripcion(request):
     else:
         # Manejar solicitudes de otros métodos HTTP
         return JsonResponse({'error': 'Método HTTP no permitido'}, status=405)        
-    
+"""    
 #-------------------TABLERO MOTONAVES
 @login_required
 def obtener_tabla_motonaves(request):
     # Obtener los datos de la tabla de motonaves, por ejemplo, desde el modelo Motonave
     motonaves = Motonave.objects.all()
     # Construir una lista de diccionarios con los datos relevantes de cada motonave
-    data = [{'nombre': motonave.nombre, 'estado_servicio': motonave.estado_servicio, 'viaje': motonave.viaje} for motonave in motonaves]
+    data = [{'nombre': motonave.nombre, 'estado_servicio': motonave.estado_servicio} for motonave in motonaves]
     # Devolver los datos como una respuesta JSON
     return JsonResponse(data, safe=False)
+
+
+#-----------------Crear Servicios
+def crear_servicio(request):
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        nombre_motonave = request.POST.get('nombreMotonave')
+        cantidad_servicios = int(request.POST.get('cantidadServicios'))
+
+        # Verificar si la motonave existe
+        try:
+            motonave = Motonave.objects.get(nombre=nombre_motonave)
+        except Motonave.DoesNotExist:
+            return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
+
+        # Cambiar el estado de la motonave a "Nominado"
+        motonave.estado_servicio = 'Nominado'
+        motonave.save()
+
+        # Actualizar la cantidad de servicios de la motonave
+        motonave.cantidad_servicios += cantidad_servicios
+        motonave.save()
+
+        # Otros pasos para crear el servicio...
+        
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+
            
- #-----------------Ficha Operaciones
+ #-----------------Ficha de Servicios
 @login_required
 def fichaOperaciones(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"

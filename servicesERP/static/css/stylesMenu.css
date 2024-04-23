@@ -42,7 +42,7 @@
   font-family: 'mifuente';
 }
 .Botones button img {
-  width: 50px; /* Ancho aumentado para hacerlos más cuadrados */
+  width: 65px; /* Ancho aumentado para hacerlos más cuadrados */
   height: 50px; /* Altura deseada */
   display: block; /* Esto ayuda a centrar la imagen dentro del botón */
   margin: 0 auto; /* Esto también ayuda a centrar la imagen */
