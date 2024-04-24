@@ -9,8 +9,8 @@
 
 
 .btn.btn-custom-color {
-  background-color: #860909;
-  border-color: #860909;
+  background-color: #860909c9;
+  border-color: #860909c9;
   /* Color del borde */
   color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -28,8 +28,8 @@
 
 /* Seccion tabla */
 .btn-agregar {
-  background-color: #860909 !important;
-  border-color: #860909 !important;
+  background-color: #860909c9 !important;
+  border-color: #860909c9 !important;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   margin-bottom: 550px;
 }
@@ -109,8 +109,8 @@
 }
 
 .modal-header {
-  background-color: #8d000e;
-  border-bottom: #8d000e !important;
+  background-color: #860909c9;
+  border-bottom: #860909c9 !important;
 }
 
 .modal-title {
@@ -156,7 +156,7 @@
 
 /* PANEL LATERAL */
 .panel-lateral {
-  background-color: #06203d;
+  background-color: #001e44;
   position: fixed;
   top: 0;
   right: 0; /* Mantener right */
@@ -166,6 +166,80 @@
   height: 100vh;
   margin-top: 106px;
   overflow-y: auto;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.panel-nombre {
+  background-color: #860909c9;
+  width: 514px;
+  height: 88px;
+  margin-top: 24px;
+  border-radius: 15px;
+}
+
+.panel-nombre h4 {
+  color: white;
+  padding-top: 20px;
+  padding-left: 20px;
+  text-align: center;
+  font-size: 40px;
+}
+
+.panel-info {
+  background-color: #01172f;
+  width: 514px;
+  padding: 10%;
+  height: 258px;
+  margin-top: 15px;
+  border-radius: 15px;
+}
+
+.info-container {
+  width: 462px;
+  height: 155px;
+  font-size: 18px;
+}
+
+.panel-info2 {
+  background-color: #01172f;
+  width: 514px;
+  height: 131px;
+  padding: 5%;
+  margin-top: 15px;
+  border-radius: 15px;
+}
+
+.info-container2 {
+  width: 462px;
+  height: 155px;
+  font-size: 18px;
+  margin-left: 26px;
+}
+
+.panel-comentario {
+  background-color: #01172f;
+  width: 514px;
+  height: 181px;
+  margin-top: 15px;
+  border-radius: 15px;
+}
+
+#miBoton {
+  background-color: #860909c9;
+  border: none; 
+  color: white; 
+  text-align: center; 
+  font-size: 12px; 
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: 40%;
+  width: 122px;
+  height: 29px;
+  cursor: pointer;
+  border-radius: 10px;
 }
 
 #dragbar {

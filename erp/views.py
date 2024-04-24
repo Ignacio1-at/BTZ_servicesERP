@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import Motonave, Personal, FichaServicio
 from .forms import CustomLoginForm
 from django.http import JsonResponse, HttpResponseRedirect
+from django.utils import timezone
 
 #---Excel
 #---------------------------------------------------
@@ -85,6 +86,9 @@ def obtener_detalles_motonave(request):
                     'nombre': motonave.nombre,
                     'estado_servicio': motonave.estado_servicio,
                     'fecha_modificacion': motonave.fecha_modificacion.strftime('%Y-%m-%d %H:%M:%S'),
+                    'fecha_nominacion': motonave.fecha_nominacion.strftime('%Y-%m-%d'),
+                    'cantidad_servicios': motonave.cantidad_servicios,
+                    'viaje': motonave.numero_viaje,
                     # Agrega otros campos según necesites
                 }
                 return JsonResponse(detalles)
@@ -170,17 +174,26 @@ def obtener_tabla_motonaves(request):
     # Obtener los datos de la tabla de motonaves, por ejemplo, desde el modelo Motonave
     motonaves = Motonave.objects.all()
     # Construir una lista de diccionarios con los datos relevantes de cada motonave
-    data = [{'nombre': motonave.nombre, 'estado_servicio': motonave.estado_servicio} for motonave in motonaves]
+    data = [{'nombre': motonave.nombre, 
+             'estado_servicio': motonave.estado_servicio,
+             'cantidad_servicios': motonave.cantidad_servicios,
+             'viaje': motonave.numero_viaje} for motonave in motonaves]
     # Devolver los datos como una respuesta JSON
     return JsonResponse(data, safe=False)
 
 
+
 #-----------------Crear Servicios
+@login_required
 def crear_servicio(request):
     if request.method == 'POST':
         # Obtener los datos del formulario
         nombre_motonave = request.POST.get('nombreMotonave')
         cantidad_servicios = int(request.POST.get('cantidadServicios'))
+        numero_viaje = int(request.POST.get('numeroViaje'))  # Obtener el número de viaje del formulario
+
+        # Obtener la fecha de nominación actual
+        fecha_nominacion = timezone.now()
 
         # Verificar si la motonave existe
         try:
@@ -192,17 +205,18 @@ def crear_servicio(request):
         motonave.estado_servicio = 'Nominado'
         motonave.save()
 
-        # Actualizar la cantidad de servicios de la motonave
+        # Actualizar la cantidad de servicios y el número de viaje de la motonave
         motonave.cantidad_servicios += cantidad_servicios
+        motonave.numero_viaje = numero_viaje  # Asignar el número de viaje
+        motonave.fecha_nominacion = fecha_nominacion  # Asignar la fecha de nominación
         motonave.save()
 
         # Otros pasos para crear el servicio...
-        
+
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
 
-           
  #-----------------Ficha de Servicios
 @login_required
 def fichaOperaciones(request):

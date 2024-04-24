@@ -125,8 +125,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="40" height="40" style="margin-right: 10px;" />
-          <h5 class="modal-title" id="modalServicioLabel">Nuevo Servicio</h5>
+          <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="margin-left: 30px;">
@@ -142,7 +141,11 @@
             </div>
             <div class="mb-3">
               <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
-              <input type="number" class="form-control" style="width: 99%;" name="cantidadServicios" id="cantidadServicios" required />
+              <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required />
+              <label for="cantidadServicios" class="form-label">Viaje:</label>
+              <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required />
+              <!-- Campo oculto para almacenar la fecha de nominación -->
+              <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="">
             </div>
           </form>
         </div>
@@ -152,6 +155,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Modal de gestión de servicios -->
   <div class="modal fade" id="modalGestionarServicios" tabindex="-1" aria-labelledby="modalGestionarServiciosLabel" aria-hidden="true">
@@ -174,8 +178,48 @@
   <!-- Panel lateral -->
   <div id="panelLateral" class="panel-lateral">
     <div id="detallesMotonave" class="detalles-motonave">
-      <!-- Aquí se mostrarán los detalles de la motonave seleccionada -->
-    </div>
+      <div id="panelNombre" class="panel-nombre">
+        <h4 id="nombreMotonave"></h4>
+      </div>
+      <div id="panelInfo" class="panel-info">
+        <div class="info-container">
+            <!-- Viaje -->
+            <p style="display: inline;">Viaje: </p>
+            <p id="viajeMotonave" style="display: inline; margin-left: 5%;"></p>
+            <!-- Estado -->
+            <p style="display: inline; margin-left: 22%;">Estado:
+                <select id="nuevoEstadoMotonave"  style="border-radius: 10px;">
+                    <option value="Disponible">Disponible</option>
+                    <option value="Nominado">Nominado</option>
+                    <option value="En Proceso">En Proceso</option>
+                    <option value="Terminado">Terminado</option>
+                </select>
+            </p>
+            <!-- Carga-->
+            <p style="margin-top: 15px;">Carga: </p>
+            <!-- Puerto-->
+            <p style="margin-top: 15px;">Puerto: </p>
+            <!-- Armador -->
+            <p style="margin-top: 15px;">Armador: </p>
+        </div>
+      </div>    
+      <div id="panelInfo2" class="panel-info2">
+        <div class="info-container2">
+          <!-- Fecha Nom -->
+          <p style="display: inline;">Fecha de Nominación: </p>
+          <p id="fechaNominacionMotonave" style="display: inline; margin-left: 5%;"></p>
+          <!-- Servicios -->
+          <p style="margin-top: 15px;">Servicios: </p>
+        </div>
+      </div>
+      <div id="panelComentario" class="panel-comentario">
+        <div class="info-container3">
+        
+        </div>
+      </div>
+      <div>
+        <button id="miBoton">Eliminar MN</button>
+      </div>
     <div id="dragbar"></div>
   </div>
 

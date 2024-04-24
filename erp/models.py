@@ -44,6 +44,8 @@ class Motonave(models.Model):
     cantidad_servicios = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios realizados
     descripcion = models.TextField(null=True, blank=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
+    fecha_nominacion = models.DateTimeField(auto_now_add=True)
+    numero_viaje = models.IntegerField(default=0)
 
     # Nuevo campo para el estado del servicio
     ESTADOS_SERVICIO = (
@@ -61,7 +63,6 @@ class Motonave(models.Model):
     
 class FichaServicio(models.Model):
     motonave_nombre = models.CharField(max_length=100)
-    numero_viaje = models.IntegerField()
     procedencia = models.CharField(max_length=100)
     tipo_servicio = models.CharField(max_length=100)
     armador = models.CharField(max_length=100)
