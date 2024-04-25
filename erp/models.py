@@ -41,8 +41,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Motonave(models.Model):
     # Campos existentes
     nombre = models.CharField(max_length=100, unique=True)
-    cantidad_servicios = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios realizados
-    descripcion = models.TextField(null=True, blank=True)
+    cantidad_serviciosHistorial = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios realizados en su totalidad
+    cantidad_serviciosActual = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios que se realizaran actual
+    comentarioActual = models.TextField(null=True, blank=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
     fecha_nominacion = models.DateTimeField(auto_now_add=True)
     numero_viaje = models.IntegerField(default=0)

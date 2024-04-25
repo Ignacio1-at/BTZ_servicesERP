@@ -13,7 +13,7 @@
     <div class="row">
       <div class="row">
           <div class="col-md-3" style="margin-left: 1.8%; width: 25%;">
-              <img src="{% static 'images/RRHH.png' %}" alt="Texto alternativo de la imagen" class="mb-2" width="10%" />
+              <img src="{% static 'images/LogoRRHH.png' %}" alt="Texto alternativo de la imagen" class="mb-2" height="30px" />
               <span style="color: white;">Personal</span>
           </div>
           <div class="col-md-9" style="width: auto; margin-top: 0.5%;">
@@ -40,7 +40,6 @@
           <input class="form-check-input estado-checkbox" type="checkbox" value="No Disponible" id="noDisponibleCheckbox" data-estado="No Disponible" checked/>
           <label class="form-check-label" for="noDisponibleCheckbox" style="color: white; background-color: transparent;">No Disponible</label>
         </div>
-
         <a class="btn btn-secondary" href="{% url 'erp:menu' %}" style="margin-top: 5%;">Volver</a>
       </div>
 
@@ -79,8 +78,8 @@
           </div>
         </div>
       </div>
-
     </div>
+
     <div id="modalAgregarPersonal" class="modal" style="backdrop-filter: blur(5px);">
       <div class="modal-contenido">
         <div class="titulo-cerrar-container">
@@ -110,8 +109,8 @@
         </form>
       </div>
     </div>
-
   </div>
+  
 {% endblock %}
 
 {% block module_scripts %}

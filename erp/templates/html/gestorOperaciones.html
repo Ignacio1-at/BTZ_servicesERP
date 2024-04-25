@@ -123,39 +123,41 @@
   <!-- Modal Servicio -->
   <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" style="margin-left: 30px;">
-          <form id="formCrearServicio" method="post" action="">
-            {% csrf_token %}
-            <div class="mb-3">
-              <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
-              <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
-                {% for motonave in motonaves %}
-                  <option value="{{ motonave.nombre }}">{{ motonave.nombre }}</option>
-                {% endfor %}
-              </select>
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-              <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
-              <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required />
-              <label for="cantidadServicios" class="form-label">Viaje:</label>
-              <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required />
-              <!-- Campo oculto para almacenar la fecha de nominación -->
-              <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="">
+            <div class="modal-body" style="margin-left: 30px;">
+                <form id="formCrearServicio" method="post" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
+                      <!-- {{ nombres_motonaves_disponibles }} -->
+                      <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
+                        {% for nombre_motonave in nombres_motonaves_disponibles %}
+                        <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
+                        <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="numeroViaje" class="form-label">Viaje:</label>
+                        <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
+                    </div>
+                    <!-- Campo oculto para almacenar la fecha de nominación -->
+                    <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="">
+                </form>
             </div>
-          </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-custom-color" id="btnMostrarModalGestion" style="margin-right: 40px;">Ingresar</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom-color" id="btnMostrarModalGestion" style="margin-right: 40px;">Ingresar</button>
-        </div>
-      </div>
     </div>
   </div>
-
 
   <!-- Modal de gestión de servicios -->
   <div class="modal fade" id="modalGestionarServicios" tabindex="-1" aria-labelledby="modalGestionarServiciosLabel" aria-hidden="true">
@@ -205,20 +207,19 @@
       </div>    
       <div id="panelInfo2" class="panel-info2">
         <div class="info-container2">
-          <!-- Fecha Nom -->
-          <p style="display: inline;">Fecha de Nominación: </p>
-          <p id="fechaNominacionMotonave" style="display: inline; margin-left: 5%;"></p>
-          <!-- Servicios -->
-          <p style="margin-top: 15px;">Servicios: </p>
+            <!-- Fecha Nom -->
+            <p style="margin-top: 5px;">Fecha de Nominación: <span id="fechaNominacionMotonave" style="margin-left: 5%;"></span></p>
+            <!-- Servicios -->
+            <p>Servicios: <span id="cantidadServiciosActual" style="margin-left: 5%;"></span></p>
         </div>
       </div>
       <div id="panelComentario" class="panel-comentario">
         <div class="info-container3">
-        
-        </div>
-      </div>
+          <textarea id="comentarioActual" name="comentarioActual" class="form-control" rows="10" cols="40" style="width: 100%; min-height:30px; max-height: 131px; border-radius: 10px;" placeholder="  Comentarios" maxlength="1000"></textarea>
+        </div> 
+      </div>    
       <div>
-        <button id="miBoton">Eliminar MN</button>
+        <button id="BotonEliminacionNomina">Eliminar Nominación</button>
       </div>
     <div id="dragbar"></div>
   </div>
@@ -241,9 +242,11 @@
   <script>
     var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
     var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
+    var nuevoComentarioMotonaveURL = "{% url 'erp:guardar_comentarios' %}"
     var obtenerTablaMotonavesURL = "{% url 'erp:obtener_tabla_motonaves' %}"
     var crearServicioURL = "{% url 'erp:crear_servicio' %}"
-    
+    var rendFormularioURL = "{% url 'erp:renderizar_formulario' %}"
+
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
       actualizarTableroMotonaves()

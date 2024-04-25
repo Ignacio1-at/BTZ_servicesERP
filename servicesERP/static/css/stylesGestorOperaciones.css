@@ -21,7 +21,7 @@
   /* Color del texto al pasar el ratón */
 }
 
-.btn.btn-primary{
+.btn.btn-primary {
   background-color: #01152a;
   border-color: #01152a;
 }
@@ -99,8 +99,10 @@
 }
 
 .modal-dialog {
-  max-width: 600px !important; /* Ancho máximo del modal */
-  min-width: 400px !important; /* Ancho mínimo del modal */
+  max-width: 600px !important;
+  /* Ancho máximo del modal */
+  min-width: 400px !important;
+  /* Ancho mínimo del modal */
 }
 
 /* Estilos para el modal */
@@ -125,7 +127,7 @@
   font-family: 'mifuente';
 }
 
-.modal-footer { 
+.modal-footer {
   border-top: #001d43 !important;
 }
 
@@ -159,7 +161,8 @@
   background-color: #001e44;
   position: fixed;
   top: 0;
-  right: 0; /* Mantener right */
+  right: 0;
+  /* Mantener right */
   width: 0;
   min-width: 0;
   max-width: 32%;
@@ -213,31 +216,39 @@
 }
 
 .info-container2 {
-  width: 462px;
-  height: 155px;
+  width: 369px;
+  height: 69px;
   font-size: 18px;
   margin-left: 26px;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-comentario {
   background-color: #01172f;
   width: 514px;
   height: 181px;
+  padding: 5%;
   margin-top: 15px;
   border-radius: 15px;
 }
 
-#miBoton {
+.info-container3 {
+  width: 443px;
+  font-size: 18px;
+}
+
+#BotonEliminacionNomina {
   background-color: #860909c9;
-  border: none; 
-  color: white; 
-  text-align: center; 
-  font-size: 12px; 
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 12px;
   margin-top: 7px;
   margin-bottom: 7px;
   margin-left: 40%;
   width: 122px;
-  height: 29px;
+  height: 35px;
   cursor: pointer;
   border-radius: 10px;
 }
@@ -249,7 +260,8 @@
   background-color: #cccccc1f;
   position: absolute;
   top: 0;
-  left: -4px; /* Colocar en el lado izquierdo */
+  left: -4px;
+  /* Colocar en el lado izquierdo */
 }
 
 #dragbar:hover {

@@ -81,11 +81,12 @@ function submitForm() {
     });
 }
 
-function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion) {
+function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual) {
     $('#panelLateral').css('width', '550px');
     $('#panelNombre h4').text(nombreMotonave); // Establecer el nombre de la motonave
     $('#viajeMotonave').text(viaje); // Establecer el valor del viaje
     $('#fechaNominacionMotonave').text(fechaNominacion); // Mostrar la fecha de nominación
+    $('#cantidadServiciosActual').text(cantidad_serviciosActual); // Mostrar la cantidad de servicios actuales
 
     console.log('Estado:', estado); // Agregar console.log para verificar el valor del estado
 
@@ -94,6 +95,13 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion) {
     // Asignar evento onchange al select
     $('#nuevoEstadoMotonave').off('change').on('change', function () {
         guardarNuevoEstado(nombreMotonave);
+    });
+
+    $('#comentarioActual').val(comentarioActual);
+
+    // Asignar evento onchange al select
+    $('#comentarioActual').off('change').on('change', function () {
+        guardarNuevoComentario(nombreMotonave);
     });
 }
 
@@ -124,7 +132,6 @@ function stopDrag(e) {
     document.documentElement.removeEventListener('mouseup', stopDrag, false);
 }
 
-
 // Función para guardar el nuevo estado seleccionado en la base de datos
 function guardarNuevoEstado(nombreMotonave) {
     var nuevoEstado = $('#nuevoEstadoMotonave').val();
@@ -144,6 +151,28 @@ function guardarNuevoEstado(nombreMotonave) {
         },
         error: function (xhr, status, error) {
             console.error('Error al guardar el nuevo estado:', error);
+        }
+    });
+}
+
+function guardarNuevoComentario(nombreMotonave) {
+    var nuevoComentario = $('#comentarioActual').val(); // Obtener el valor del textarea
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+        type: 'POST',
+        url: nuevoComentarioMotonaveURL,
+        headers: { 'X-CSRFToken': csrftoken },
+        data: {
+            'nombre_motonave': nombreMotonave,
+            'comentarioActual': nuevoComentario // Asegúrate de que coincida con el nombre del campo en tu vista de Django
+        },
+        success: function (response) {
+            console.log('Nuevo comentario guardado correctamente:', response);
+            // Realizar un refresh de la página después de guardar el comentario
+            actualizarTableroMotonaves(); // Llamar a la función para actualizar el tablero de motonaves
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al guardar el nuevo comentario:', error);
         }
     });
 }
@@ -223,7 +252,7 @@ function seleccionarMotonaveDesdeLista(nombreMotonave) {
             // Verificar si se recibieron los detalles correctamente
             if (data.nombre && data.estado_servicio) {
                 // Abrir el panel lateral y mostrar los detalles de la motonave
-                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion);
+                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion, data.cantidad_serviciosActual, data.comentarioActual);
             } else {
                 console.error('No se recibieron los detalles de la motonave correctamente.');
             }
@@ -253,7 +282,7 @@ function seleccionarMotonaveDesdeTablero(nombreMotonave) {
             // Verificar si se recibieron los detalles correctamente
             if (data.nombre && data.estado_servicio) {
                 // Abrir el panel lateral y mostrar los detalles de la motonave desde el tablero
-                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion);
+                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion, data.cantidad_serviciosActual, data.comentarioActual);
             } else {
                 console.error('No se recibieron los detalles de la motonave correctamente desde el tablero.');
             }
@@ -265,28 +294,59 @@ function seleccionarMotonaveDesdeTablero(nombreMotonave) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Obtener el botón "Ingresar" del formulario
-    var btnMostrarModalGestion = document.getElementById('btnMostrarModalGestion');
+    // Obtener el select de las motonaves
+    const selectMotonave = document.querySelector('#modalServicio select[name="nombreMotonave"]');
 
-    // Obtener el modal de cantidad de servicios
-    var modalServicio = new bootstrap.Modal(document.getElementById('modalServicio'));
+    function cargarNombresMotonavesDisponibles() {
+        fetch(rendFormularioURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La solicitud no fue exitosa');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Limpiar el select antes de agregar las nuevas opciones
+                selectMotonave.innerHTML = "";
 
-    // Obtener el modal de gestión de servicios
-    var modalGestionarServicios = new bootstrap.Modal(document.getElementById('modalGestionarServicios'));
+                // Verificar si hay nombres disponibles
+                if (data.nombres_motonaves_disponibles && data.nombres_motonaves_disponibles.length > 0) {
+                    // Iterar sobre los nombres de las motonaves disponibles
+                    data.nombres_motonaves_disponibles.forEach(nombre => {
+                        const option = document.createElement('option');
+                        option.value = nombre;
+                        option.textContent = nombre;
+                        selectMotonave.appendChild(option);
+                    });
+                } else {
+                    console.error('No se encontraron nombres de motonaves disponibles.');
+                }
+            })
+            .catch(error => console.error('Error al cargar los nombres de las motonaves:', error));
+    }
 
-    // Agregar un evento de clic al botón "Ingresar" para cerrar el modal actual y mostrar el modal de gestión de servicios
-    btnMostrarModalGestion.addEventListener('click', function () {
-        // Cerrar el modal de cantidad de servicios
-        modalServicio.hide();
-
-        // Mostrar el modal de gestión de servicios
-        modalGestionarServicios.show();
+    // Llamar a la función para cargar los nombres de las motonaves disponibles cuando se abre el modal
+    document.getElementById('modalServicio').addEventListener('show.bs.modal', function () {
+        cargarNombresMotonavesDisponibles();
     });
 });
 
 $(document).ready(function () {
     // Agregar un evento de clic al botón "Ingresar" para enviar el formulario al servidor
     $('#btnMostrarModalGestion').click(function () {
+        // Obtener los valores de cantidad de servicios y número de viaje
+        var cantidadServicios = parseInt($('#cantidadServicios').val());
+        var numeroViaje = parseInt($('#numeroViaje').val());
+
+        // Validar que los valores sean números enteros positivos
+        if (isNaN(cantidadServicios) || cantidadServicios <= 0 || !Number.isInteger(cantidadServicios) ||
+            isNaN(numeroViaje) || numeroViaje <= 0 || !Number.isInteger(numeroViaje)) {
+            // Mostrar un mensaje de error al usuario
+            alert('Por favor, ingrese números validos para servicios y viaje.');
+            return; // Detener la ejecución del código
+        }
+
+        // Si la validación es exitosa, enviar la solicitud AJAX
         // Obtener los datos del formulario
         var formData = $('#formCrearServicio').serialize();
 
@@ -296,6 +356,9 @@ $(document).ready(function () {
         // Agregar la fecha de nominación al formData
         formData += '&fechaNominacion=' + fechaNominacion;
 
+        // Ocultar el modal de servicios
+        $('#modalServicio').modal('hide');
+
         // Enviar los datos al servidor utilizando AJAX
         $.ajax({
             url: crearServicioURL,
@@ -303,9 +366,16 @@ $(document).ready(function () {
             data: formData,
             success: function (response) {
                 // Manejar la respuesta del servidor aquí
-                console.log('Datos del formulario:', formData);
                 console.log('Respuesta del servidor:', response);
-                actualizarTableroMotonaves(); // Llamar a la función para actualizar el tablero de motonaves
+
+                // Si la respuesta del servidor es verdadera (true), abrir el modal de gestión de servicios
+                if (response.success) {
+                    // Mostrar el modal de gestión de servicios
+                    $('#modalGestionarServicios').modal('show');
+                }
+
+                // Llamar a la función para actualizar el tablero de motonaves
+                actualizarTableroMotonaves();
             },
             error: function (xhr, status, error) {
                 // Manejar errores de AJAX aquí
