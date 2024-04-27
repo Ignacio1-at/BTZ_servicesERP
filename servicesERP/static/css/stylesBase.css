@@ -3,27 +3,22 @@
   src: url('../font/IronFist-KqrD.ttf') format('opentype');
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+nav {
+  background-color: #01152a;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  width: 100vw;
+  font-family: 'mifuente';
 }
 
 .fondo {
   background-image: url(../images/Fondonew.png);
-  min-height: 100vh;
+  width: 100vw;
+  min-height: calc(100vh - 12vh); /* Ajustar según la altura del footer */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  overflow: hidden;
-  /* Esto evita el scroll */
-}
-
-.content-container {
-  width: 1660px;
-  /* Ancho del fondo */
-  margin: 0 auto;
-  /* Centra el contenedor horizontalmente */
+  background-size: 100% 100%;
 }
 
 /* stylesBase.css u otro archivo de estilos */
@@ -44,8 +39,7 @@ footer {
   padding: 10px;
   position: fixed;
   bottom: 0;
-  width: 100%;
-  z-index: 1;
-  margin-top: auto;
+  width: 100vw;
+  height: 8vh;
   font-family: 'mifuente';
 }

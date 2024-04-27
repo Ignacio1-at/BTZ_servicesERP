@@ -82,7 +82,8 @@ function submitForm() {
 }
 
 function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual) {
-    $('#panelLateral').css('width', '550px');
+    $('#panelLateral').css('width', '30vw');
+    $('#panelLateral').css('height', '100vh');
     $('#panelNombre h4').text(nombreMotonave); // Establecer el nombre de la motonave
     $('#viajeMotonave').text(viaje); // Establecer el valor del viaje
     $('#fechaNominacionMotonave').text(fechaNominacion); // Mostrar la fecha de nominación
@@ -102,6 +103,11 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, canti
     // Asignar evento onchange al select
     $('#comentarioActual').off('change').on('change', function () {
         guardarNuevoComentario(nombreMotonave);
+    });
+
+    // Agregar evento de clic al botón de eliminar para capturar el nombre de la motonave
+    $('#BotonEliminacionNomina').off('click').on('click', function () {
+        eliminarServicio(nombreMotonave);
     });
 }
 
@@ -239,30 +245,6 @@ $(document).mouseup(function (e) {
     }
 });
 
-function seleccionarMotonaveDesdeLista(nombreMotonave) {
-    // Cerrar el modal
-    $('#listaMotonaveModal').modal('hide');
-
-    // Realizar una solicitud AJAX para obtener los detalles de la motonave seleccionada
-    $.ajax({
-        type: 'GET',
-        url: obtenerDetallesMotonaveURL,
-        data: { 'nombre_motonave': nombreMotonave },
-        success: function (data) {
-            // Verificar si se recibieron los detalles correctamente
-            if (data.nombre && data.estado_servicio) {
-                // Abrir el panel lateral y mostrar los detalles de la motonave
-                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion, data.cantidad_serviciosActual, data.comentarioActual);
-            } else {
-                console.error('No se recibieron los detalles de la motonave correctamente.');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error al obtener los detalles de la motonave:', error);
-        }
-    });
-}
-
 // Asignar evento de click a las fichas de motonave en el tablero
 function asignarEventoClicFichasMotonave() {
     $('.ficha-motonave').click(function () {
@@ -331,6 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Crear Servicio
 $(document).ready(function () {
     // Agregar un evento de clic al botón "Ingresar" para enviar el formulario al servidor
     $('#btnMostrarModalGestion').click(function () {
@@ -384,3 +367,41 @@ $(document).ready(function () {
         });
     });
 });
+
+// Función para eliminar el servicio
+function eliminarServicio(nombreMotonave) {
+    // Obtener el token CSRF de las cookies
+    var csrftoken = getCookie('csrftoken');
+
+    // Confirmar con el usuario si realmente desea eliminar el servicio
+    if (confirm("¿Estás seguro de que quieres eliminar este servicio?")) {
+        // Realizar la petición AJAX para eliminar el servicio
+        $.ajax({
+            url: eliminarServicioURL,
+            type: 'POST',
+            headers: { 'X-CSRFToken': csrftoken },  // Incluir el token CSRF en los headers de la solicitud
+            data: {
+                nombreMotonave: nombreMotonave
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Eliminación exitosa, actualizar la interfaz de usuario según sea necesario
+                    alert("El servicio se ha eliminado correctamente.");
+                    // Aquí podrías recargar la página o realizar otras acciones necesarias después de eliminar el servicio
+                    location.reload();
+                } else {
+                    // Error al eliminar el servicio, mostrar un mensaje de error si es necesario
+                    alert("Ha ocurrido un error al eliminar el servicio.");
+                }
+            },
+            error: function (xhr, errmsg, err) {
+                // Manejar el error de la petición AJAX si es necesario
+                alert("Ha ocurrido un error al eliminar el servicio.");
+            }
+        });
+    }
+}
+
+function abrirModalGestorServicios() {
+    $('#modalGestionarServicios').modal('show');
+}

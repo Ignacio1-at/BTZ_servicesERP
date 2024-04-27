@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import F
 from .models import Motonave, Personal, FichaServicio
 from .forms import CustomLoginForm
-from django.http import JsonResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.utils import timezone
 
 #---Excel
@@ -222,6 +223,38 @@ def crear_servicio(request):
         motonave.save()
 
         # Otros pasos para crear el servicio...
+
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+    
+# ELIMINAR SERVICIO
+@login_required
+def eliminar_servicio(request):
+    if request.method == 'POST':
+        # Obtener el nombre de la motonave del cuerpo de la solicitud
+        nombre_motonave = request.POST.get('nombreMotonave')
+        
+        # Obtener la motonave
+        try:
+            motonave = Motonave.objects.get(nombre=nombre_motonave)
+        except Motonave.DoesNotExist:
+            return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
+        
+        # Actualizar el estado de la motonave a "Disponible"
+        motonave.estado_servicio = 'Disponible'
+        
+        # Restar la cantidad de servicios actual del historial
+        motonave.cantidad_serviciosHistorial = F('cantidad_serviciosHistorial') - motonave.cantidad_serviciosActual
+        
+        # Restablecer la cantidad de servicios
+        motonave.cantidad_serviciosActual = 0
+        
+        # Restablecer el número de viaje a su valor predeterminado (0)
+        motonave.numero_viaje = 0
+        
+        # Guardar los cambios en la motonave
+        motonave.save()
 
         return JsonResponse({'success': True})
     else:

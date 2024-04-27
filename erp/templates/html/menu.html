@@ -11,69 +11,70 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container Set_Botones px-4 d-flex justify-content-center align-items-center">
-    <div class="row gx-5">
-      <div class="col-md-6 col-lg-6">
-        <div class="p-3 Operaciones">
-          <!-- Configura el botón para redireccionar a gestorOperaciones -->
-          <a href="{% url 'erp:gestor-operaciones' %}" class="btn btn-operaciones d-flex flex-column align-items-center w-100">
-            <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" />
-            <span class="texto-blanco" style="color: white; font-size: 20px;">Operaciones</span>
-          </a>
+  <div id="contenidoPrincipal" class="contenido-principal">
+    <div class="container Set_Botones px-4 d-flex justify-content-center align-items-center">
+      <div class="row gx-5">
+        <div class="col-md-6 col-lg-6">
+          <div class="p-3 Operaciones">
+            <!-- Configura el botón para redireccionar a gestorOperaciones -->
+            <a href="{% url 'erp:gestor-operaciones' %}" class="btn btn-operaciones d-flex flex-column align-items-center w-100">
+              <img src="{% static 'images/Operaciones.png' %}" style="height: 30vh;" alt="Texto alternativo de la imagen" class="mb-2" />
+              <span class="texto-blanco" style="color: white; font-size: 3vh;">Operaciones</span>
+            </a>
+          </div>
         </div>
-      </div>
-      <div class="col">
-        <style>
-          /* Estilo para los botones con ancho y altura fijos */
-          .Botones button {
-            width: 200px; /* Ancho aumentado para hacerlos más cuadrados */
-            height: 200px; /* Altura deseada */
-            margin-right: 35px; /* Margen derecho para separar los botones */
-            margin-bottom: -20px; /* Margen inferior para separar los botones de la parte superior */
-          }
-        </style>
+        <div class="col">
+          <style>
+            /* Estilo para los botones con ancho y altura fijos */
+            .Botones button {
+              width: 10vw; /* Ancho aumentado para hacerlos más cuadrados */
+              height: 20vh; /* Altura deseada */
+              margin-right: 1vw; /* Margen derecho para separar los botones */
+            }
+          </style>
 
-        <div class="container Mantenimiento-Informe px-4 d-flex justify-content-center align-items-center">
-          <div class="row gy-5">
-            <div class="col-md-6 col-lg-6">
-              <div class="p-3 Botones">
-                <button class="BotonPuerto" onclick="window.location.href=''">
-                  <img src="{% static 'images/LogoPuerto.png' %}" alt="Texto alternativo de la imagen" />
-                  <br />
-                  Puertos
-                </button>
+          <div class="container Mantenimiento-Informe px-4 d-flex justify-content-center align-items-center" style="margin-top: 13vh;">
+            <div class="row gy-5">
+              <div class="col-md-6 col-lg-6">
+                <div class="p-3 Botones">
+                  <button class="BotonPuerto" onclick="window.location.href=''">
+                    <img src="{% static 'images/LogoPuerto.png' %}" alt="Texto alternativo de la imagen" />
+                    <br />
+                    Puertos
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6 col-lg-6">
-              <div class="p-3 Botones">
-                <button class="BotonOtro" onclick="window.location.href=''">
-                  <img src="{% static 'images/LogoDoc.png' %}" alt="Texto alternativo de la imagen" />
-                  <br />
-                  Documentos
-                </button>
+              <div class="col-md-6 col-lg-6">
+                <div class="p-3 Botones">
+                  <button class="BotonOtro" onclick="window.location.href=''">
+                    <img src="{% static 'images/LogoDoc.png' %}" alt="Texto alternativo de la imagen" />
+                    <br />
+                    Documentos
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
         <div class="container RRHH_INVENTARIO px-4 d-flex justify-content-center align-items-center">
-          <div class="row gy-5">
-            <div class="col-md-6 col-lg-6">
-              <div class="p-3 Botones">
-                <button class="BotonOtro" onclick="window.location.href=''">
-                  <img src="{% static 'images/LogoInventario.png' %}" alt="Texto alternativo de la imagen" />
-                  <br />
-                  Inventario
-                </button>
+            <div class="row gy-5">
+              <div class="col-md-6 col-lg-6">
+                <div class="p-3 Botones">
+                  <button class="BotonOtro" onclick="window.location.href=''">
+                    <img src="{% static 'images/LogoInventario.png' %}" alt="Texto alternativo de la imagen" />
+                    <br />
+                    Inventario
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6 col-lg-6">
-              <div class="p-3 Botones">
-                <button class="BotonOtro" onclick="window.location.href='{% url 'erp:gestor-personal' %}'">
-                  <img src="{% static 'images/LogoRRHH.png' %}" alt="Texto alternativo de la imagen" />
-                  <br />
-                  Recursos humanos
-                </button>
+              <div class="col-md-6 col-lg-6">
+                <div class="p-3 Botones">
+                  <button class="BotonOtro" onclick="window.location.href='{% url 'erp:gestor-personal' %}'">
+                    <img src="{% static 'images/LogoRRHH.png' %}" alt="Texto alternativo de la imagen" />
+                    <br />
+                    Recursos humanos
+                  </button>
+                </div>
               </div>
             </div>
           </div>

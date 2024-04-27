@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, renderizar_formulario, gestorPersonal, crear_personal
+from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, renderizar_formulario, gestorPersonal, crear_personal
 
 app_name = 'erp'  
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('gestor-operaciones/guardar-nuevo-comentario/', guardar_comentarios, name='guardar_comentarios'),
     path('gestor-operaciones/obtener_tabla_motonaves/', obtener_tabla_motonaves, name='obtener_tabla_motonaves'),
     path('gestor-operaciones/crear_servicio/', crear_servicio, name='crear_servicio'),
+    path('gestor-operaciones/eliminar_servicio/', eliminar_servicio, name='eliminar_servicio'),
     path('gestor-operaciones/rend_formulario/', renderizar_formulario, name='renderizar_formulario'),
     path('ficha-operaciones/', fichaOperaciones, name='ficha-operaciones'),
     path('gestor-personal/', gestorPersonal, name='gestor-personal'),

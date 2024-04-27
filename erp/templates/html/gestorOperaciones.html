@@ -11,28 +11,28 @@
 {% endblock %}
 
 {% block content %}
-  <div class="container-fluid" style="margin-top: 20px; padding: 0; font-family: 'mifuente';">
+  <div id="contenidoPrincipal" class="contenido-principal">
     <div class="row">
-      <div class="col-md-3" style="width: 100%;">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
+      <div class="col-md-3" style="width: 100vw; margin-top: 2vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
           <!-- Logo y texto "Operaciones" -->
           <div style="display: flex; align-items: center;">
-            <button type="button" onclick="goBack()" style="border: none; background: none; padding: 0; margin: 0;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 10px; cursor: pointer;" /></button>
-            <img src="{% static 'images/Operaciones.png' %}" style="margin-left: 20px;" alt="Texto alternativo de la imagen" class="mb-2" width="10%" />
-            <span style="color: white; margin-left: 5px;">Operaciones</span>
+            <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
+            <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 5vh;"/>
+            <span style="color: white; margin-left: 1vw; font-size: 2vh;">Operaciones</span>
           </div>
-          <div style="display: flex; margin-left: 45%; align-items: center;">
-            <button type="button" class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#listaMotonaveModal">Lista de Motonaves</button>
+          <div style="display: flex; margin-left: 50vw; align-items: center; margin-right: 1vh;">
+            <button type="button" class="btn btn-primary" style="height: 6vh; overflow: hidden;" href="#" data-bs-toggle="modal" data-bs-target="#listaMotonaveModal" title="Lista de Motonaves">Lista de Motonaves</button>
           </div>
-          <div style="display: flex; align-items: center;">
-            <button type="button" class="btn btn-custom-color">Historial de Servicios</button>
+          <div style="display: flex; align-items: center; margin-right: 6vw;">
+            <button type="button" class="btn btn-custom-color" style="height: 6vh; overflow: hidden;" title="Historial de Motonaves">Historial de Servicios</button>
           </div>
         </div>
       </div>
     </div>
     <!-- Sección "Crear Ficha" -->
     <div class="row mt-4">
-      <div class="col-md-3" style="width: 100%;">
+      <div class="col-md-3" style="width: 100vw;">
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
           <!-- Botón "Crear Motonave" -->
           <div class="dropdown">
@@ -70,162 +70,166 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal Agregar Motonave -->
-  <div class="modal fade" id="modalAgregarMotonave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- Logo -->
-          <img src="{% static 'images/Operaciones.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
-          <h5 class="modal-title" id="exampleModalLabel">Nueva Motonave</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form id="formAgregarMotonave" method="post" action="{% url 'erp:crear_motonave' %}">
-          {% csrf_token %}
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="nombreMotonave" style="margin-left: 40px;" class="form-label">Nombre de la Motonave:</label>
-              <input type="text" class="form-control" name="nombreMotonave" style="width: 91%; margin-left: 40px;" id="nombreMotonave" required />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-custom-color" style="margin-right: 40px; ">Agregar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Lista Motonave -->
-  <div class="modal fade" id="listaMotonaveModal" tabindex="-1" aria-labelledby="listaMotonaveModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <img src="{% static 'images/LogoLista.png' %}" alt="Logo" width="40" height="40" style="margin-right: 10px;" />
-          <h5 class="modal-title" id="listaMotonaveModalLabel">Lista de Motonaves</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ul>
-            {% for motonave in motonaves %}
-              <li>
-                <a class="dropdown-item" style="color: #fff;" href="#" onclick="seleccionarMotonaveDesdeLista('{{ motonave.nombre }}')">{{ motonave.nombre }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Servicio -->
-  <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-    <div class="modal-dialog modal-dialog-centered">
+    <!-- Modal Agregar Motonave -->
+    <div class="modal fade" id="modalAgregarMotonave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="margin-left: 30px;">
-                <form id="formCrearServicio" method="post" action="">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                      <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
-                      <!-- {{ nombres_motonaves_disponibles }} -->
-                      <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
-                        {% for nombre_motonave in nombres_motonaves_disponibles %}
-                        <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
-                        <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
-                    </div>
-                    <div class="mb-3">
-                        <label for="numeroViaje" class="form-label">Viaje:</label>
-                        <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
-                    </div>
-                    <!-- Campo oculto para almacenar la fecha de nominación -->
-                    <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="">
-                </form>
+          <div class="modal-header">
+            <!-- Logo -->
+            <img src="{% static 'images/Operaciones.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
+            <h5 class="modal-title" id="exampleModalLabel">Nueva Motonave</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="formAgregarMotonave" method="post" action="{% url 'erp:crear_motonave' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="nombreMotonave" style="margin-left: 40px;" class="form-label">Nombre de la Motonave:</label>
+                <input type="text" class="form-control" name="nombreMotonave" style="width: 91%; margin-left: 40px;" id="nombreMotonave" required />
+              </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-custom-color" id="btnMostrarModalGestion" style="margin-right: 40px;">Ingresar</button>
+              <button type="submit" class="btn btn-custom-color" style="margin-right: 40px; ">Agregar</button>
             </div>
-        </div>
-    </div>
-  </div>
-
-  <!-- Modal de gestión de servicios -->
-  <div class="modal fade" id="modalGestionarServicios" tabindex="-1" aria-labelledby="modalGestionarServiciosLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="40" height="40" style="margin-right: 10px;" />
-          <h5 class="modal-title" id="modalGestionarServiciosLabel">Gestor de Servicios</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Aquí colocarías los campos para gestionar los servicios -->
-          <!-- Por ejemplo, nombre del servicio, descripción, fechas, etc. -->
-          <!-- Puedes usar formularios o cualquier otro elemento según tus necesidades -->
+          </form>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Panel lateral -->
-  <div id="panelLateral" class="panel-lateral">
-    <div id="detallesMotonave" class="detalles-motonave">
-      <div id="panelNombre" class="panel-nombre">
-        <h4 id="nombreMotonave"></h4>
-      </div>
-      <div id="panelInfo" class="panel-info">
-        <div class="info-container">
-            <!-- Viaje -->
-            <p style="display: inline;">Viaje: </p>
-            <p id="viajeMotonave" style="display: inline; margin-left: 5%;"></p>
-            <!-- Estado -->
-            <p style="display: inline; margin-left: 22%;">Estado:
-                <select id="nuevoEstadoMotonave"  style="border-radius: 10px;">
-                    <option value="Disponible">Disponible</option>
-                    <option value="Nominado">Nominado</option>
-                    <option value="En Proceso">En Proceso</option>
-                    <option value="Terminado">Terminado</option>
-                </select>
-            </p>
-            <!-- Carga-->
-            <p style="margin-top: 15px;">Carga: </p>
-            <!-- Puerto-->
-            <p style="margin-top: 15px;">Puerto: </p>
-            <!-- Armador -->
-            <p style="margin-top: 15px;">Armador: </p>
-        </div>
-      </div>    
-      <div id="panelInfo2" class="panel-info2">
-        <div class="info-container2">
-            <!-- Fecha Nom -->
-            <p style="margin-top: 5px;">Fecha de Nominación: <span id="fechaNominacionMotonave" style="margin-left: 5%;"></span></p>
-            <!-- Servicios -->
-            <p>Servicios: <span id="cantidadServiciosActual" style="margin-left: 5%;"></span></p>
+    <!-- Modal Lista Motonave -->
+    <div class="modal fade" id="listaMotonaveModal" tabindex="-1" aria-labelledby="listaMotonaveModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="max-height: 700px; min-height: 0px;">
+          <div class="modal-header">
+            <img src="{% static 'images/LogoLista.png' %}" alt="Logo" width="40" height="40" style="margin-right: 10px;" />
+            <h5 class="modal-title" id="listaMotonaveModalLabel">Lista de Motonaves</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="overflow: auto; font-size: 20px;">
+            <ul>
+              {% for motonave in motonaves %}
+                <li>
+                  {{ motonave.nombre }}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
       </div>
-      <div id="panelComentario" class="panel-comentario">
-        <div class="info-container3">
-          <textarea id="comentarioActual" name="comentarioActual" class="form-control" rows="10" cols="40" style="width: 100%; min-height:30px; max-height: 131px; border-radius: 10px;" placeholder="  Comentarios" maxlength="1000"></textarea>
-        </div> 
-      </div>    
-      <div>
-        <button id="BotonEliminacionNomina">Eliminar Nominación</button>
-      </div>
-    <div id="dragbar"></div>
-  </div>
+    </div>
 
-  <!-- Div transparente que cubre el área fuera del panel lateral -->
-  <div id="panelOverlay" class="panel-overlay"></div>
+    <!-- Modal Servicio -->
+    <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+      <div class="modal-dialog modal-dialog-centered" >
+          <div class="modal-content">
+              <div class="modal-header">
+                  <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="margin-left: 30px;">
+                  <form id="formCrearServicio" method="post" action="">
+                      {% csrf_token %}
+                      <div class="mb-3">
+                        <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
+                        <!-- {{ nombres_motonaves_disponibles }} -->
+                        <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
+                          {% for nombre_motonave in nombres_motonaves_disponibles %}
+                          <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                          <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
+                          <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
+                      </div>
+                      <div class="mb-3">
+                          <label for="numeroViaje" class="form-label">Viaje:</label>
+                          <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
+                      </div>
+                      <!-- Campo oculto para almacenar la fecha de nominación -->
+                      <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="">
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-custom-color" id="btnMostrarModalGestion" style="margin-right: 40px;">Ingresar</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Modal de gestión de servicios -->
+    <div class="modal fade" id="modalGestionarServicios" tabindex="-1" aria-labelledby="modalGestionarServiciosLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="40" height="40" style="margin-right: 10px;" />
+            <h5 class="modal-title" id="modalGestionarServiciosLabel">Gestor de Servicios</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Aquí colocarías los campos para gestionar los servicios -->
+            <!-- Por ejemplo, nombre del servicio, descripción, fechas, etc. -->
+            <!-- Puedes usar formularios o cualquier otro elemento según tus necesidades -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel lateral -->
+    <div id="panelLateral" class="panel-lateral">
+      <div id="detallesMotonave" class="detalles-motonave">
+        <div id="panelNombre" class="panel-nombre">
+          <h4 id="nombreMotonave"></h4>
+        </div>
+        <div id="panelInfo" class="panel-info">
+          <div class="info-container">
+              <!-- Viaje -->
+              <p style="display: inline;">Viaje: </p>
+              <p id="viajeMotonave" style="display: inline; margin-left: 5%;"></p>
+              <!-- Estado -->
+              <p style="display: inline; margin-left: 5vw;">Estado:
+                  <select id="nuevoEstadoMotonave"  style="border-radius: 10px;">
+                      <option value="Nominado">Nominado</option>
+                      <option value="En Proceso">En Proceso</option>
+                      <option value="Terminado">Terminado</option>
+                  </select>
+              </p>
+              <!-- Carga-->
+              <p style="margin-top: 15px;">Carga: </p>
+              <!-- Puerto-->
+              <p style="margin-top: 15px;">Puerto: </p>
+              <!-- Armador -->
+              <p style="margin-top: 15px;">Armador: </p>
+          </div>
+        </div>    
+        <div id="panelInfo2" class="panel-info2">
+          <div class="info-container2">
+              <!-- Fecha Nom -->
+              <p style="margin-top: 5px;">Fecha de Nominación: <span id="fechaNominacionMotonave" style="margin-left: 5%;"></span></p>
+              <!-- Servicios -->
+              <div style="display: flex; align-items: center;">
+                <p style="margin-right: 10px;">Servicios: <span id="cantidadServiciosActual"></span></p>
+                <button type="button" id="AbrirGestorServicio" title="Abrir Gestor de Servicios" onclick="abrirModalGestorServicios()" style="border: none; background: none; margin-left: 20%; margin-bottom: 10px; ">
+                    <img src="{% static 'images/Ojo.png' %}" style="cursor: pointer; height: 5vh;" />
+                </button>
+              </div>            
+          </div>
+        </div>
+        <div id="panelComentario" class="panel-comentario">
+          <div class="info-container3">
+            <textarea id="comentarioActual" name="comentarioActual" class="form-control" rows="10" cols="40" style="width: 25vw; min-height: 4vh; ; max-height: 14vh; border-radius: 10px;" placeholder="  Comentarios" maxlength="1000"></textarea>
+          </div> 
+        </div>    
+        <div>
+          <button id="BotonEliminacionNomina">Eliminar Nominación</button>
+        </div>
+      <div id="dragbar"></div>
+    </div>
+
+    <!-- Div transparente que cubre el área fuera del panel lateral -->
+    <div id="panelOverlay" class="panel-overlay"></div>
+  </div>  
 {% endblock %}
 
 {% block module_scripts %}
@@ -246,6 +250,7 @@
     var obtenerTablaMotonavesURL = "{% url 'erp:obtener_tabla_motonaves' %}"
     var crearServicioURL = "{% url 'erp:crear_servicio' %}"
     var rendFormularioURL = "{% url 'erp:renderizar_formulario' %}"
+    var eliminarServicioURL = "{% url 'erp:eliminar_servicio' %}"
 
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado

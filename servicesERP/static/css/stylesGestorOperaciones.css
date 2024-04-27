@@ -3,10 +3,21 @@
   src: url('../font/IronFist-KqrD.ttf') format('opentype');
 }
 
-.container {
+.contenido-principal {
+  height: 80vh;
+  width: 90vw;
+  margin-left: 5vw;
   font-family: 'mifuente';
 }
 
+/* Estilos para el contenido principal */
+#contenidoPrincipal {
+  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+}
+
+.container {
+  font-family: 'mifuente';
+}
 
 .btn.btn-custom-color {
   background-color: #860909c9;
@@ -31,7 +42,8 @@
   background-color: #860909c9 !important;
   border-color: #860909c9 !important;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  margin-bottom: 550px;
+  margin-bottom: 60vh;
+  margin-right: 6vw;
 }
 
 .btn.btn-agregar:hover {
@@ -39,22 +51,23 @@
   /* Color del texto al pasar el ratón */
 }
 
-/* Tablero */
+/* Estilos base del cuadro azul */
 .cuadro-azul {
   background-color: #01152a;
-  width: 85%;
-  height: 660px;
+  width: 70vw;
+  height: 65vh;
   border-radius: 10px;
   display: flex;
   /* Utilizamos flexbox para alinear las columnas */
+  margin-right: 7vw; /* Centrar horizontalmente el cuadro */
 }
 
 .columna {
   font-family: 'mifuente';
   border-right: 3px solid #cccccc1f;
   background-color: #01152a;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 64vh;
   margin-bottom: 20px;
 }
 
@@ -64,18 +77,17 @@
   background-color: #860909c9;
   box-shadow: 0px 0px 5px rgba(214, 1, 1, 0.9);
   /* Reducimos el margen inferior del título */
-  height: 20%;
+  height: 12vh;
   color: #fff;
-  font-size: 25px;
+  font-size: 3vh;
   font-weight: bold;
   text-align: center;
-
 }
 
 .columna-contenido {
-  max-height: 500px;
+  max-height: 50vh;
   /* Altura máxima del contenido antes de que aparezca el scroll */
-  margin-top: 5%;
+  margin-top: 2vh;
   overflow-y: auto;
   /* Mostrar scroll vertical si el contenido excede la altura máxima */
 }
@@ -85,13 +97,13 @@
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 2);
   color: #fff;
   text-align: center;
-  font-size: 20px;
+  font-size: 3vh;
   border-radius: 5px;
-  padding: 60px;
-  margin-bottom: 20px;
+  padding: 4vh;
+  margin-bottom: 2vh;
   cursor: pointer;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 2vw;
+  margin-right: 2vw;
 }
 
 .ficha-motonave:hover {
@@ -165,77 +177,76 @@
   /* Mantener right */
   width: 0;
   min-width: 0;
-  max-width: 32%;
-  height: 100vh;
-  margin-top: 106px;
-  overflow-y: auto;
+  max-width: 30vw;
+  max-height: 100vh;
+  overflow: hidden;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 50;
 }
 
 .panel-nombre {
   background-color: #860909c9;
-  width: 514px;
-  height: 88px;
-  margin-top: 24px;
-  border-radius: 15px;
+  width: 27vw;
+  height: 10vh;
+  margin-top: 2vh;
+  border-radius: 1vw;
 }
 
 .panel-nombre h4 {
   color: white;
-  padding-top: 20px;
-  padding-left: 20px;
+  padding-top: 2vh;
   text-align: center;
-  font-size: 40px;
+  font-size: 3vw !important;
 }
 
 .panel-info {
   background-color: #01172f;
-  width: 514px;
-  padding: 10%;
-  height: 258px;
-  margin-top: 15px;
-  border-radius: 15px;
+  width: 27vw;
+  padding: 2vw;
+  height: 25vh;
+  margin-top: 2vh; 
+  border-radius: 1vw; 
 }
 
 .info-container {
-  width: 462px;
-  height: 155px;
-  font-size: 18px;
+  width: 26vw;
+  height: 15vh; 
+  font-size: 1.125vw; 
 }
 
 .panel-info2 {
   background-color: #01172f;
-  width: 514px;
-  height: 131px;
-  padding: 5%;
-  margin-top: 15px;
-  border-radius: 15px;
+  width: 27vw;
+  height: 20vh;
+  padding: 2vw; 
+  margin-top: 2vh;
+  border-radius: 1vw;
 }
 
 .info-container2 {
-  width: 369px;
-  height: 69px;
-  font-size: 18px;
-  margin-left: 26px;
+  width: 26vw; 
+  height: 10vh; 
+  font-size: 1.125vw; 
   display: flex;
   flex-direction: column;
 }
 
+
 .panel-comentario {
   background-color: #01172f;
-  width: 514px;
-  height: 181px;
-  padding: 5%;
-  margin-top: 15px;
-  border-radius: 15px;
+  width: 27vw;
+  height: 18vh; 
+  padding: 1vw; 
+  margin-top: 2vh;
+  border-radius: 1vw;
 }
 
 .info-container3 {
-  width: 443px;
-  font-size: 18px;
+  width: 27vw;
+  font-size: 1.125vw; 
 }
 
 #BotonEliminacionNomina {
@@ -243,14 +254,13 @@
   border: none;
   color: white;
   text-align: center;
-  font-size: 12px;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  margin-left: 40%;
-  width: 122px;
-  height: 35px;
+  font-size: 0.9vw; 
+  margin-top: 2vh;
+  margin-left: 9vw;
+  width: 10vw;
+  height: 8vh;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 1vw;
 }
 
 #dragbar {
@@ -269,13 +279,12 @@
 }
 
 .detalles-motonave {
-  margin-left: 20px;
+  width: 28vw;
+  height: 70vh;
+  margin-top: 5vh;
+  margin-left: 1vw;
   color: #fff;
   font-family: 'mifuente';
-}
-
-.detalles-motonave h4 {
-  padding: 20px;
 }
 
 /* Estilos para el panel overlay */
@@ -284,7 +293,7 @@
   top: 0;
   left: 0;
   width: 0;
-  height: 100%;
+  height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: -1;
   transition: width 0.5s ease;

@@ -3,15 +3,20 @@
   src: url('../font/IronFist-KqrD.ttf') format('opentype');
 }
 
+.contenido-principal {
+  display: relative;
+  height: 80vh;
+  width: 90vw;
+  margin-left: 5vw;
+}
+
 .Set_Botones {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
 }
 
-  
 .Operaciones {
   background-color: #01152a; /* Cambia el color de fondo del botón según tus preferencias */
   color: rgb(255, 255, 255); /* Cambia el color del texto del botón según tus preferencias */
@@ -19,10 +24,11 @@
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 10px;
+  margin-top: 13vh;
 }
 .btn-operaciones{
-  width: 200px; /* Ancho aumentado para hacerlos más cuadrados */
-  height: 400px; /* Altura deseada */
+  width: 10vw; /* Ancho aumentado para hacerlos más cuadrados */
+  height: 43vh; /* Altura deseada */
   display: flex; /* Esto ayuda a centrar la imagen dentro del botón */
   margin: 0 auto; /* Esto también ayuda a centrar la imagen */
   color: rgb(255, 255, 255);
@@ -36,13 +42,13 @@
   background-color: #01152a; /* Cambia el color de fondo del botón según tus preferencias */
   color: white; /* Cambia el color del texto del botón según tus preferencias */
   border: none;
-  padding: 10px 20px;
   cursor: pointer;
   border-radius: 10px;
+  font-size: 2vh;
   font-family: 'mifuente';
 }
 .Botones button img {
-  height: 70px; /* Altura deseada */
+  height: 8vh; /* Altura deseada */
   display: block; /* Esto ayuda a centrar la imagen dentro del botón */
   margin: 0 auto; /* Esto también ayuda a centrar la imagen */
 }

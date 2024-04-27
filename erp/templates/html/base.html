@@ -23,32 +23,28 @@
   </head>
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-blue">
-      <div class="container-fluid" style="max-width: 1660px;">
-        <a class="navbar-brand pl-0" href="{% url 'erp:menu' %}"><img src="{% static 'images/logopng.png' %}" alt="" width="100" height="80" /></a>
-        <!-- button -->
-        <div class="btn-group ms-auto">
-          <button type="button" class="btn btn-personalizado dropdown-toggle text-white" data-bs-toggle="dropdown" aria-expanded="false">
-            <!-- CAMBIAR PARA QUE SE LEA DESDE LA BASE DE DATOS -->
-            {{ nombre_usuario }}
-          </button>
+    <nav class="navbar">
+      <a class="navbar-brand pl-1" style="margin-left: 5vw;" href="{% url 'erp:menu' %}"><img src="{% static 'images/logopng.png' %}" alt="" width="100" height="80" /></a>
+      <!-- button -->
+      <div class="btn-group ms-auto" style="margin-right: 5vw;">
+        <button type="button" class="btn btn-personalizado dropdown-toggle text-white" data-bs-toggle="dropdown" aria-expanded="false">
+          <!-- CAMBIAR PARA QUE SE LEA DESDE LA BASE DE DATOS -->
+          {{ nombre_usuario }}
+        </button>
 
-          <ul class="dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="{% url 'erp:logout' %}">Cerrar sesión</a>
-            </li>
-          </ul>
-        </div>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="{% url 'erp:logout' %}">Cerrar sesión</a>
+          </li>
+        </ul>
       </div>
     </nav>
 
     <!-- Fondo -->
     <div class="fondo">
-      <div class="content-container">
-        {% block content %}
+      {% block content %}
 
-        {% endblock %}
-      </div>
+      {% endblock %}
     </div>
 
     <!-- Pie de página -->
