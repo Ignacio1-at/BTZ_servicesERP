@@ -1,429 +1,454 @@
 {% extends 'html/base.html' %}
 
 {% block title %}
-    Inventario
+  Inventario
 {% endblock %}
 
 {% block module_styles %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/stylesGestorInventario.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesGestorInventario.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
 {% endblock %}
 
 {% block content %}
-    <div id="contenidoPrincipal" class="contenido-principal">
-        <div class="row">
-            <div class="col-md-3" style="margin-left: 1vw; margin-top: 3vh;">
-                <button type="button" onclick="goBack()" style="border: none; background: none;">
-                    <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
-                </button>
-                <img src="{% static 'images/LogoInventario.png' %}" alt="Inventario" class="mb-2" width="10%" />
-                <span style="color: white; font-size: 3vh;">Inventario</span>
+  <div id="contenidoPrincipal" class="contenido-principal">
+    <div class="row">
+      <div class="col-md-3" style="margin-left: 1vw; margin-top: 3vh;">
+        <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
+        <img src="{% static 'images/LogoInventario.png' %}" alt="Inventario" class="mb-2" width="10%" />
+        <span style="color: white; font-size: 3vh;">Inventario</span>
 
-                <!-- Menu Inventario -->
-                <div class="menu">
-                    <ul class="menuVert">
-                        <li>
-                            <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="10%" />
-                            <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="10%" />
-                            <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
-                        </li>
-                        <li>
-                            <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
-                            <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Varios</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="dropdown">
-                    <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Agregar</button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarQuimico">Químico</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Vario</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Tablas -->
-            <div class="col" style="margin-left: 1vw; margin-top: 3vh;" id="contenedorTablas">
-                <div class="tablaContenido" id="contenidoTablas">
-
-                    <!-- Tabla de Químicos -->
-                    <table class="table" id="tablaQuimico">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tipo de Químico</th>
-                                <th>Fecha de Ingreso</th>
-                                <th>Número de Factura</th>
-                                <th>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for quimico in quimico_list %}
-                            <tr>
-                                <td>{{ quimico.id }}</td>
-                                <td>{{ quimico.tipo_quimico }}</td>
-                                <td>{{ quimico.fecha_ingreso }}</td>
-                                <td>{{ quimico.numero_factura}}</td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Acciones">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}">
-                                            <img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;">
-                                        </button>
-                                        <form id="formEliminarQuimico{{ quimico.id }}" method="POST" action="{% url 'erp:eliminar_quimico' quimico.id %}">
-                                            {% csrf_token %}
-                                            <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')">
-                                                <img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;">
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Modal para ver detalles del químico -->
-                            <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Detalles del químico -->
-                                            <p><strong>Tipo de Químico:</strong> {{ quimico.tipo_quimico }}</p>
-                                            <p><strong>Fecha de Ingreso:</strong> {{ quimico.fecha_ingreso }}</p>
-                                            <p><strong>Número de Factura:</strong> {{ quimico.numero_factura }}</p>
-                                            <p><strong>Litros Ingresados:</strong> {{ quimico.litros_ingreso }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-                    <!-- Tabla de Vehículos -->
-                    <table class="table" id="tablaVehiculo">
-                        <thead>
-                            <tr>
-                                <th>Tipo de Vehículo</th>
-                                <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Patente</th>
-                                <th>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for vehiculo in vehiculo_list %}
-                            <tr>
-                                <td>{{ vehiculo.tipo_vehiculo}}</td>
-                                <td>{{ vehiculo.marca }}</td>
-                                <td>{{ vehiculo.modelo }}</td>
-                                <td>{{ vehiculo.patente}}</td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Acciones">
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVehiculo{{ vehiculo.id }}">
-                                            <img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;">
-                                        </button>
-                                        <form id="formEliminarVehiculo{{ vehiculo.id }}" method="POST" action="{% url 'erp:eliminar_vehiculo' vehiculo.id %}">
-                                            {% csrf_token %}
-                                            <!-- Otros campos del formulario si los tienes -->
-                                            <button type="button" class="btn btn-danger" onclick="eliminarVehiculo('{{ vehiculo.id }}')">
-                                                <img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;">
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Modal para ver detalles del vehículo -->
-                            <div class="modal fade" id="modalDetalleVehiculo{{ vehiculo.id }}" tabindex="-1" aria-labelledby="modalDetalleVehiculoLabel{{ vehiculo.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modalDetalleVehiculoLabel{{ vehiculo.id }}">Detalles del Vehículo</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- Aquí puedes mostrar los detalles del vehículo -->
-                                            <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
-                                            <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
-                                            <p><strong>Color:</strong> {{ vehiculo.color }}</p>
-                                            <p><strong>Número de Motor:</strong> {{ vehiculo.numero_motor }}</p>
-                                            <p><strong>Número de Chasis:</strong> {{ vehiculo.numero_chasis }}</p>
-                                            <p><strong>Cilindrada:</strong> {{ vehiculo.cilindrada }}</p>
-                                            <p><strong>Tipo de Vehículo:</strong> {{ vehiculo.tipo_vehiculo }}</p>
-                                            <p><strong>Primer Ingreso:</strong> {{ vehiculo.primer_ingreso }}</p>
-                                            <p><strong>Patente:</strong> {{ vehiculo.patente }}</p>
-                                            <p><strong>Fecha de Permiso de Circulación:</strong> {{ vehiculo.fecha_permiso_circulacion }}</p>
-                                            <p><strong>Fecha SOAP:</strong> {{ vehiculo.fecha_soap }}</p>
-                                            <p><strong>Fecha de Revisión Técnica:</strong> {{ vehiculo.fecha_revision_tecnica }}</p>
-                                            <p><strong>Nombre del Seguro:</strong> {{ vehiculo.seguro_nombre }}</p>
-                                            <p><strong>Póliza del Seguro:</strong> {{ vehiculo.seguro_poliza }}</p>
-                                            <p><strong>Tipo de Combustible:</strong> {{ vehiculo.tipo_combustible }}</p>
-                                            <p><strong>Estado:</strong> {{ vehiculo.estado }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </tbody>                    
-                    </table>
-
-                    <!-- Tabla de Varios -->
-                    <table class="table" id="tablaVarios">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Fecha de Ingreso</th>
-                                <th>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for vario in vario_list %}
-                            <tr>
-                                <td>{{ vario.id}}</td>
-                                <td>{{ vario.nombre}}</td>
-                                <td>{{ vario.fecha_ingreso }}</td>
-                                <td>
-                                    <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
-                                        {% csrf_token %}
-                                        <!-- Otros campos del formulario si los tienes -->
-                                        <button type="button" class="btn btn-danger" onclick="eliminarVarios('{{ vario.id }}')">
-                                            <img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;">
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- Menu Inventario -->
+        <div class="menu">
+          <ul class="menuVert">
+            <li>
+              <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="10%" />
+              <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
+            </li>
+            <li>
+              <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="10%" />
+              <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
+            </li>
+            <li>
+              <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
+              <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Varios</span>
+            </li>
+          </ul>
         </div>
-    </div>
 
-    <!--Modal Agregar Quimico-->
-    <div class="modal fade" id="modalAgregarQuimico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar Químico</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_quimico' %}">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="tipoQuimico" class="form-label">Tipo de Químico:</label>
-                            <select type="text" class="form-control" name="tipoQuimico" id="tipoQuimico" required>
-                                <option value="Bidones OCN 01">Bidones OCN 01</option>
-                                <option value="Bidones OCN 08">Bidones OCN 08</option>
-                                <option value="Bidones Acido Clorhídrico">Bidones Acido Clorhídrico</option>
-                                <option value="Bidones Hipoclorito">Bidones Hipoclorito</option>
-                                <option value="Bidones Hold Coat">Bidones Hold Coat </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="fechaIngreso" class="form-label">Fecha Ingreso:</label>
-                            <input type="date" class="form-control" name="fechaIngreso" id="fechaIngreso" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="litrosIngreso" class="form-label">Litros de Ingreso:</label>
-                            <input type="number" class="form-control" name="litrosIngreso" id="litrosIngreso" placeholder="1" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="numFactura" class="form-label">Numero de Factura:</label>
-                            <input type="number" class="form-control" name="numFactura" id="numFactura" placeholder="10000" required />
-                        </div>
-                    </div>
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-custom-color">Agregar</button>
-                    </div>
-                    
-                </form>
-            </div>
+        <div class="dropdown">
+          <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Agregar</button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarQuimico">Químico</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Vario</a>
+            </li>
+          </ul>
         </div>
-    </div>
+      </div>
 
-    <!--Modal Agregar Vehiculo-->
-    <div class="modal fade" id="modalAgregarVehiculo" tabindex="-1" aria-labelledby="modalAgregarVehiculoLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAgregarVehiculoLabel">Agregar Vehículo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <!-- Tablas -->
+      <div class="col" style="margin-left: 1vw; margin-top: 3vh;" id="contenedorTablas">
+        <div class="tablaContenido" id="contenidoTablas">
+          <!-- Tabla de Químicos -->
+          <table class="table" id="tablaQuimico">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tipo de Químico</th>
+                <th>Fecha de Ingreso</th>
+                <th>Número de Factura</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for quimico in quimico_list %}
+                <tr>
+                  <td>{{ quimico.id }}</td>
+                  <td>{{ quimico.tipo_quimico }}</td>
+                  <td>{{ quimico.fecha_ingreso }}</td>
+                  <td>{{ quimico.numero_factura }}</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Acciones">
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                      <form id="formEliminarQuimico{{ quimico.id }}" method="POST" action="{% url 'erp:eliminar_quimico' quimico.id %}">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Modal para ver detalles del químico -->
+                <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- Detalles del químico -->
+                        <p>
+                          <strong>Tipo de Químico:</strong> {{ quimico.tipo_quimico }}
+                        </p>
+                        <p>
+                          <strong>Fecha de Ingreso:</strong> {{ quimico.fecha_ingreso }}
+                        </p>
+                        <p>
+                          <strong>Número de Factura:</strong> {{ quimico.numero_factura }}
+                        </p>
+                        <p>
+                          <strong>Litros Ingresados:</strong> {{ quimico.litros_ingreso }}
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <form id="formAgregarVehiculo" method="post" action="{% url 'erp:agregar_vehiculo' %}">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="marca" class="form-label">Marca:</label>
-                                    <input type="text" class="form-control" name="marca" id="marca" placeholder="Rolls-Royce" required />
-                                </div>
+              {% endfor %}
+            </tbody>
+          </table>
 
-                                <div class="mb-3">
-                                    <label for="modelo" class="form-label">Modelo:</label>
-                                    <input type="text" class="form-control" name="modelo" id="modelo" placeholder="Phantom" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="color" class="form-label" place>Color:</label>
-                                    <input type="text" class="form-control" name="color" id="color" placeholder="Gris" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="patente" class="form-label">Patente:</label>
-                                    <input type="text" class="form-control" name="patente" id="patente" placeholder="AA1122" required />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="numero_motor" class="form-label">Número de Motor:</label>
-                                    <input type="text" class="form-control" name="numero_motor" id="numero_motor" required />
-                                </div>
-
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="numero_chasis" class="form-label">Número de Chasis:</label>
-                                    <input type="text" class="form-control" name="numero_chasis" id="numero_chasis" required />
-                                </div>
-
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="cilindrada" class="form-label">Cilindrada:</label>
-                                    <input type="text" class="form-control" name="cilindrada" id="cilindrada" required />
-                                </div>
-
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="tipo_vehiculo" class="form-label">Tipo de Vehículo:</label>
-                                    <input type="text" class="form-control" name="tipo_vehiculo" id="tipo_vehiculo" required />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="tipo_combustible" class="form-label">Tipo de Combustible:</label>
-                                    <select class="form-select" name="tipo_combustible" id="tipo_combustible" required>
-                                        <option value="93">93</option>
-                                        <option value="95">95</option>
-                                        <option value="97">97</option>
-                                        <option value="diésel">Diesel</option>
-                                        <option value="electrico">Electrico</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="seguro_nombre" class="form-label">Nombre del Seguro:</label>
-                                    <input type="text" class="form-control" name="seguro_nombre" id="seguro_nombre" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="seguro_poliza" class="form-label">Póliza del Seguro:</label>
-                                    <input type="number" class="form-control" name="seguro_poliza" id="seguro_poliza" placeholder="00000000" required />
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="fecha_soap" class="form-label">Fecha de SOAP:</label>
-                                    <input type="date" class="form-control" name="fecha_soap" id="fecha_soap" required />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="fecha_permiso_circulacion" class="form-label" style="font-size: small;">Fecha de Permiso de Circulación:</label>
-                                    <input type="date" class="form-control" name="fecha_permiso_circulacion" id="fecha_permiso_circulacion" required />
-                                </div>
-
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="fecha_revision_tecnica" class="form-label">Fecha de Revisión Técnica:</label>
-                                    <input type="date" class="form-control" name="fecha_revision_tecnica" id="fecha_revision_tecnica" required />
-                                </div>
-
-                                <div class="mb-3" style="margin-left: 1vw;">
-                                    <label for="primer_ingreso" class="form-label">Fecha de Ingreso:</label>
-                                    <input type="date" class="form-control" name="primer_ingreso" id="primer_ingreso" required />
-                                </div>
-                            </div>
-                        </div>
+          <!-- Tabla de Vehículos -->
+          <table class="table" id="tablaVehiculo">
+            <thead>
+              <tr>
+                <th>Tipo de Vehículo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Patente</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for vehiculo in vehiculo_list %}
+                <tr>
+                  <td>{{ vehiculo.tipo_vehiculo }}</td>
+                  <td>{{ vehiculo.marca }}</td>
+                  <td>{{ vehiculo.modelo }}</td>
+                  <td>{{ vehiculo.patente }}</td>
+                  <td>
+                    <div class="btn-group" role="group" aria-label="Acciones">
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVehiculo{{ vehiculo.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                      <form id="formEliminarVehiculo{{ vehiculo.id }}" method="POST" action="{% url 'erp:eliminar_vehiculo' vehiculo.id %}">
+                        {% csrf_token %}
+                        <!-- Otros campos del formulario si los tienes -->
+                        <button type="button" class="btn btn-danger" onclick="eliminarVehiculo('{{ vehiculo.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                      </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-custom-color">Agregar</button>
+                  </td>
+                </tr>
+                <!-- Modal para ver detalles del vehículo -->
+                <div class="modal fade" id="modalDetalleVehiculo{{ vehiculo.id }}" tabindex="-1" aria-labelledby="modalDetalleVehiculoLabel{{ vehiculo.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalDetalleVehiculoLabel{{ vehiculo.id }}">Detalles del Vehículo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <!-- Aquí puedes mostrar los detalles del vehículo -->
+                        <p>
+                          <strong>Marca:</strong> {{ vehiculo.marca }}
+                        </p>
+                        <p>
+                          <strong>Modelo:</strong> {{ vehiculo.modelo }}
+                        </p>
+                        <p>
+                          <strong>Color:</strong> {{ vehiculo.color }}
+                        </p>
+                        <p>
+                          <strong>Número de Motor:</strong> {{ vehiculo.numero_motor }}
+                        </p>
+                        <p>
+                          <strong>Número de Chasis:</strong> {{ vehiculo.numero_chasis }}
+                        </p>
+                        <p>
+                          <strong>Cilindrada:</strong> {{ vehiculo.cilindrada }}
+                        </p>
+                        <p>
+                          <strong>Tipo de Vehículo:</strong> {{ vehiculo.tipo_vehiculo }}
+                        </p>
+                        <p>
+                          <strong>Primer Ingreso:</strong> {{ vehiculo.primer_ingreso }}
+                        </p>
+                        <p>
+                          <strong>Patente:</strong> {{ vehiculo.patente }}
+                        </p>
+                        <p>
+                          <strong>Fecha de Permiso de Circulación:</strong> {{ vehiculo.fecha_permiso_circulacion }}
+                        </p>
+                        <p>
+                          <strong>Fecha SOAP:</strong> {{ vehiculo.fecha_soap }}
+                        </p>
+                        <p>
+                          <strong>Fecha de Revisión Técnica:</strong> {{ vehiculo.fecha_revision_tecnica }}
+                        </p>
+                        <p>
+                          <strong>Nombre del Seguro:</strong> {{ vehiculo.seguro_nombre }}
+                        </p>
+                        <p>
+                          <strong>Póliza del Seguro:</strong> {{ vehiculo.seguro_poliza }}
+                        </p>
+                        <p>
+                          <strong>Tipo de Combustible:</strong> {{ vehiculo.tipo_combustible }}
+                        </p>
+                        <p>
+                          <strong>Estado:</strong> {{ vehiculo.estado }}
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      </div>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!--Modal Agregar Vario-->
-    <div class="modal fade" id="modalAgregarVario" tabindex="-1" aria-labelledby="modalAgregarVarioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAgregarVarioLabel">Agregar Vario</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
                 </div>
-                <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_vario' %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre:</label>
-                        <input type="text" class="form-control" name="nombre" id="nombre" required>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
-                        <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" required>
-                    </div>
+              {% endfor %}
+            </tbody>
+          </table>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-custom-color">Agregar</button>
-                    </div>
-                </form>
-            </div>
+          <!-- Tabla de Varios -->
+          <table class="table" id="tablaVarios">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha de Ingreso</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for vario in vario_list %}
+                <tr>
+                  <td>{{ vario.id }}</td>
+                  <td>{{ vario.nombre }}</td>
+                  <td>{{ vario.fecha_ingreso }}</td>
+                  <td>
+                    <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
+                      {% csrf_token %}
+                      <!-- Otros campos del formulario si los tienes -->
+                      <button type="button" class="btn btn-danger" onclick="eliminarVarios('{{ vario.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
 
+  <!-- Modal Agregar Quimico -->
+  <div class="modal fade" id="modalAgregarQuimico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Químico</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_quimico' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="tipoQuimico" class="form-label">Tipo de Químico:</label>
+              <select type="text" class="form-control" name="tipoQuimico" id="tipoQuimico" required>
+                <option value="Bidones OCN 01">Bidones OCN 01</option>
+                <option value="Bidones OCN 08">Bidones OCN 08</option>
+                <option value="Bidones Acido Clorhídrico">Bidones Acido Clorhídrico</option>
+                <option value="Bidones Hipoclorito">Bidones Hipoclorito</option>
+                <option value="Bidones Hold Coat">Bidones Hold Coat</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="fechaIngreso" class="form-label">Fecha Ingreso:</label>
+              <input type="date" class="form-control" name="fechaIngreso" id="fechaIngreso" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="litrosIngreso" class="form-label">Litros de Ingreso:</label>
+              <input type="number" class="form-control" name="litrosIngreso" id="litrosIngreso" placeholder="1" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="numFactura" class="form-label">Numero de Factura:</label>
+              <input type="number" class="form-control" name="numFactura" id="numFactura" placeholder="10000" required />
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-custom-color">Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Agregar Vehiculo -->
+  <div class="modal fade" id="modalAgregarVehiculo" tabindex="-1" aria-labelledby="modalAgregarVehiculoLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarVehiculoLabel">Agregar Vehículo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formAgregarVehiculo" method="post" action="{% url 'erp:agregar_vehiculo' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="marca" class="form-label">Marca:</label>
+                  <input type="text" class="form-control" name="marca" id="marca" placeholder="Rolls-Royce" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="modelo" class="form-label">Modelo:</label>
+                  <input type="text" class="form-control" name="modelo" id="modelo" placeholder="Phantom" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="color" class="form-label" place>Color:</label>
+                  <input type="text" class="form-control" name="color" id="color" placeholder="Gris" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="patente" class="form-label">Patente:</label>
+                  <input type="text" class="form-control" name="patente" id="patente" placeholder="AA1122" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="numero_motor" class="form-label">Número de Motor:</label>
+                  <input type="text" class="form-control" name="numero_motor" id="numero_motor" required />
+                </div>
+
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="numero_chasis" class="form-label">Número de Chasis:</label>
+                  <input type="text" class="form-control" name="numero_chasis" id="numero_chasis" required />
+                </div>
+
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="cilindrada" class="form-label">Cilindrada:</label>
+                  <input type="text" class="form-control" name="cilindrada" id="cilindrada" required />
+                </div>
+
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="tipo_vehiculo" class="form-label">Tipo de Vehículo:</label>
+                  <input type="text" class="form-control" name="tipo_vehiculo" id="tipo_vehiculo" required />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="tipo_combustible" class="form-label">Tipo de Combustible:</label>
+                  <select class="form-select" name="tipo_combustible" id="tipo_combustible" required>
+                    <option value="93">93</option>
+                    <option value="95">95</option>
+                    <option value="97">97</option>
+                    <option value="diésel">Diesel</option>
+                    <option value="electrico">Electrico</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="seguro_nombre" class="form-label">Nombre del Seguro:</label>
+                  <input type="text" class="form-control" name="seguro_nombre" id="seguro_nombre" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="seguro_poliza" class="form-label">Póliza del Seguro:</label>
+                  <input type="number" class="form-control" name="seguro_poliza" id="seguro_poliza" placeholder="00000000" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="fecha_soap" class="form-label">Fecha de SOAP:</label>
+                  <input type="date" class="form-control" name="fecha_soap" id="fecha_soap" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="fecha_permiso_circulacion" class="form-label" style="font-size: small;">Fecha de Permiso de Circulación:</label>
+                  <input type="date" class="form-control" name="fecha_permiso_circulacion" id="fecha_permiso_circulacion" required />
+                </div>
+
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="fecha_revision_tecnica" class="form-label">Fecha de Revisión Técnica:</label>
+                  <input type="date" class="form-control" name="fecha_revision_tecnica" id="fecha_revision_tecnica" required />
+                </div>
+
+                <div class="mb-3" style="margin-left: 1vw;">
+                  <label for="primer_ingreso" class="form-label">Fecha de Ingreso:</label>
+                  <input type="date" class="form-control" name="primer_ingreso" id="primer_ingreso" required />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-custom-color">Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Agregar Vario -->
+  <div class="modal fade" id="modalAgregarVario" tabindex="-1" aria-labelledby="modalAgregarVarioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarVarioLabel">Agregar Vario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_vario' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre:</label>
+              <input type="text" class="form-control" name="nombre" id="nombre" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+              <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" required />
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-custom-color">Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block module_scripts %}
-    <!-- Retroceder -->
-    <script>
-        function goBack() {
-            history.back()
-        }
-    </script>
-    <script>
-        var obtenerNumeroMotor = "{% url 'erp:obtener_numero_motor' %}";
-        var obtenerNumeroChasis = "{% url 'erp:obtener_numero_chasis' %}";
-        var obtenerPatente = "{% url 'erp:obtener_patente' %}";
-    </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
-    <!-- Scripts específicos de la página de Inventario -->
-    <script src="{% static 'js/scriptGestorInventario.js' %}"></script>
+  <!-- Retroceder -->
+  <script>
+    function goBack() {
+      history.back()
+    }
+  </script>
+  <script>
+    var obtenerNumeroMotor = "{% url 'erp:obtener_numero_motor' %}"
+    var obtenerNumeroChasis = "{% url 'erp:obtener_numero_chasis' %}"
+    var obtenerPatente = "{% url 'erp:obtener_patente' %}"
+  </script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+  <!-- Scripts específicos de la página de Inventario -->
+  <script src="{% static 'js/scriptGestorInventario.js' %}"></script>
 {% endblock %}
