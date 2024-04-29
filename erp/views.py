@@ -285,7 +285,7 @@ def gestorPersonal(request):
     # Obtener todos los objetos de Personal desde la base de datos
     personal_objects = Personal.objects.all()
     # Pasar los objetos de Personal al contexto
-    return render(request, 'html/gestorPersonal.html', {'nombre_usuario': nombre_usuario, 'personal_list': personal_objects})
+    return render(request, 'html/gestorPersonal.html', {'personal_list': personal_objects,'nombre_usuario': nombre_usuario})
 
 # -----------------Crear Personal
 @login_required
