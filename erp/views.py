@@ -3,10 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import F
-from .models import Motonave, Personal, FichaServicio
+from .models import Motonave, Personal, Especialidad, FichaServicio, Quimico, Vehiculo, Vario
 from .forms import CustomLoginForm
 from django.http import JsonResponse
 from django.utils import timezone
+from django.core import serializers
+from django.views.decorators.http import require_POST
+import json
 
 #---Excel
 #---------------------------------------------------
@@ -284,20 +287,335 @@ def gestorPersonal(request):
     # Pasar los objetos de Personal al contexto
     return render(request, 'html/gestorPersonal.html', {'nombre_usuario': nombre_usuario, 'personal_list': personal_objects})
 
- #-----------------Crear Personal
+# -----------------Crear Personal
 @login_required
 def crear_personal(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
-        rut = request.POST.get('rut')
+        rut_sinDigito = request.POST.get('rut_SinDigito')
+        digito_verificador = request.POST.get('digito_Verificador')
         cargo = request.POST.get('cargo')
+        conductor = request.POST.get('conductor')
+        tipo_licencia = request.POST.get('tipo_licencia')
+        especialidades_seleccionadas = request.POST.getlist('especialidad[]')
+
+        # Formatear el rut con el dígito verificador
+        rut_formateado = f"{rut_sinDigito}-{digito_verificador}"
 
         # Crear una instancia del modelo Personal y guardarla en la base de datos
-        personal = Personal(nombre=nombre, rut=rut, cargo=cargo)
+        personal = Personal(nombre=nombre, rut=rut_formateado, cargo=cargo, conductor=conductor, tipo_licencia=tipo_licencia)
         personal.save()
 
-        # Redirigir a alguna página de éxito o a donde desees
+        # Obtener instancias de Especialidad correspondientes a los nombres proporcionados
+        especialidades_seleccionadas_instancias = Especialidad.objects.filter(nombre__in=especialidades_seleccionadas)
+
+        # Agregar las instancias de Especialidad al campo especialidades del objeto Personal
+        personal.especialidades.add(*especialidades_seleccionadas_instancias)
+
+        # Redirigir a la página de éxito o a donde sea necesario
         return redirect('erp:gestor-personal')
 
-    # Si la solicitud no es POST, simplemente renderiza la página nuevamente
-    return render(request, 'erp:gestor-personal')
+    # Si la solicitud no es POST, o la validación falla, devuelve una respuesta con un mensaje de error
+    return JsonResponse({'success': False, 'message': 'La solicitud debe ser de tipo POST'}, status=400)
+
+#-----------Verificar RUT
+@login_required
+def validar_rut(request):
+    rut = request.GET.get('rut', None)
+    if rut:
+        try:
+            # Verificar si el rut ya existe en la base de datos
+            personal_existente = Personal.objects.get(rut=rut)
+            return JsonResponse({'existe': True})
+        except Personal.DoesNotExist:
+            return JsonResponse({'existe': False})
+    return JsonResponse({'existe': False})
+
+#-------Eliminar Personal
+@login_required  
+def eliminar_personal(request, personal_id):
+    personal = get_object_or_404(Personal, id=personal_id)
+    personal.delete()
+    return redirect('erp:gestor-personal')
+
+#-------Obtener Personal
+@login_required  
+def obtener_personal(request):
+    # Obtener el ID personal de la solicitud
+    personal_id = request.GET.get('personal_id')
+
+    # Filtrar los detalles del personal por el ID
+    if personal_id:
+        try:
+            personal = Personal.objects.filter(pk=personal_id)
+            data = serializers.serialize('json', personal)
+            return JsonResponse(data, safe=False)
+        except Personal.DoesNotExist:
+            return JsonResponse({'error': 'No se encontró información para el personal con ID proporcionado'}, status=404)
+    else:
+        return JsonResponse({'error': 'Se requiere proporcionar un ID de personal'}, status=400)
+    
+#-------Obtener Especialidad X ID
+@login_required
+def obtener_nombres_especialidades(request):
+    if request.method == 'GET':
+        especialidades_ids = request.GET.getlist('especialidades_ids[]')  # Obtener los IDs de las especialidades desde la solicitud GET
+        nombres_especialidades = []
+
+        # Iterar sobre los IDs de las especialidades y obtener los nombres correspondientes
+        for especialidad_id in especialidades_ids:
+            try:
+                especialidad = Especialidad.objects.get(pk=especialidad_id)
+                nombres_especialidades.append(especialidad.nombre)
+            except Especialidad.DoesNotExist:
+                nombres_especialidades.append('Especialidad no encontrada')
+
+        # Creamos un diccionario con la respuesta JSON
+        response_data = {
+            'nombres_especialidades': nombres_especialidades
+        }
+    
+        return JsonResponse(nombres_especialidades, safe=False)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+ 
+#-------Obtener Lista Especialidad
+@login_required    
+def obtener_lista_especialidades(request):
+    # Obtener todas las especialidades de la base de datos
+    especialidades = Especialidad.objects.all()
+    
+    # Crear una lista de diccionarios con el ID y el nombre de cada especialidad
+    lista_especialidades = [{'id': especialidad.id, 'nombre': especialidad.nombre} for especialidad in especialidades]
+    
+    # Devolver la lista de especialidades como una respuesta JSON
+    return JsonResponse({'especialidades': lista_especialidades})
+
+#-------Actualizar informacion
+@require_POST
+@login_required    
+def actualizar_informacion_personal(request):
+    if request.method == 'POST':
+        # Obtener los datos enviados desde el cliente
+        data = json.loads(request.body)
+        
+        # Obtener los campos del objeto personal desde los datos recibidos
+        nombre = data.get('nombre')
+        rut = data.get('rut')
+        cargo = data.get('cargo')
+        conductor = data.get('conductor')
+        tipo_licencia = data.get('tipo_licencia')
+
+        # Aquí asumimos que las especialidades ya existen en la base de datos
+        especialidades_nombres = data.get('especialidades', [])
+        especialidades = [Especialidad.objects.get(nombre=nombre) for nombre in especialidades_nombres]
+
+        # Tu lógica para actualizar el objeto personal con los nuevos datos recibidos
+        # Por ejemplo:
+        personal = Personal.objects.get(id=data.get('personal_id'))
+        personal.nombre = nombre
+        personal.rut = rut
+        personal.cargo = cargo
+        personal.conductor = conductor
+        personal.tipo_licencia = tipo_licencia
+        personal.especialidades.clear()  # Eliminar todas las especialidades actuales
+        personal.especialidades.add(*especialidades)  # Agregar las nuevas especialidades
+        
+        # Guardar los cambios en la base de datos
+        personal.save()
+
+        # Devolver una respuesta de éxito
+        return JsonResponse({'message': 'Los cambios han sido guardados exitosamente.'})
+
+    # Si la solicitud no es de tipo POST, devolver un error
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+#-----------------Gestor Inventario
+@login_required
+def gestorInventario(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+
+    # Obtener todos los objetos de Químico desde la base de datos
+    quimico_objects = Quimico.objects.all()
+    # Obtener todos los objetos de Vehículo desde la base de datos
+    vehiculo_objects = Vehiculo.objects.all()
+    # Obtener todos los objetos de Varios desde la base de datos
+    vario_objects = Vario.objects.all()
+    # Pasar los objetos de Químico, Vehículo y Varios al contexto
+    return render(request, 'html/gestorInventario.html', {'quimico_list': quimico_objects, 'vehiculo_list': vehiculo_objects, 'vario_list': vario_objects, 'nombre_usuario': nombre_usuario})
+
+#-----------------Agregar Quimico
+@login_required
+def agregar_quimico(request):
+    if request.method == 'POST':
+        tipo_quimico = request.POST.get('tipoQuimico')
+        fecha_ingreso = request.POST.get('fechaIngreso')
+        litros_ingreso = request.POST.get('litrosIngreso')
+        numero_factura = request.POST.get('numFactura')
+
+        if tipo_quimico and fecha_ingreso and litros_ingreso and numero_factura:
+            Quimico.objects.create(
+                tipo_quimico=tipo_quimico,
+                fecha_ingreso=fecha_ingreso,
+                litros_ingreso=litros_ingreso,
+                numero_factura=numero_factura,
+            )
+            # Redirigir a la página de gestión de inventario
+            return redirect('erp:gestor-inventario')
+
+    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
+    return redirect('erp:gestor-inventario')
+
+#-----------------Agregar Vehiculo
+@login_required
+def agregar_vehiculo(request):
+    if request.method == 'POST':
+        marca = request.POST.get('marca')
+        modelo = request.POST.get('modelo')
+        color = request.POST.get('color')
+        numero_motor = request.POST.get('numero_motor')
+        numero_chasis = request.POST.get('numero_chasis')
+        cilindrada = request.POST.get('cilindrada')
+        tipo_vehiculo = request.POST.get('tipo_vehiculo')
+        tipo_combustible = request.POST.get('tipo_combustible')
+        primer_ingreso = request.POST.get('primer_ingreso')
+        patente = request.POST.get('patente')
+        fecha_permiso_circulacion = request.POST.get('fecha_permiso_circulacion')
+        fecha_soap = request.POST.get('fecha_soap')
+        fecha_revision_tecnica = request.POST.get('fecha_revision_tecnica')
+        seguro_nombre = request.POST.get('seguro_nombre')
+        seguro_poliza = request.POST.get('seguro_poliza')
+
+        if (marca and modelo and color and numero_motor and numero_chasis and cilindrada and
+            tipo_vehiculo and tipo_combustible and primer_ingreso and patente and
+            fecha_permiso_circulacion and fecha_soap and fecha_revision_tecnica and
+            seguro_nombre and seguro_poliza):
+
+            Vehiculo.objects.create(
+                marca=marca,
+                modelo=modelo,
+                color=color,
+                numero_motor=numero_motor,
+                numero_chasis=numero_chasis,
+                cilindrada=cilindrada,
+                tipo_vehiculo=tipo_vehiculo,
+                tipo_combustible=tipo_combustible,
+                primer_ingreso=primer_ingreso,
+                patente=patente,
+                fecha_permiso_circulacion=fecha_permiso_circulacion,
+                fecha_soap=fecha_soap,
+                fecha_revision_tecnica=fecha_revision_tecnica,
+                seguro_nombre=seguro_nombre,
+                seguro_poliza=seguro_poliza
+            )
+            # Redirigir a la página de gestión de inventario
+            return redirect('erp:gestor-inventario')
+
+    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
+    return redirect('erp:gestor-inventario')
+
+#-----------------Agregar Vario
+@login_required
+def agregar_vario(request):
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        fecha_ingreso = request.POST.get('fecha_ingreso')
+
+        if nombre and fecha_ingreso:
+            Vario.objects.create(
+                nombre=nombre,
+                fecha_ingreso=fecha_ingreso
+            )
+            # Redirigir a la página de gestión de inventario
+            return redirect('erp:gestor-inventario')
+
+    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
+    return redirect('erp:gestor-inventario')
+
+@login_required
+def eliminar_quimico(request, quimico_id):
+    # Obtener el objeto Quimico correspondiente al ID
+    quimico = get_object_or_404(Quimico, id=quimico_id)
+
+    # Eliminar el objeto Quimico
+    quimico.delete()
+
+    # Devolver una respuesta JSON indicando que el objeto se ha eliminado correctamente
+    return redirect('erp:gestor-inventario')
+
+@login_required
+def eliminar_vehiculo(request, vehiculo_id):
+    # Obtener el objeto Vehiculo correspondiente al ID
+    vehiculo = get_object_or_404(Vehiculo, id=vehiculo_id)
+
+    # Eliminar el objeto Vehiculo
+    vehiculo.delete()
+
+    # Redirigir a la página del gestor de inventario
+    return redirect('erp:gestor-inventario')
+
+@login_required
+def eliminar_vario(request, vario_id):
+    # Obtener el objeto Vario correspondiente al ID
+    vario = get_object_or_404(Vario, id=vario_id)
+
+    # Eliminar el objeto Vario
+    vario.delete()
+
+    # Redirigir a la página del gestor de inventario
+    return redirect('erp:gestor-inventario')
+
+#-----------------OBTENER ENTRAN PERO  NO funcan
+@login_required
+def obtener_numero_motor(request):
+    if request.method == 'GET':
+        numero_motor = request.GET.get('numero_motor')
+        if numero_motor:
+            try:
+                vehiculo = Vehiculo.objects.get(numero_motor=numero_motor)
+                detalles = {
+                    'numero_motor': vehiculo.numero_motor,
+                }
+                return JsonResponse(detalles)
+            except Vehiculo.DoesNotExist:
+                return JsonResponse({'mensaje': 'El número de motor no está en uso.'})
+        else:
+            return JsonResponse({'error': 'El parámetro "numero_motor" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
+
+@login_required
+def obtener_numero_chasis(request):
+    if request.method == 'GET':
+        numero_chasis = request.GET.get('numero_chasis')
+        if numero_chasis:
+            try:
+                vehiculo = Vehiculo.objects.get(numero_chasis=numero_chasis)
+                detalles = {
+                    'numero_chasis': vehiculo.numero_chasis,
+                }
+                return JsonResponse(detalles)
+            except Vehiculo.DoesNotExist:
+                return JsonResponse({'mensaje': 'El número de chasis no está en uso.'})
+        else:
+            return JsonResponse({'error': 'El parámetro "numero_chasis" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
+
+@login_required
+def obtener_patente(request):
+    if request.method == 'GET':
+        patente = request.GET.get('patente')
+        if patente:
+            try:
+                vehiculo = Vehiculo.objects.get(patente=patente)
+                detalles = {
+                    'patente': vehiculo.patente,
+                }
+                return JsonResponse(detalles)
+            except Vehiculo.DoesNotExist:
+                return JsonResponse({'mensaje': 'La patente no está en uso.'})
+        else:
+            return JsonResponse({'error': 'El parámetro "patente" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)

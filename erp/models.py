@@ -82,22 +82,101 @@ class FichaServicio(models.Model):
     def __str__(self):
         return f"Ficha de Servicio para {self.motonave_nombre}"
 
-#----------------------PERSONAL---------------------------------------------------------------------------------------------   
+#----------------------ESPECIALIDAD--------------------------------------------------------------------------
+class Especialidad(models.Model):
+    nombre = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.nombre
+
+#----------------------PERSONAL------------------------------------------------------------------------------
 class Personal(models.Model):
-    SUPERVISOR = 'Supervisor'
-    JEFE_DE_CUADRILLA = 'Jefe de Cuadrilla'
-    OPERARIO = 'Operario'
-
-    CARGOS_CHOICES = [
-        (OPERARIO, 'Operario'),
-        (JEFE_DE_CUADRILLA, 'Jefe de Cuadrilla'),
-        (SUPERVISOR, 'Supervisor'),
-    ]
-
     nombre = models.CharField(max_length=100)
     rut = models.CharField(max_length=20, unique=True)
-    cargo = models.CharField(max_length=20, choices=CARGOS_CHOICES, default=OPERARIO)
+    
+    CARGOS_CHOICES = [
+        ('Operario', 'Operario'),
+        ('Jefe de Cuadrilla', 'Jefe de Cuadrilla'),
+        ('Supervisor', 'Supervisor'),
+    ]
+    
+    cargo = models.CharField(max_length=20, choices=CARGOS_CHOICES, default='Operario')
+    especialidades = models.ManyToManyField(Especialidad)
+    conductor = models.CharField(max_length=3, choices=[('Si', 'Si'), ('No', 'No')], blank=True, null=True)
+    LICENCIA_CHOICES = [
+        ('', ''),
+        ('A1', 'A1'),
+        ('A2', 'A2'),
+        ('A3', 'A3'),
+        ('A4', 'A4'),
+        ('A5', 'A5'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+        ('E', 'E'),
+        ('F', 'F'),
+    ]
+    
+    tipo_licencia = models.CharField(max_length=2, choices=LICENCIA_CHOICES, blank=True, null=True)
+
+    ESTADOS = [
+        ('Disponible', 'Disponible'),
+        ('No Disponible', 'No Disponible'),
+        ('En Operación', 'En Operación'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
+
+
+    def __str__(self):
+        return self.nombre
+
+#----------------------QUIMICO-------------------------------------------------------------------------------
+
+class Quimico(models.Model):
+
+    fecha_ingreso = models.DateField()  # Campo para la fecha de ingreso (tipo DATE)
+    litros_ingreso = models.BigIntegerField()  # Campo para los litros de ingreso
+    numero_factura = models.BigIntegerField()  # Campo para el número de factura
+
+    tipo_quimico_CHOICES = [
+        ('Bidones OCN 01', 'Bidones OCN 01'),
+        ('Bidones OCN 08', 'Bidones OCN 08'),
+        ('Bidones Acido Clorhídrico', 'Bidones Acido Clorhídrico'),
+        ('Bidones Hipoclorito','Bidones Hipoclorito'),
+        ('Bidones Hold Coat','Bidones Hold Coat'),
+    ]
+
+    tipo_quimico = models.CharField(max_length=100)  # Campo para el tipo de químico
+
+    def __str__(self):
+        return self.tipo_quimico   
+    
+#----------------------VEHICULO-----------------------------------------------------------------------------
+
+class Vehiculo(models.Model):
+    marca = models.CharField(max_length=100)
+    modelo = models.CharField(max_length=100)
+    color = models.CharField(max_length=50)
+    numero_motor = models.CharField(max_length=100, unique=True)
+    numero_chasis = models.CharField(max_length=100, unique=True)
+    cilindrada = models.CharField(max_length=50)
+    tipo_vehiculo = models.CharField(max_length=100)
+    primer_ingreso = models.DateField()
+    patente = models.CharField(max_length=6, unique=True)
+    fecha_permiso_circulacion = models.DateField()
+    fecha_soap = models.DateField()
+    fecha_revision_tecnica = models.DateField()
+    seguro_nombre = models.CharField(max_length=100)
+    seguro_poliza = models.BigIntegerField()
+
+    TIPOS_COMBUSTIBLE_CHOICES = [
+        ('93', '93'),
+        ('95', '95'),
+        ('97', '97'),
+        ('diésel', 'Diésel'),
+        ('electrico', 'Eléctrico'),
+    ]
+    tipo_combustible = models.CharField(max_length=50)
 
     ESTADOS = [
         ('Disponible', 'Disponible'),
@@ -107,12 +186,15 @@ class Personal(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
 
     def __str__(self):
-        return self.nombre
+        return {self.patente}  
+    
+#----------------------VARIO--------------------------------------------------------------------------
 
-#----------------------TABLA DE FICHA Herramientas--------------------------------------------------------------------------
-   
-#----------------------TABLA DE FICHA Quimico-------------------------------------------------------------------------------    
-  
-#----------------------TABLA DE FICHA Vehiculos-----------------------------------------------------------------------------    
+class Vario(models.Model):
+    nombre = models.CharField(max_length=100)
+    fecha_ingreso = models.DateField()
+
+    def __str__(self):
+        return self.nombre
 
 #----------------------TABLA DE FICHA Mantenimiento------------------------------------------------------------------------- 

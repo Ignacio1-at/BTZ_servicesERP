@@ -1,93 +1,144 @@
+.contenido-principal {
+    height: 80vh;
+    width: 90vw;
+    margin-left: 5vw;
+    margin-left: 7vw;
+    margin-right: 7vw;
+    font-family: 'mifuente';
+}
+
+.cuadro-azul {
+    background-color: #01152a;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
+    margin-right: 5vw;
+    position: relative; /* Para establecer la base del posicionamiento */
+    width: 100vw;
+    height: 65vh;
+    padding: 1%;
+    margin-bottom: 5vh;
+}
+
+.table-header {
+    position: sticky;
+    top: 0; /* Fija el encabezado en la parte superior */
+    z-index: 1; /* Asegura que el encabezado esté por encima del cuerpo */
+}
+
+.table-body {
+    overflow-y: auto; /* Permite el desplazamiento vertical solo en el cuerpo de la tabla */
+    max-height: 55vh; /* Establece la altura máxima del cuerpo de la tabla */
+}
+
+.table-wrapper {
+    overflow-x: hidden; /* Oculta el desplazamiento horizontal */
+}
+
 /* Estilo para el fondo desenfocado cuando el modal está activo */
 .blur-background {
-    backdrop-filter: blur(5px); /* Aplica un desenfoque al fondo */
-    pointer-events: none; /* Permite hacer clic a través del fondo desenfocado */
-    transition: filter 0.3s ease; /* Agrega una transición suave */
+    backdrop-filter: blur(5px);
+    /* Aplica un desenfoque al fondo */
+    pointer-events: none;
+    /* Permite hacer clic a través del fondo desenfocado */
+    transition: filter 0.3s ease;
+    /* Agrega una transición suave */
 }
 
 /* Estilo del cuerpo de la página cuando el modal está activo */
 .modal-active {
-    overflow: hidden; /* Evita el desplazamiento de la página */
-    position: fixed; /* Fijar posición en la ventana */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 100%; /* Ocupa toda la altura */
+    overflow: hidden;
+    /* Evita el desplazamiento de la página */
+    position: fixed;
+    /* Fijar posición en la ventana */
+    width: 100%;
+    /* Ocupa todo el ancho */
+    height: 100%;
+    /* Ocupa toda la altura */
+}
+
+.modal-dialog.modal-dialog-centered {
+    max-width: 600px !important;
+    min-width: 400px !important;
 }
 
 /* Estilo del modal */
-.modal {
-    display: none; /* Por defecto oculto */
-    position: fixed; /* Fijar posición en la ventana */
-    z-index: 1000; /* Asegurar que esté por encima de otros elementos */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4); /* Fondo semi-transparente */
+.modal-content {
+    background-color: #001d43 !important;
 }
 
-.modal-contenido {
-    background-color: #01152a;
-    margin: 10% auto;
-    border-radius: 10px;
-    width: 60%; /* Ancho del modal */
-    max-width: 800px; /* Ancho máximo */
-    height: auto;
-    position: relative; /* Añadido para posicionar el botón de cerrar */
+.modal-header {
+    background-color: #860909c9;
+    border-bottom: #860909c9 !important;
 }
 
-
-.textoModal {
-    color: white;
+.modal-title {
+    color: #fff;
     font-family: 'mifuente';
-    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+.modal-body {
+    color: #fff;
+    margin-left: 40px;
+    margin-top: 1% !important;
+    margin-right: 40px !important;
+    font-family: 'mifuente';
+}
+
+.modal-footer {
+    border-top: #001d43 !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-close {
+    color: #333;
+}
+
+.btn-close:hover {
+    color: #000;
+}
+
+.btn.btn-custom-color {
+    background-color: #860909c9;
+    border-color: #860909c9;
+    color: white;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para los campos de entrada */
+#modalDetallePersonal input[type="text"],
+#modalDetallePersonal select {
     width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     box-sizing: border-box;
 }
 
-.titulo-cerrar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+/* Estilos para la lista de especialidades */
+#modalDetallePersonal ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.titulo {
-    background-color: #8d000e;
+/* Estilos para los botones */
+#modalDetallePersonal button {
+    background-color: #860909c9; /* Color de fondo verde */
     color: white;
-    border-width: solid;
-    font-family: 'mifuente';
     padding: 10px 20px;
-    text-align: left; /* Alineación del texto a la izquierda */
-    width: calc(100% - 40px); /* El ancho del título es el 100% menos el ancho total del botón de cerrar */
-    box-sizing: border-box;
-}
-
-.submit {
-    color: white;
-    background-color: #8d000e;
-    border-radius: 5px;
     border: none;
-    padding: 10px 20px;
-    align-self: flex-start;
-    width: fit-content; /* Ajustar al contenido */
-    margin-top: 20px;
-    margin-bottom: 20px; /* Agregado para separación */
-}
-
-.cerrar {
-    color: #aaa;
-    font-size: 28px; /* Ajusta el tamaño del botón según sea necesario */
-    font-weight: bold;
-    z-index: 999; /* Ajusta el z-index según sea necesario */
-    position: absolute; /* Posicionamiento absoluto */
-    top: 10px; /* Ajusta la distancia desde la parte superior */
-    right: 10px; /* Ajusta la distancia desde la derecha */
-}
-
-.cerrar:hover,
-.cerrar:focus {
-    color: black;
-    text-decoration: none;
+    border-radius: 4px;
     cursor: pointer;
+}
+
+#modalDetallePersonal button:hover {
+    background-color: #860909c9; /* Cambio de color de fondo al pasar el cursor */
 }
