@@ -201,22 +201,19 @@
           <div class="modal-header">
             <img src="{% static 'images/LogoRRHH.png' %}" alt="Logo" width="50" height="40" style="margin-right: 10px;" />
             <h5 class="modal-title" id="modalDetallePersonalLabel" style="margin-right: 5vw;">Detalles del Personal</h5>
-            <!-- Botón para cambiar entre los modos de visualización y edición -->
-            <button type="button" style="margin-right: 1vw;" class="btn btn-primary" id="btnCambiarModo" onclick="cambiarModo()">Editar</button>
-
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
             <!-- Aquí se mostrarán los detalles del personal -->
           </div>
-          <!-- Footer del modal -->
           <div class="modal-footer">
-            <!-- Botón de guardar (visible solo en modo edición) -->
-            <button type="button" style="margin-right: 1vw; display: none;" class="btn btn-success" id="btnGuardar" onclick="guardarCambios()">Guardar</button>
+            <button type="button" id="btnCambiarModo" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> <!-- Botón para guardar en modo edición -->
           </div>
         </div>
       </div>
     </div>
+    
   </div>
 {% endblock %}
 

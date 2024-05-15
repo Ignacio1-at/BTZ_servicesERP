@@ -391,44 +391,48 @@ def obtener_lista_especialidades(request):
     # Devolver la lista de especialidades como una respuesta JSON
     return JsonResponse({'especialidades': lista_especialidades})
 
-#-------Actualizar informacion
 @require_POST
 @login_required    
 def actualizar_informacion_personal(request):
     if request.method == 'POST':
         # Obtener los datos enviados desde el cliente
-        data = json.loads(request.body)
-        
-        # Obtener los campos del objeto personal desde los datos recibidos
-        nombre = data.get('nombre')
-        rut = data.get('rut')
-        cargo = data.get('cargo')
-        conductor = data.get('conductor')
-        tipo_licencia = data.get('tipo_licencia')
+        nombre = request.POST.get('nombre')
+        rut = request.POST.get('rut')
+        cargo = request.POST.get('cargo')
+        conductor = request.POST.get('conductor')
+        tipo_licencia = request.POST.get('tipo_licencia')
+        especialidades = request.POST.getlist('especialidades[]')  # Obtener la lista de especialidades
 
-        # Aquí asumimos que las especialidades ya existen en la base de datos
-        especialidades_nombres = data.get('especialidades', [])
-        especialidades = [Especialidad.objects.get(nombre=nombre) for nombre in especialidades_nombres]
+        try:
+            # Obtener el objeto personal
+            personal_id = request.POST.get('personal_id')
+            personal = Personal.objects.get(id=personal_id)
 
-        # Tu lógica para actualizar el objeto personal con los nuevos datos recibidos
-        # Por ejemplo:
-        personal = Personal.objects.get(id=data.get('personal_id'))
-        personal.nombre = nombre
-        personal.rut = rut
-        personal.cargo = cargo
-        personal.conductor = conductor
-        personal.tipo_licencia = tipo_licencia
-        personal.especialidades.clear()  # Eliminar todas las especialidades actuales
-        personal.especialidades.add(*especialidades)  # Agregar las nuevas especialidades
-        
-        # Guardar los cambios en la base de datos
-        personal.save()
+            # Actualizar los campos del objeto personal
+            personal.nombre = nombre
+            personal.rut = rut
+            personal.cargo = cargo
+            personal.conductor = conductor
+            personal.tipo_licencia = tipo_licencia
 
-        # Devolver una respuesta de éxito
-        return JsonResponse({'message': 'Los cambios han sido guardados exitosamente.'})
+            # Eliminar todas las especialidades actuales y agregar las nuevas
+            personal.especialidades.clear()
+            for especialidad_id in especialidades:
+                personal.especialidades.add(especialidad_id)
 
-    # Si la solicitud no es de tipo POST, devolver un error
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
+            # Guardar los cambios en la base de datos
+            personal.save()
+
+            # Devolver una respuesta de éxito
+            return JsonResponse({'message': 'Cambios guardados exitosamente'})
+
+        except Personal.DoesNotExist:
+            # Si no se encuentra el personal, devolver un error
+            return JsonResponse({'error': 'El personal no existe'}, status=404)
+
+    else:
+        # Si la solicitud no es POST, retornamos un error
+        return JsonResponse({'error': 'Se espera una solicitud POST'})
 
 #-----------------Gestor Inventario
 @login_required
