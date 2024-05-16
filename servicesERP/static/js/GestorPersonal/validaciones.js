@@ -13,6 +13,11 @@ function validarNombre() {
         return false;
     }
 
+    if (nombreInput.length > 100) {
+        alert("El nombre no puede tener más de 100 caracteres.");
+        return false;
+    }
+
     return true;
 }
 

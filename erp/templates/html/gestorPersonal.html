@@ -219,7 +219,7 @@
 {% block module_scripts %}
   <script>
     function goBack() {
-      history.back()
+      window.location.href = "{% url 'erp:menu' %}"
     }
   </script>
   <script>

@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, renderizar_formulario, gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal, gestorInventario, agregar_quimico, agregar_vehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario, obtener_numero_motor, obtener_numero_chasis, obtener_patente
+from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, renderizar_formulario, gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal, gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
 
 app_name = 'erp'  
 
@@ -30,12 +30,10 @@ urlpatterns = [
     path('gestor-inventario/', gestorInventario, name='gestor-inventario'),
     path('agregar_quimico', agregar_quimico, name='agregar_quimico'),
     path('agregar_vehiculo', agregar_vehiculo, name='agregar_vehiculo'),
+    path('validar-campo-unico/', validar_campo_unicoVehiculo, name='validar_campo_unico'),
     path('agregar_vario', agregar_vario, name='agregar_vario'),
     path('eliminar_quimico/<int:quimico_id>/', eliminar_quimico, name='eliminar_quimico'),
     path('eliminar_vehiculo/<int:vehiculo_id>/', eliminar_vehiculo, name='eliminar_vehiculo'),
     path('eliminar_vario/<int:vario_id>/', eliminar_vario, name='eliminar_vario'),
-    path('obtener_numero_motor/', obtener_numero_motor, name='obtener_numero_motor'),
-    path('obtener_numero_chasis/', obtener_numero_chasis, name='obtener_numero_chasis'),
-    path('obtener_patente/', obtener_patente, name='obtener_patente'),
     # Otras rutas aquí...
 ]

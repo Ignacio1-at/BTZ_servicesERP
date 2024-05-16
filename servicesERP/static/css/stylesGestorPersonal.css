@@ -142,3 +142,24 @@
 #modalDetallePersonal button:hover {
     background-color: #860909c9; /* Cambio de color de fondo al pasar el cursor */
 }
+
+.bodyDatosGenerales {
+    background: #01172f;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.textoDatosGenerales {
+    margin-top: 13px;
+}
+
+.datos-par {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    gap: 5vw;
+}
+
+.datos-par p {
+    flex-basis: 80%;
+}

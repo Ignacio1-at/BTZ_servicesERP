@@ -18,7 +18,7 @@
           <!-- Logo y texto "Operaciones" -->
           <div style="display: flex; align-items: center;">
             <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
-            <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 5vh;"/>
+            <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 5vh;" />
             <span style="color: white; margin-left: 1vw; font-size: 2vh;">Operaciones</span>
           </div>
           <div style="display: flex; margin-left: 50vw; align-items: center; margin-right: 1vh;">
@@ -109,9 +109,7 @@
           <div class="modal-body" style="overflow: auto; font-size: 20px;">
             <ul>
               {% for motonave in motonaves %}
-                <li>
-                  {{ motonave.nombre }}
-                </li>
+                <li>{{ motonave.nombre }}</li>
               {% endfor %}
             </ul>
           </div>
@@ -121,40 +119,39 @@
 
     <!-- Modal Servicio -->
     <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-      <div class="modal-dialog modal-dialog-centered" >
-          <div class="modal-content">
-              <div class="modal-header">
-                  <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body" style="margin-left: 30px;">
-                  <form id="formCrearServicio" method="post" action="">
-                      {% csrf_token %}
-                      <div class="mb-3">
-                        <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
-                        <!-- {{ nombres_motonaves_disponibles }} -->
-                        <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
-                          {% for nombre_motonave in nombres_motonaves_disponibles %}
-                          <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="mb-3">
-                          <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
-                          <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
-                      </div>
-                      <div class="mb-3">
-                          <label for="numeroViaje" class="form-label">Viaje:</label>
-                          <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
-                      </div>
-                      <!-- Campo oculto para almacenar la fecha de nominación -->
-                      <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="">
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-custom-color" id="btnMostrarModalGestion" style="margin-right: 40px;">Ingresar</button>
-              </div>
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <div class="modal-body" style="margin-left: 30px;">
+            <form id="formCrearServicio" method="post" action="">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
+                <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
+                  {% for nombre_motonave in nombres_motonaves_disponibles %}
+                    <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
+                <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
+              </div>
+              <div class="mb-3">
+                <label for="numeroViaje" class="form-label">Viaje:</label>
+                <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
+              </div>
+              <!-- Campo oculto para almacenar la fecha de nominación -->
+              <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="" />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-custom-color" id="btnMostrarModalGestion" style="margin-right: 40px;">Ingresar</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -184,66 +181,72 @@
         </div>
         <div id="panelInfo" class="panel-info">
           <div class="info-container">
-              <!-- Viaje -->
-              <p style="display: inline;">Viaje: </p>
-              <p id="viajeMotonave" style="display: inline; margin-left: 5%;"></p>
-              <!-- Estado -->
-              <p style="display: inline; margin-left: 5vw;">Estado:
-                  <select id="nuevoEstadoMotonave"  style="border-radius: 10px;">
-                      <option value="Nominado">Nominado</option>
-                      <option value="En Proceso">En Proceso</option>
-                      <option value="Terminado">Terminado</option>
-                  </select>
-              </p>
-              <!-- Carga-->
-              <p style="margin-top: 15px;">Carga: </p>
-              <!-- Puerto-->
-              <p style="margin-top: 15px;">Puerto: </p>
-              <!-- Armador -->
-              <p style="margin-top: 15px;">Armador: </p>
+            <!-- Viaje -->
+            <p style="display: inline;">Viaje:</p>
+            <p id="viajeMotonave" style="display: inline; margin-left: 5%;"></p>
+            <!-- Estado -->
+            <p style="display: inline; margin-left: 5vw;">
+              Estado:<select id="nuevoEstadoMotonave" style="border-radius: 10px;">
+                <option value="Nominado">Nominado</option>
+                <option value="En Proceso">En Proceso</option>
+                <option value="Terminado">Terminado</option>
+              </select>
+            </p>
+            <!-- Carga -->
+            <p style="margin-top: 15px;">Carga:</p>
+            <!-- Puerto -->
+            <p style="margin-top: 15px;">Puerto:</p>
+            <!-- Armador -->
+            <p style="margin-top: 15px;">Armador:</p>
           </div>
-        </div>    
+        </div>
         <div id="panelInfo2" class="panel-info2">
           <div class="info-container2">
-              <!-- Fecha Nom -->
-              <p style="margin-top: 5px;">Fecha de Nominación: <span id="fechaNominacionMotonave" style="margin-left: 5%;"></span></p>
-              <!-- Servicios -->
-              <div style="display: flex; align-items: center;">
-                <p style="margin-right: 10px;">Servicios: <span id="cantidadServiciosActual"></span></p>
-                <button type="button" id="AbrirGestorServicio" title="Abrir Gestor de Servicios" onclick="abrirModalGestorServicios()" style="border: none; background: none; margin-left: 20%; margin-bottom: 10px; ">
-                    <img src="{% static 'images/Ojo.png' %}" style="cursor: pointer; height: 5vh;" />
-                </button>
-              </div>            
+            <!-- Fecha Nom -->
+            <p style="margin-top: 5px;">
+              Fecha de Nominación: <span id="fechaNominacionMotonave" style="margin-left: 5%;"></span>
+            </p>
+            <!-- Servicios -->
+            <div style="display: flex; align-items: center;">
+              <p style="margin-right: 10px;">
+                Servicios: <span id="cantidadServiciosActual"></span>
+              </p>
+              <button type="button" id="AbrirGestorServicio" title="Abrir Gestor de Servicios" onclick="abrirModalGestorServicios()" style="border: none; background: none; margin-left: 20%; margin-bottom: 10px;"><img src="{% static 'images/Ojo.png' %}" style="cursor: pointer; height: 5vh;" /></button>
+            </div>
           </div>
         </div>
         <div id="panelComentario" class="panel-comentario">
           <div class="info-container3">
-            <textarea id="comentarioActual" name="comentarioActual" class="form-control" rows="10" cols="40" style="width: 25vw; min-height: 4vh; ; max-height: 14vh; border-radius: 10px;" placeholder="  Comentarios" maxlength="1000"></textarea>
-          </div> 
-        </div>    
+            <textarea id="comentarioActual" name="comentarioActual" class="form-control" rows="10" cols="40" style="width: 25vw; min-height: 4vh; max-height: 14vh; border-radius: 10px;" placeholder="  Comentarios" maxlength="1000"></textarea>
+          </div>
+        </div>
         <div>
           <button id="BotonEliminacionNomina">Eliminar Nominación</button>
         </div>
-      <div id="dragbar"></div>
+        <div id="dragbar"></div>
+      </div>
     </div>
 
     <!-- Div transparente que cubre el área fuera del panel lateral -->
     <div id="panelOverlay" class="panel-overlay"></div>
-
-  </div>  
+  </div>
 {% endblock %}
 
 {% block module_scripts %}
   <!-- Retroceder -->
   <script>
     function goBack() {
-      history.back()
+      window.location.href = "{% url 'erp:menu' %}"
     }
   </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <!-- Scripts específicos de la página de menú -->
-  <script src="{% static 'js/scriptGestorOperaciones.js' %}"></script>
+  <script src="{% static 'js/GestorOperaciones/validaciones.js' %}"></script>
+  <script src="{% static 'js/GestorOperaciones/motonaves.js' %}"></script>
+  <script src="{% static 'js/GestorOperaciones/servicios.js' %}"></script>
+  <script src="{% static 'js/GestorOperaciones/panelLateral.js' %}"></script>
+  <script src="{% static 'js/GestorOperaciones/utils.js' %}"></script>
   <script>
     var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
     var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
@@ -252,7 +255,7 @@
     var crearServicioURL = "{% url 'erp:crear_servicio' %}"
     var rendFormularioURL = "{% url 'erp:renderizar_formulario' %}"
     var eliminarServicioURL = "{% url 'erp:eliminar_servicio' %}"
-
+    
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
       actualizarTableroMotonaves()

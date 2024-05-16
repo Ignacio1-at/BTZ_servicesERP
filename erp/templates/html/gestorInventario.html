@@ -84,7 +84,7 @@
                   </td>
                 </tr>
                 <!-- Modal para ver detalles del químico -->
-                <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+                <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -92,22 +92,44 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <!-- Detalles del químico -->
-                        <p>
-                          <strong>Tipo de Químico:</strong> {{ quimico.tipo_quimico }}
-                        </p>
-                        <p>
-                          <strong>Fecha de Ingreso:</strong> {{ quimico.fecha_ingreso }}
-                        </p>
-                        <p>
-                          <strong>Número de Factura:</strong> {{ quimico.numero_factura }}
-                        </p>
-                        <p>
-                          <strong>Litros Ingresados:</strong> {{ quimico.litros_ingreso }}
-                        </p>
+                        <div class="datosGenerales" id="datosGenerales">
+                          <div class="headerDatosGenerales" id="headerDatosGenerales">
+                            <p style="font-size: 2.5vh;">Datos Generales</p>
+                          </div>
+                          <div class="bodyDatosGenerales" id="bodyDatosGenerales">
+                            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
+                              <p>
+                                <strong>Tipo de Químico:</strong> {{ quimico.tipo_quimico }}
+                              </p>
+                              <p>
+                                <strong>Fecha de Ingreso:</strong> {{ quimico.fecha_ingreso }}
+                              </p>
+                              <p>
+                                <strong>Número de Factura:</strong> {{ quimico.numero_factura }}
+                              </p>
+                              <p>
+                                <strong>Litros Ingresados:</strong> {{ quimico.litros_ingreso }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="Estado" id="Estado">
+                          <div class="headerEstado" id="headerEstado">
+                            <p style="font-size: 2.5vh;">Estado</p>
+                          </div>
+                          <div class="bodyEstado" id="bodyEstado">
+                            <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
+                              <p>
+                                <strong>Estado:</strong> {{ quimico.estado }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Agrega más secciones según los detalles del químico -->
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" id="btnCambiarModo" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                        <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> <!-- Botón para guardar en modo edición -->
                       </div>
                     </div>
                   </div>
@@ -154,58 +176,58 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <!-- Aquí puedes mostrar los detalles del vehículo -->
-                        <p>
-                          <strong>Marca:</strong> {{ vehiculo.marca }}
-                        </p>
-                        <p>
-                          <strong>Modelo:</strong> {{ vehiculo.modelo }}
-                        </p>
-                        <p>
-                          <strong>Color:</strong> {{ vehiculo.color }}
-                        </p>
-                        <p>
-                          <strong>Número de Motor:</strong> {{ vehiculo.numero_motor }}
-                        </p>
-                        <p>
-                          <strong>Número de Chasis:</strong> {{ vehiculo.numero_chasis }}
-                        </p>
-                        <p>
-                          <strong>Cilindrada:</strong> {{ vehiculo.cilindrada }}
-                        </p>
-                        <p>
-                          <strong>Tipo de Vehículo:</strong> {{ vehiculo.tipo_vehiculo }}
-                        </p>
-                        <p>
-                          <strong>Primer Ingreso:</strong> {{ vehiculo.primer_ingreso }}
-                        </p>
-                        <p>
-                          <strong>Patente:</strong> {{ vehiculo.patente }}
-                        </p>
-                        <p>
-                          <strong>Fecha de Permiso de Circulación:</strong> {{ vehiculo.fecha_permiso_circulacion }}
-                        </p>
-                        <p>
-                          <strong>Fecha SOAP:</strong> {{ vehiculo.fecha_soap }}
-                        </p>
-                        <p>
-                          <strong>Fecha de Revisión Técnica:</strong> {{ vehiculo.fecha_revision_tecnica }}
-                        </p>
-                        <p>
-                          <strong>Nombre del Seguro:</strong> {{ vehiculo.seguro_nombre }}
-                        </p>
-                        <p>
-                          <strong>Póliza del Seguro:</strong> {{ vehiculo.seguro_poliza }}
-                        </p>
-                        <p>
-                          <strong>Tipo de Combustible:</strong> {{ vehiculo.tipo_combustible }}
-                        </p>
-                        <p>
-                          <strong>Estado:</strong> {{ vehiculo.estado }}
-                        </p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <div class="datosGenerales" id="datosGenerales">
+                          <div class="headerDatosGenerales" id="headerDatosGenerales">
+                            <p style="font-size: 2.5vh;">Datos Generales</p>
+                          </div>
+                          <div class="bodyDatosGenerales" id="bodyDatosGenerales">
+                            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
+                              <p>
+                                <strong>Marca:</strong> {{ vehiculo.marca }} ||| <strong>Modelo:</strong> {{ vehiculo.modelo }} ||| <strong>Color:</strong> {{ vehiculo.color }}
+                              </p>
+                              <p>
+                                <strong>Número de Motor:</strong> {{ vehiculo.numero_motor }} |||||| <strong>Número de Chasis:</strong> {{ vehiculo.numero_chasis }}
+                              </p>
+                              <p>
+                                <strong>Cilindrada:</strong> {{ vehiculo.cilindrada }} |||||| <strong>Tipo de Vehículo:</strong> {{ vehiculo.tipo_vehiculo }}
+                              </p>
+                              <p>
+                                <strong>Tipo de Combustible:</strong> {{ vehiculo.tipo_combustible }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="historialDocumentacion" id="historialDocumentacion">
+                          <div class="headerhistorialDocumentacion" id="headerhistorialDocumentacion">
+                            <p style="font-size: 2.5vh;">Historial Y Documentacion</p>
+                          </div>
+                          <div class="bodyhistorialDocumentacion" id="bodyhistorialDocumentacion">
+                            <div class="textohistorialDocumentacion" id="textohistorialDocumentacion" style="margin-left: 3vw;">
+                              <p>
+                                <strong>Primer Ingreso:</strong> {{ vehiculo.primer_ingreso }} ||| <strong>Patente:</strong> {{ vehiculo.patente }} || <strong>Número de Póliza:</strong> {{ vehiculo.seguro_poliza }}
+                              </p>
+                              <p>
+                                <strong>Fecha de Permiso de Circulación:</strong> {{ vehiculo.fecha_permiso_circulacion }} || <strong>Fecha SOAP:</strong> {{ vehiculo.fecha_soap }}
+                              </p>
+                              <p>
+                                <strong>Fecha de Revisión Técnica:</strong> {{ vehiculo.fecha_revision_tecnica }} || <strong>Nombre del Seguro:</strong> {{ vehiculo.seguro_nombre }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="Estado" id="Estado">
+                          <div class="headerEstado" id="headerEstado">
+                            <p style="font-size: 2.5vh;">Estado</p>
+                          </div>
+                          <div class="bodyEstado" id="bodyEstado">
+                            <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
+                              <p>
+                                <strong>Estado:</strong> {{ vehiculo.estado }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Agrega más secciones según los detalles del vehiculo -->
                       </div>
                     </div>
                   </div>
@@ -231,13 +253,57 @@
                   <td>{{ vario.nombre }}</td>
                   <td>{{ vario.fecha_ingreso }}</td>
                   <td>
-                    <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
-                      {% csrf_token %}
-                      <!-- Otros campos del formulario si los tienes -->
-                      <button type="button" class="btn btn-danger" onclick="eliminarVarios('{{ vario.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
-                    </form>
+                    <div class="btn-group" role="group" aria-label="Acciones">
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVario{{ vario.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                      <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
+                        {% csrf_token %}
+                        <!-- Otros campos del formulario si los tienes -->
+                        <button type="button" class="btn btn-danger" onclick="eliminarVario('{{ vario.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                      </form>
+                    </div>
                   </td>
                 </tr>
+                <!-- Modal para ver detalles del vario -->
+                <div class="modal fade" id="modalDetalleVario{{ vario.id }}" tabindex="-1" aria-labelledby="modalDetalleVarioLabel{{ vario.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modalDetalleVarioLabel{{ vario.id }}">Detalles del Vario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="datosGenerales" id="datosGenerales">
+                          <div class="headerDatosGenerales" id="headerDatosGenerales">
+                            <p style="font-size: 2.5vh;">Datos Generales</p>
+                          </div>
+                          <div class="bodyDatosGenerales" id="bodyDatosGenerales">
+                            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
+                              <p>
+                                <strong>Nombre:</strong> {{ vario.nombre }}
+                              </p>
+                              <p>
+                                <strong>Fecha de Ingreso:</strong> {{ vario.fecha_ingreso }}
+                              </p>
+                            </div>
+                          </div>
+                          <div class="Estado" id="Estado">
+                            <div class="headerEstado" id="headerEstado">
+                              <p style="font-size: 2.5vh;">Estado</p>
+                            </div>
+                            <div class="bodyEstado" id="bodyEstado">
+                              <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
+                                <p>
+                                  <strong>Estado:</strong> {{ vario.estado }}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Agrega más secciones según los detalles de vario -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               {% endfor %}
             </tbody>
           </table>
@@ -254,33 +320,56 @@
           <h5 class="modal-title" id="exampleModalLabel">Agregar Químico</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_quimico' %}">
+        <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_quimico' %}" onsubmit="return validarFormularioAgregarQuimico()">
           {% csrf_token %}
           <div class="modal-body">
-            <div class="mb-3">
-              <label for="tipoQuimico" class="form-label">Tipo de Químico:</label>
-              <select type="text" class="form-control" name="tipoQuimico" id="tipoQuimico" required>
-                <option value="Bidones OCN 01">Bidones OCN 01</option>
-                <option value="Bidones OCN 08">Bidones OCN 08</option>
-                <option value="Bidones Acido Clorhídrico">Bidones Acido Clorhídrico</option>
-                <option value="Bidones Hipoclorito">Bidones Hipoclorito</option>
-                <option value="Bidones Hold Coat">Bidones Hold Coat</option>
-              </select>
-            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="inputdatosGenerales" id="inputdatosGenerales">
+                  <div class="inputHeaderDatosGenerales" id="inputHeaderDatosGenerales">
+                    <p style="font-size: 2.5vh;">Datos</p>
+                  </div>
+                  <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
+                    <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales" style="margin-left: 3vw;">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="tipoQuimico" class="form-label">Tipo de Químico:</label>
+                            <select type="text" class="form-control" name="tipoQuimico" id="tipoQuimico" required>
+                              <option value="Bidones OCN 01">Bidones OCN 01</option>
+                              <option value="Bidones OCN 08">Bidones OCN 08</option>
+                              <option value="Bidones Acido Clorhídrico">Bidones Acido Clorhídrico</option>
+                              <option value="Bidones Hipoclorito">Bidones Hipoclorito</option>
+                              <option value="Bidones Hold Coat">Bidones Hold Coat</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3" style="margin-left: 3vw;">
+                            <label for="fechaIngreso" class="form-label">Fecha Ingreso:</label>
+                            <input type="date" class="form-control" name="fechaIngreso" id="fechaIngreso" style="width: 10vw;" required />
+                          </div>
+                        </div>
+                      </div>
 
-            <div class="mb-3">
-              <label for="fechaIngreso" class="form-label">Fecha Ingreso:</label>
-              <input type="date" class="form-control" name="fechaIngreso" id="fechaIngreso" required />
-            </div>
-
-            <div class="mb-3">
-              <label for="litrosIngreso" class="form-label">Litros de Ingreso:</label>
-              <input type="number" class="form-control" name="litrosIngreso" id="litrosIngreso" placeholder="1" required />
-            </div>
-
-            <div class="mb-3">
-              <label for="numFactura" class="form-label">Numero de Factura:</label>
-              <input type="number" class="form-control" name="numFactura" id="numFactura" placeholder="10000" required />
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="litrosIngreso" class="form-label">Litros de Ingreso:</label>
+                            <input type="number" class="form-control" name="litrosIngreso" id="litrosIngreso" placeholder="1" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4" style="margin-left: 3vw;">
+                          <div class="mb-3">
+                            <label for="numFactura" class="form-label">Número de Factura:</label>
+                            <input type="number" class="form-control" name="numFactura" id="numFactura" placeholder="10000" required />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -294,103 +383,149 @@
   </div>
 
   <!-- Modal Agregar Vehiculo -->
-  <div class="modal fade" id="modalAgregarVehiculo" tabindex="-1" aria-labelledby="modalAgregarVehiculoLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+  <div class="modal fade modalAgregarVehiculo" id="modalAgregarVehiculo" tabindex="-1" aria-labelledby="modalAgregarVehiculoLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalAgregarVehiculoLabel">Agregar Vehículo</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="formAgregarVehiculo" method="post" action="{% url 'erp:agregar_vehiculo' %}">
+        <form id="formAgregarVehiculo" method="post" action="{% url 'erp:agregar_vehiculo' %}" onsubmit="return validarFormularioAgregarVehiculo()">
           {% csrf_token %}
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="marca" class="form-label">Marca:</label>
-                  <input type="text" class="form-control" name="marca" id="marca" placeholder="Rolls-Royce" required />
+              <div class="col-md-12">
+                <div class="inputdatosGenerales" id="inputdatosGenerales">
+                  <div class="inputHeaderDatosGenerales" id="inputHeaderDatosGenerales">
+                    <p style="font-size: 2.5vh;">Datos Generales</p>
+                  </div>
+                  <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
+                    <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales" style="margin-left: 3vw;">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="marca" class="form-label">Marca:</label>
+                            <input type="text" class="form-control" name="marca" id="marca" placeholder="Rolls-Royce" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="modelo" class="form-label">Modelo:</label>
+                            <input type="text" class="form-control" name="modelo" id="modelo" placeholder="Phantom" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="color" class="form-label">Color:</label>
+                            <input type="text" class="form-control" name="color" id="color" placeholder="Gris" style="width: fit-content;" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="numero_motor" class="form-label">Número de Motor:</label>
+                            <input type="text" class="form-control" name="numero_motor" id="numero_motor" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="numero_chasis" class="form-label">Número de Chasis:</label>
+                            <input type="text" class="form-control" name="numero_chasis" id="numero_chasis" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="cilindrada" class="form-label">Cilindrada:</label>
+                            <input type="text" class="form-control" name="cilindrada" id="cilindrada" style="width: fit-content;" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="tipo_vehiculo" class="form-label">Tipo de Vehículo:</label>
+                            <input type="text" class="form-control" name="tipo_vehiculo" id="tipo_vehiculo" required />
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="tipo_combustible" class="form-label">Tipo de Combustible:</label>
+                            <select class="form-select" name="tipo_combustible" id="tipo_combustible" style="width: 15vw;" required>
+                              <option value="93">93</option>
+                              <option value="95">95</option>
+                              <option value="97">97</option>
+                              <option value="diésel">Diesel</option>
+                              <option value="electrico">Electrico</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Aqui se pueden agregar mas inputs -->
+                    </div>
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="modelo" class="form-label">Modelo:</label>
-                  <input type="text" class="form-control" name="modelo" id="modelo" placeholder="Phantom" required />
+                <div class="inputHistorialDocumentacion" id="inputHistorialDocumentacion">
+                  <div class="headerhistorialDocumentacion" id="headerhistorialDocumentacion">
+                    <p style="font-size: 2.5vh;">2 Historial Y Documentacion</p>
+                  </div>
+                  <div class="bodyhistorialDocumentacion" id="bodyhistorialDocumentacion">
+                    <div class="textohistorialDocumentacion" id="textohistorialDocumentacion" style="margin-left: 3vw;">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="primer_ingreso" class="form-label">Primer Ingreso:</label>
+                            <input type="date" class="form-control" name="primer_ingreso" id="primer_ingreso" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="patente" class="form-label">Patente:</label>
+                            <input type="text" class="form-control" name="patente" id="patente" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="fecha_permiso_circulacion" class="form-label">Fecha de Permiso de Circulación:</label>
+                            <input type="date" class="form-control" name="fecha_permiso_circulacion" id="fecha_permiso_circulacion" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="fecha_soap" class="form-label">Fecha de SOAP:</label>
+                            <input type="date" class="form-control" name="fecha_soap" id="fecha_soap" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="fecha_revision_tecnica" class="form-label">Fecha de Revisión Técnica:</label>
+                            <input type="date" class="form-control" name="fecha_revision_tecnica" id="fecha_revision_tecnica" required />
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="seguro_nombre" class="form-label">Nombre del Seguro:</label>
+                            <input type="text" class="form-control" name="seguro_nombre" id="seguro_nombre" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="mb-3">
+                            <label for="seguro_poliza" class="form-label">Número de Póliza:</label>
+                            <input type="number" class="form-control" name="seguro_poliza" id="seguro_poliza" placeholder="00000000" style="width: fit-content;" required />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Aqui se pueden agregar mas inputs -->
+                    </div>
+                  </div>
+                  <!-- Aqui se pueden agregar mas inputs -->
                 </div>
-
-                <div class="mb-3">
-                  <label for="color" class="form-label" place>Color:</label>
-                  <input type="text" class="form-control" name="color" id="color" placeholder="Gris" required />
-                </div>
-
-                <div class="mb-3">
-                  <label for="patente" class="form-label">Patente:</label>
-                  <input type="text" class="form-control" name="patente" id="patente" placeholder="AA1122" required />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="numero_motor" class="form-label">Número de Motor:</label>
-                  <input type="text" class="form-control" name="numero_motor" id="numero_motor" required />
-                </div>
-
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="numero_chasis" class="form-label">Número de Chasis:</label>
-                  <input type="text" class="form-control" name="numero_chasis" id="numero_chasis" required />
-                </div>
-
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="cilindrada" class="form-label">Cilindrada:</label>
-                  <input type="text" class="form-control" name="cilindrada" id="cilindrada" required />
-                </div>
-
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="tipo_vehiculo" class="form-label">Tipo de Vehículo:</label>
-                  <input type="text" class="form-control" name="tipo_vehiculo" id="tipo_vehiculo" required />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="tipo_combustible" class="form-label">Tipo de Combustible:</label>
-                  <select class="form-select" name="tipo_combustible" id="tipo_combustible" required>
-                    <option value="93">93</option>
-                    <option value="95">95</option>
-                    <option value="97">97</option>
-                    <option value="diésel">Diesel</option>
-                    <option value="electrico">Electrico</option>
-                  </select>
-                </div>
-
-                <div class="mb-3">
-                  <label for="seguro_nombre" class="form-label">Nombre del Seguro:</label>
-                  <input type="text" class="form-control" name="seguro_nombre" id="seguro_nombre" required />
-                </div>
-
-                <div class="mb-3">
-                  <label for="seguro_poliza" class="form-label">Póliza del Seguro:</label>
-                  <input type="number" class="form-control" name="seguro_poliza" id="seguro_poliza" placeholder="00000000" required />
-                </div>
-
-                <div class="mb-3">
-                  <label for="fecha_soap" class="form-label">Fecha de SOAP:</label>
-                  <input type="date" class="form-control" name="fecha_soap" id="fecha_soap" required />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="fecha_permiso_circulacion" class="form-label" style="font-size: small;">Fecha de Permiso de Circulación:</label>
-                  <input type="date" class="form-control" name="fecha_permiso_circulacion" id="fecha_permiso_circulacion" required />
-                </div>
-
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="fecha_revision_tecnica" class="form-label">Fecha de Revisión Técnica:</label>
-                  <input type="date" class="form-control" name="fecha_revision_tecnica" id="fecha_revision_tecnica" required />
-                </div>
-
-                <div class="mb-3" style="margin-left: 1vw;">
-                  <label for="primer_ingreso" class="form-label">Fecha de Ingreso:</label>
-                  <input type="date" class="form-control" name="primer_ingreso" id="primer_ingreso" required />
-                </div>
+                <!-- Aqui se pueden agregar otra seccion -->
               </div>
             </div>
           </div>
@@ -411,20 +546,39 @@
           <h5 class="modal-title" id="modalAgregarVarioLabel">Agregar Vario</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="formAgregarQuimico" method="post" action="{% url 'erp:agregar_vario' %}">
+        <form id="formAgregarVarios" method="post" action="{% url 'erp:agregar_vario' %}" onsubmit="return validarFormularioAgregarVarios()">
           {% csrf_token %}
           <div class="modal-body">
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre:</label>
-              <input type="text" class="form-control" name="nombre" id="nombre" required />
-            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="inputdatosGenerales" id="inputdatosGenerales">
+                  <div class="inputHeaderDatosGenerales" id="inputHeaderDatosGenerales">
+                    <p style="font-size: 2.5vh;">Datos</p>
+                  </div>
+                  <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
+                    <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales" style="margin-left: 3vw;">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" style="width: 18vw;" required />
+                          </div>
 
-            <div class="mb-3">
-              <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
-              <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" required />
+                          <div class="mb-3">
+                            <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+                            <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" style="width: 20vw;" required />
+                          </div>
+                          <!-- Aqui se pueden agregar mas inputs -->
+                        </div>
+                        <!-- Aqui se pueden agregar mas inputs -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Aqui se pueden agregar otra seccion -->
+                </div>
+              </div>
             </div>
           </div>
-
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-custom-color">Agregar</button>
@@ -439,16 +593,17 @@
   <!-- Retroceder -->
   <script>
     function goBack() {
-      history.back()
+      window.location.href = "{% url 'erp:menu' %}"
     }
-  </script>
-  <script>
-    var obtenerNumeroMotor = "{% url 'erp:obtener_numero_motor' %}"
-    var obtenerNumeroChasis = "{% url 'erp:obtener_numero_chasis' %}"
-    var obtenerPatente = "{% url 'erp:obtener_patente' %}"
   </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <!-- Scripts específicos de la página de Inventario -->
-  <script src="{% static 'js/scriptGestorInventario.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/validaciones.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/quimicos.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/vehiculos.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/varios.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/modales.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/utils.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/main.js' %}"></script>
 {% endblock %}

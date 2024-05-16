@@ -146,11 +146,18 @@ class Quimico(models.Model):
         ('Bidones Hold Coat','Bidones Hold Coat'),
     ]
 
+    ESTADOS = [
+        ('Disponible', 'Disponible'),
+        ('No Disponible', 'No Disponible'),
+        ('En Operación', 'En Operación'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
+
     tipo_quimico = models.CharField(max_length=100)  # Campo para el tipo de químico
 
     def __str__(self):
-        return self.tipo_quimico   
-    
+        return self.tipo_quimico
+
 #----------------------VEHICULO-----------------------------------------------------------------------------
 
 class Vehiculo(models.Model):
@@ -186,15 +193,20 @@ class Vehiculo(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
 
     def __str__(self):
-        return {self.patente}  
-    
+        return {self.patente}
+
 #----------------------VARIO--------------------------------------------------------------------------
 
 class Vario(models.Model):
     nombre = models.CharField(max_length=100)
     fecha_ingreso = models.DateField()
 
+    ESTADOS = [
+        ('Disponible', 'Disponible'),
+        ('No Disponible', 'No Disponible'),
+        ('En Operación', 'En Operación'),
+    ]
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
+
     def __str__(self):
         return self.nombre
-
-#----------------------TABLA DE FICHA Mantenimiento------------------------------------------------------------------------- 

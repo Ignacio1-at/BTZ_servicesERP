@@ -7,15 +7,25 @@ function mostrarDetallesModalVisualizacion(personal) {
 
     // Construir el contenido del modal en modo visualización
     var modalContent = `
-        <p><strong>Nombre:</strong> ${personal.nombre}</p>
-        <p><strong>Rut:</strong> ${personal.rut}</p>
-        <p><strong>Cargo:</strong> ${personal.cargo}</p>
-        <p><strong>Conductor:</strong> ${personal.conductor}</p>
-        <p><strong>Tipo de Licencia:</strong> ${personal.tipo_licencia}</p>
-        <p><strong>Estado:</strong> ${personal.estado}</p>
-        <p><strong>Especialidades:</strong></p>
-        <ul>${especialidadesHTML}</ul>
-        <!-- Agrega más campos según sea necesario -->
+        <div class="bodyDatosGenerales" id="bodyDatosGenerales">
+            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 1vw;">
+                <div class="datos-par">
+                    <p><strong>Nombre:</strong> ${personal.nombre}</p>
+                    <p><strong>Rut:</strong> ${personal.rut}</p>
+                </div>
+                <div class="datos-par">
+                    <p><strong>Cargo:</strong> ${personal.cargo}</p>
+                    <p><strong>Conductor:</strong> ${personal.conductor}</p>
+                </div>
+                <div class="datos-par">
+                    <p><strong>Tipo de Licencia:</strong> ${personal.tipo_licencia}</p>
+                    <p><strong>Estado:</strong> ${personal.estado}</p>
+                </div>
+                <p><strong>Especialidades:</strong></p>
+                <ul>${especialidadesHTML}</ul>
+                <!-- Agrega más campos según sea necesario -->
+            </div>
+        </div>
     `;
 
     // Actualizar el contenido del modal y ocultar el botón de guardar

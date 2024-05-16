@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.core import serializers
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 import json
 
 #---Excel
@@ -124,30 +126,7 @@ def guardar_nuevo_estado(request):
         return JsonResponse({'success': True, 'message': 'Estado actualizado correctamente.'})
     else:
         return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)
-
-"""   
-#-------------------GUARDAR NUEVO VIAJE    
-@login_required
-def guardar_nuevo_viaje(request):
-    if request.method == 'POST':
-        nombre_motonave = request.POST.get('nombreMotonave')
-        nuevo_viaje = request.POST.get('nuevoViaje')
-
-        if nombre_motonave and nuevo_viaje:
-            try:
-                # Buscar la motonave por su nombre
-                motonave = Motonave.objects.get(nombre=nombre_motonave)
-                # Actualizar el valor del viaje
-                motonave.viaje = nuevo_viaje
-                motonave.save()
-                return JsonResponse({'success': True})
-            except Motonave.DoesNotExist:
-                return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
-        else:
-            return JsonResponse({'error': 'Se requieren el nombre de la motonave y el nuevo viaje.'}, status=400)
-    else:
-        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
-"""        
+   
 #-------------------GUARDAR COMENTARIOS
 @login_required  
 def guardar_comentarios(request):
@@ -273,12 +252,15 @@ def renderizar_formulario(request):
     return JsonResponse({'nombres_motonaves_disponibles': nombres_motonaves_disponibles})
 
  #-----------------Ficha de Servicios
+
 @login_required
 def fichaOperaciones(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
     return render(request, 'html/fichaOperaciones.html', {'nombre_usuario': nombre_usuario})
 
  #-----------------Gestor Personal
+
+#GESTOR PERSONAL
 @login_required
 def gestorPersonal(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
@@ -391,6 +373,7 @@ def obtener_lista_especialidades(request):
     # Devolver la lista de especialidades como una respuesta JSON
     return JsonResponse({'especialidades': lista_especialidades})
 
+#-------Actualizar Informacion PERSONAL
 @require_POST
 @login_required    
 def actualizar_informacion_personal(request):
@@ -513,13 +496,39 @@ def agregar_vehiculo(request):
                 seguro_poliza=seguro_poliza
             )
             # Redirigir a la página de gestión de inventario
-            return redirect('erp:gestor-inventario')
+            return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVehiculo')
 
     # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-inventario')
 
+# Valida campo UNICO EN VEHICULO.
+@login_required
+def validar_campo_unicoVehiculo(request):
+    if request.method == 'POST':
+        valor = request.POST.get('valor')
+        campo = request.POST.get('campo')
+        print("Campo:", campo)  # Agregar print statement
+        print("Valor:", valor)  # Agregar print statement
+
+        if campo == 'numero_motor':
+            existe = Vehiculo.objects.filter(numero_motor=valor).exists()
+        elif campo == 'numero_chasis':
+            existe = Vehiculo.objects.filter(numero_chasis=valor).exists()
+        elif campo == 'patente':
+            existe = Vehiculo.objects.filter(patente=valor).exists()
+        else:
+            existe = False
+
+        print("Existe:", existe)  # Agregar print statement
+        return JsonResponse({'existe': existe})
+
+    return JsonResponse({'error': 'Método no permitido'})
+
+#-----------------Obtener detalles de VEHICULO.
+
 #-----------------Agregar Vario
 @login_required
+@csrf_exempt
 def agregar_vario(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
@@ -531,7 +540,7 @@ def agregar_vario(request):
                 fecha_ingreso=fecha_ingreso
             )
             # Redirigir a la página de gestión de inventario
-            return redirect('erp:gestor-inventario')
+            return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVarios')
 
     # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-inventario')
@@ -556,7 +565,7 @@ def eliminar_vehiculo(request, vehiculo_id):
     vehiculo.delete()
 
     # Redirigir a la página del gestor de inventario
-    return redirect('erp:gestor-inventario')
+    return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVehiculo')
 
 @login_required
 def eliminar_vario(request, vario_id):
@@ -567,59 +576,5 @@ def eliminar_vario(request, vario_id):
     vario.delete()
 
     # Redirigir a la página del gestor de inventario
-    return redirect('erp:gestor-inventario')
+    return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVarios')
 
-#-----------------OBTENER ENTRAN PERO  NO funcan
-@login_required
-def obtener_numero_motor(request):
-    if request.method == 'GET':
-        numero_motor = request.GET.get('numero_motor')
-        if numero_motor:
-            try:
-                vehiculo = Vehiculo.objects.get(numero_motor=numero_motor)
-                detalles = {
-                    'numero_motor': vehiculo.numero_motor,
-                }
-                return JsonResponse(detalles)
-            except Vehiculo.DoesNotExist:
-                return JsonResponse({'mensaje': 'El número de motor no está en uso.'})
-        else:
-            return JsonResponse({'error': 'El parámetro "numero_motor" es obligatorio en la solicitud GET.'}, status=400)
-    else:
-        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
-
-@login_required
-def obtener_numero_chasis(request):
-    if request.method == 'GET':
-        numero_chasis = request.GET.get('numero_chasis')
-        if numero_chasis:
-            try:
-                vehiculo = Vehiculo.objects.get(numero_chasis=numero_chasis)
-                detalles = {
-                    'numero_chasis': vehiculo.numero_chasis,
-                }
-                return JsonResponse(detalles)
-            except Vehiculo.DoesNotExist:
-                return JsonResponse({'mensaje': 'El número de chasis no está en uso.'})
-        else:
-            return JsonResponse({'error': 'El parámetro "numero_chasis" es obligatorio en la solicitud GET.'}, status=400)
-    else:
-        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
-
-@login_required
-def obtener_patente(request):
-    if request.method == 'GET':
-        patente = request.GET.get('patente')
-        if patente:
-            try:
-                vehiculo = Vehiculo.objects.get(patente=patente)
-                detalles = {
-                    'patente': vehiculo.patente,
-                }
-                return JsonResponse(detalles)
-            except Vehiculo.DoesNotExist:
-                return JsonResponse({'mensaje': 'La patente no está en uso.'})
-        else:
-            return JsonResponse({'error': 'El parámetro "patente" es obligatorio en la solicitud GET.'}, status=400)
-    else:
-        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
