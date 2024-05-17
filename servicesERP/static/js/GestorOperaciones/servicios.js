@@ -79,9 +79,10 @@ $(document).ready(function () {
                     // Mostrar el modal de gestión de servicios
                     $('#modalGestionarServicios').modal('show');
                 }
-
+                location.reload();
                 // Llamar a la función para actualizar el tablero de motonaves
                 actualizarTableroMotonaves();
+                actualizarTablaMotonavesModal()
             },
             error: function (xhr, status, error) {
                 // Manejar errores de AJAX aquí
@@ -97,32 +98,55 @@ function eliminarServicio(nombreMotonave) {
     var csrftoken = getCookie('csrftoken');
 
     // Confirmar con el usuario si realmente desea eliminar el servicio
-    if (confirm("¿Estás seguro de que quieres eliminar este servicio?")) {
-        // Realizar la petición AJAX para eliminar el servicio
-        $.ajax({
-            url: eliminarServicioURL,
-            type: 'POST',
-            headers: { 'X-CSRFToken': csrftoken },  // Incluir el token CSRF en los headers de la solicitud
-            data: {
-                nombreMotonave: nombreMotonave
-            },
-            success: function (response) {
-                if (response.success) {
-                    // Eliminación exitosa, actualizar la interfaz de usuario según sea necesario
-                    alert("El servicio se ha eliminado correctamente.");
-                    // Aquí podrías recargar la página o realizar otras acciones necesarias después de eliminar el servicio
-                    location.reload();
-                } else {
-                    // Error al eliminar el servicio, mostrar un mensaje de error si es necesario
-                    alert("Ha ocurrido un error al eliminar el servicio.");
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres eliminar este servicio?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Realizar la petición AJAX para eliminar el servicio
+            $.ajax({
+                url: eliminarServicioURL,
+                type: 'POST',
+                headers: { 'X-CSRFToken': csrftoken }, // Incluir el token CSRF en los headers de la solicitud
+                data: {
+                    nombreMotonave: nombreMotonave
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Eliminación exitosa, actualizar la interfaz de usuario según sea necesario
+                        Swal.fire(
+                            '¡Eliminado!',
+                            'El servicio ha sido eliminado correctamente.',
+                            'success'
+                        );
+                        // Aquí podrías realizar otras acciones necesarias después de eliminar el servicio
+                        location.reload();
+                    } else {
+                        // Error al eliminar el servicio, mostrar un mensaje de error
+                        Swal.fire(
+                            '¡Error!',
+                            'Ha ocurrido un error al eliminar el servicio.',
+                            'error'
+                        );
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    // Manejar el error de la petición AJAX
+                    Swal.fire(
+                        '¡Error!',
+                        'Ha ocurrido un error al eliminar el servicio.',
+                        'error'
+                    );
                 }
-            },
-            error: function (xhr, errmsg, err) {
-                // Manejar el error de la petición AJAX si es necesario
-                alert("Ha ocurrido un error al eliminar el servicio.");
-            }
-        });
-    }
+            });
+        }
+    });
 }
 
 function abrirModalGestorServicios() {

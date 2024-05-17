@@ -46,6 +46,7 @@ class Motonave(models.Model):
     comentarioActual = models.TextField(null=True, blank=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
     fecha_nominacion = models.DateTimeField(auto_now_add=True)
+    cantBodegas = models.CharField(max_length=50)
     numero_viaje = models.IntegerField(default=0)
 
     # Nuevo campo para el estado del servicio
@@ -71,7 +72,7 @@ class FichaServicio(models.Model):
     arribo = models.DateField()
     hospedaje_desayuno = models.BooleanField()
     lancha_grua = models.BooleanField()
-    cantidad_bodegas = models.IntegerField()
+    cantBodegas_aRealizar = models.IntegerField(default=0)
     arriendo_bomba = models.BooleanField()
     navegacion = models.BooleanField()
     prox_puerto = models.CharField(max_length=100)

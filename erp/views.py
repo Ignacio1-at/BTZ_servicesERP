@@ -68,14 +68,33 @@ def gestorOperaciones(request):
 def crear_motonave(request):
     if request.method == 'POST':
         nombre_motonave = request.POST.get('nombreMotonave')
-        if nombre_motonave:
+        cant_bodegas = request.POST.get('cantidadBodegas')
+
+        if nombre_motonave and cant_bodegas:
             motonave = Motonave.objects.create(
                 nombre=nombre_motonave,
+                cantBodegas=cant_bodegas
             )
+
             # Redirigir a la página de gestión de operaciones
             return redirect('erp:gestor-operaciones')
+
     # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-operaciones')
+
+#-------------------ELIMINAR Motonaves
+@login_required
+def eliminar_motonave(request):
+    if request.method == 'POST':
+        motonave_id = request.POST.get('motonaveId')
+        try:
+            motonave = Motonave.objects.get(id=motonave_id)
+            motonave.delete()
+            return JsonResponse({'mensaje': 'Motonave eliminada correctamente'})
+        except Motonave.DoesNotExist:
+            return JsonResponse({'error': 'La motonave no existe'}, status=404)
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 #-------------------DETALLES MOTONAVES
 @login_required
@@ -91,6 +110,7 @@ def obtener_detalles_motonave(request):
                 detalles = {
                     'nombre': motonave.nombre,
                     'estado_servicio': motonave.estado_servicio,
+                    'cant_bodegas': motonave.cantBodegas,
                     'fecha_modificacion': motonave.fecha_modificacion.strftime('%Y-%m-%d %H:%M:%S'),
                     'fecha_nominacion': motonave.fecha_nominacion.strftime('%Y-%m-%d'),
                     'cantidad_serviciosActual': motonave.cantidad_serviciosActual,
@@ -158,12 +178,15 @@ def guardar_comentarios(request):
 def obtener_tabla_motonaves(request):
     # Obtener los datos de la tabla de motonaves, por ejemplo, desde el modelo Motonave
     motonaves = Motonave.objects.all()
+
     # Construir una lista de diccionarios con los datos relevantes de cada motonave
-    data = [{'nombre': motonave.nombre, 
+    data = [{'nombre': motonave.nombre,
              'estado_servicio': motonave.estado_servicio,
+             'cantBodegas': motonave.cantBodegas,
              'cantidad_serviciosHistorial': motonave.cantidad_serviciosHistorial,
              'cantidad_serviciosActual': motonave.cantidad_serviciosActual,
              'viaje': motonave.numero_viaje} for motonave in motonaves]
+
     # Devolver los datos como una respuesta JSON
     return JsonResponse(data, safe=False)
 

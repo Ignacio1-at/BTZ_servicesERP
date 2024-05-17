@@ -73,7 +73,7 @@
 
     <!-- Modal Agregar Motonave -->
     <div class="modal fade" id="modalAgregarMotonave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered" style="width: 30vw;">
         <div class="modal-content">
           <div class="modal-header">
             <!-- Logo -->
@@ -88,9 +88,13 @@
                 <label for="nombreMotonave" style="margin-left: 40px;" class="form-label">Nombre de la Motonave:</label>
                 <input type="text" class="form-control" name="nombreMotonave" style="width: 91%; margin-left: 40px;" id="nombreMotonave" required />
               </div>
+              <div class="mb-3">
+                <label for="cantidadBodegas" style="margin-left: 40px;" class="form-label">Cantidad de Bodegas:</label>
+                <input type="number" class="form-control" name="cantidadBodegas" style="width: 91%; margin-left: 40px;" id="cantidadBodegas" min="1" required />
+              </div>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-custom-color" style="margin-right: 40px; ">Agregar</button>
+              <button type="submit" class="btn btn-custom-color" style="margin-right: 40px;">Agregar</button>
             </div>
           </form>
         </div>
@@ -100,18 +104,40 @@
     <!-- Modal Lista Motonave -->
     <div class="modal fade" id="listaMotonaveModal" tabindex="-1" aria-labelledby="listaMotonaveModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="max-height: 700px; min-height: 0px;">
+        <div class="modal-content" style="max-height: 700px; min-height: 0px; background-color: white;">
           <div class="modal-header">
             <img src="{% static 'images/LogoLista.png' %}" alt="Logo" width="40" height="40" style="margin-right: 10px;" />
-            <h5 class="modal-title" id="listaMotonaveModalLabel">Lista de Motonaves</h5>
+            <h5 class="modal-title" id="listaMotonaveModalLabel">Tabla de Motonaves</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="overflow: auto; font-size: 20px;">
-            <ul>
-              {% for motonave in motonaves %}
-                <li>{{ motonave.nombre }}</li>
-              {% endfor %}
-            </ul>
+          <div class="modal-body" style="font-size: 20px; padding: 2%;">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+              <table class="table table-striped" style="color: white; border-color: white; margin-bottom: 0;">
+                <thead style="position: sticky; top: 0; background-color: #01152a;">
+                  <tr>
+                    <th>Motonave</th>
+                    <th>Estado</th>
+                    <th>Bodegas</th>
+                    <th>Viaje Actual</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for motonave in motonaves %}
+                    <tr style="color: white;">
+                      <td>{{ motonave.nombre }}</td>
+                      <td>{{ motonave.estado_servicio }}</td>
+                      <td>{{ motonave.cantBodegas }}</td>
+                      <td>{{ motonave.numero_viaje }}</td>
+                      <td>
+                        <button type="button" id="editarMotonave" style="border: none; background: none;" title="Editar" data-motonave-id="{{ motonave.id }}"><img src="{% static 'images/Editar.png' %}" alt="Editar" width="40" height="40" style="cursor: pointer;" /></button>
+                        <button type="button" id="eliminarMotonave" style="border: none; background: none;" title="Eliminar" data-motonave-id="{{ motonave.id }}"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" width="40" height="40" style="cursor: pointer;" /></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -119,7 +145,7 @@
 
     <!-- Modal Servicio -->
     <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered" style="width: 30vw;">
         <div class="modal-content">
           <div class="modal-header">
             <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
@@ -241,6 +267,7 @@
   </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Scripts específicos de la página de menú -->
   <script src="{% static 'js/GestorOperaciones/validaciones.js' %}"></script>
   <script src="{% static 'js/GestorOperaciones/motonaves.js' %}"></script>
@@ -255,6 +282,7 @@
     var crearServicioURL = "{% url 'erp:crear_servicio' %}"
     var rendFormularioURL = "{% url 'erp:renderizar_formulario' %}"
     var eliminarServicioURL = "{% url 'erp:eliminar_servicio' %}"
+    var eliminarMotonaveURL = "{% url 'erp:eliminar_motonave' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado

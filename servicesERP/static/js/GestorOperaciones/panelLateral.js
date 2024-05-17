@@ -71,6 +71,7 @@ function guardarNuevoEstado(nombreMotonave) {
             console.log('Nuevo estado guardado correctamente:', response);
             // Realizar un refresh de la página después de guardar el estado
             actualizarTableroMotonaves(); // Llamar a la función para actualizar el tablero de motonaves
+            actualizarTablaMotonavesModal()
         },
         error: function (xhr, status, error) {
             console.error('Error al guardar el nuevo estado:', error);

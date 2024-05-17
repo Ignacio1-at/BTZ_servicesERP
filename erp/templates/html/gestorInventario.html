@@ -78,7 +78,7 @@
                       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
                       <form id="formEliminarQuimico{{ quimico.id }}" method="POST" action="{% url 'erp:eliminar_quimico' quimico.id %}">
                         {% csrf_token %}
-                        <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                        <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
                       </form>
                     </div>
                   </td>
@@ -162,7 +162,7 @@
                       <form id="formEliminarVehiculo{{ vehiculo.id }}" method="POST" action="{% url 'erp:eliminar_vehiculo' vehiculo.id %}">
                         {% csrf_token %}
                         <!-- Otros campos del formulario si los tienes -->
-                        <button type="button" class="btn btn-danger" onclick="eliminarVehiculo('{{ vehiculo.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                        <button type="button" class="btn btn-danger" onclick="eliminarVehiculo('{{ vehiculo.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
                       </form>
                     </div>
                   </td>
@@ -258,7 +258,7 @@
                       <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
                         {% csrf_token %}
                         <!-- Otros campos del formulario si los tienes -->
-                        <button type="button" class="btn btn-danger" onclick="eliminarVario('{{ vario.id }}')"><img src="{% static 'images/eliminar.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                        <button type="button" class="btn btn-danger" onclick="eliminarVario('{{ vario.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
                       </form>
                     </div>
                   </td>
@@ -598,6 +598,8 @@
   </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <!-- Scripts específicos de la página de Inventario -->
   <script src="{% static 'js/GestorInventario/validaciones.js' %}"></script>
   <script src="{% static 'js/GestorInventario/quimicos.js' %}"></script>

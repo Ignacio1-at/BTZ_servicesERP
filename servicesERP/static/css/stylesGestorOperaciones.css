@@ -112,10 +112,11 @@
 }
 
 .modal-dialog {
-  max-width: 600px !important;
+  max-width: 50vw !important;
   /* Ancho máximo del modal */
-  min-width: 400px !important;
+  min-width: 30vw !important;
   /* Ancho mínimo del modal */
+  max-height: 50vh !important;
 }
 
 /* Estilos para el modal */
