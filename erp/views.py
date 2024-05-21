@@ -96,6 +96,40 @@ def eliminar_motonave(request):
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+#-------------------EDITAR Motonaves
+@require_POST
+@login_required
+def modificar_motonave(request):
+    if request.method == 'POST':
+        # Obtener los datos enviados desde el cliente
+        motonave_id = request.POST.get('motonave_id')
+        nombre_motonave = request.POST.get('nombre_motonave')
+        cantidad_bodegas = request.POST.get('cantidad_bodegas')
+        numero_viaje = request.POST.get('numero_viaje')
+
+        try:
+            # Obtener el objeto motonave
+            motonave = Motonave.objects.get(id=motonave_id)
+
+            # Actualizar los campos del objeto motonave
+            motonave.nombre = nombre_motonave
+            motonave.cantBodegas = cantidad_bodegas
+            motonave.numero_viaje = numero_viaje
+
+            # Guardar los cambios en la base de datos
+            motonave.save()
+
+            # Devolver una respuesta de éxito
+            return JsonResponse({'success': True, 'message': 'Cambios guardados exitosamente'})
+
+        except Motonave.DoesNotExist:
+            # Si no se encuentra la motonave, devolver un error
+            return JsonResponse({'success': False, 'message': 'La motonave no existe'}, status=404)
+
+    else:
+        # Si la solicitud no es POST, retornamos un error
+        return JsonResponse({'success': False, 'message': 'Se espera una solicitud POST'})
+
 #-------------------DETALLES MOTONAVES
 @login_required
 def obtener_detalles_motonave(request):

@@ -1,31 +1,4 @@
-function verificarNombreMotonaveExistente(nombreMotonave) {
-    $.ajax({
-        type: 'GET',
-        url: obtenerDetallesMotonaveURL,
-        data: { 'nombre_motonave': nombreMotonave },
-        success: function (data) {
-            console.log("Respuesta del servidor:", data); // Mostrar la respuesta del servidor en la consola
-            if (data.error) {
-                // Si hay un error en la respuesta, significa que la motonave no existe
-                submitForm(); // Enviar el formulario
-            } else {
-                // Si la respuesta no contiene un error, la motonave existe
-                alert('La motonave ya existe en el sistema.');
-            }
-        },
-        error: function (xhr, status, error) {
-            // Manejo de errores: mostrar mensaje de alerta
-            if (xhr.status === 404) {
-                // Si el código de estado es 404 (Not Found), significa que la motonave no existe
-                submitForm(); // Enviar el formulario
-            } else {
-                alert('Error al verificar la existencia de la motonave.');
-                console.error('Error al verificar la existencia de la motonave:', error);
-            }
-        }
-    });
-}
-
+//ACTUALIZAR TABLERO REFRESH
 function actualizarTableroMotonaves() {
     $.ajax({
         type: 'GET',
@@ -70,7 +43,7 @@ function actualizarTablaMotonavesModal() {
     $.ajax({
         url: obtenerTablaMotonavesURL, // URL para obtener los datos actualizados de las motonaves
         type: 'GET',
-        success: function(data) {
+        success: function (data) {
 
             // Verificar si data es un arreglo
             if (!Array.isArray(data)) {
@@ -83,7 +56,7 @@ function actualizarTablaMotonavesModal() {
             tablaMotonaves.empty(); // Limpiar el contenido actual del tbody
 
             // Iterar sobre los nuevos datos y agregar filas a la tabla
-            $.each(data, function(index, motonave) {
+            $.each(data, function (index, motonave) {
 
                 var fila = $('<tr style="color: white;"></tr>');
                 fila.append('<td>' + motonave.nombre + '</td>');
@@ -94,7 +67,7 @@ function actualizarTablaMotonavesModal() {
                 tablaMotonaves.append(fila);
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error al obtener los datos de las motonaves:', error);
         }
     });
@@ -128,30 +101,6 @@ function seleccionarMotonaveDesdeTablero(nombreMotonave) {
             console.error('Error al obtener los detalles de la motonave desde el tablero:', error);
         }
     });
-}
-
-// Event listener para convertir el texto a mayúsculas al escribir en el campo del nombre
-$('#nombreMotonave').on('input', function () {
-    var input = $(this);
-    var texto = input.val();
-    input.val(texto.toUpperCase());
-});
-
-function validarCantidadBodegas(cantBodegas) {
-    // Verificar que la cantidad de bodegas no esté vacía
-    if (cantBodegas === '') {
-        return false;
-    }
-
-    // Convertir la cantidad de bodegas a un número entero
-    var cantidadBodegas = parseInt(cantBodegas);
-
-    // Verificar que la cantidad de bodegas sea un número positivo y no mayor a 15
-    if (isNaN(cantidadBodegas) || cantidadBodegas <= 0 || cantidadBodegas > 15) {
-        return false;
-    }
-
-    return true;
 }
 
 // Event listener para validar el nombre de la motonave al enviar el formulario
@@ -201,20 +150,100 @@ function submitForm() {
     });
 }
 
-$(document).ready(function () {
-    // Manejar el evento de clic en el botón "Editar"
-    $('#listaMotonaveModal').on('click', '#editarMotonave', function () {
-        var motonaveId = $(this).data('motonave-id');
-        // Aquí puedes realizar la acción de editar la motonave
-        console.log('Editar motonave:', motonaveId);
-        // Puedes abrir un modal o redirigir a una página de edición con los datos de la motonave
-    });
+// Función para manejar la apertura del modal de edición de motonave
+$(document).on('click', '.btn-editar-motonave', function () {
+    var motonaveId = $(this).data('motonave-id');
+    var motonaveNombre = $(this).data('motonave-nombre');
+    var motonaveBodegas = $(this).data('motonave-bodegas');
+    var motonaveViaje = $(this).data('motonave-viaje');
 
+    $('#editarMotonaveId').val(motonaveId);
+    $('#editarNombreMotonave').val(motonaveNombre).data('original-value', motonaveNombre);
+    $('#editarCantidadBodegas').val(motonaveBodegas).data('original-value', motonaveBodegas);
+    $('#editarNumeroViaje').val(motonaveViaje).data('original-value', motonaveViaje);
+});
+
+// Función para manejar el envío del formulario de edición de motonave
+$('#formEditarMotonave').submit(function (event) {
+    event.preventDefault();
+
+    var motonaveId = $('#editarMotonaveId').val();
+    var nombreMotonave = $('#editarNombreMotonave').val();
+    var cantidadBodegas = $('#editarCantidadBodegas').val();
+    var numeroViaje = $('#editarNumeroViaje').val();
+    var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    // Obtener los valores originales de los campos
+    var nombreMotonaveOriginal = $('#editarNombreMotonave').data('original-value');
+    var cantidadBodegasOriginal = $('#editarCantidadBodegas').data('original-value');
+    var numeroViajeOriginal = $('#editarNumeroViaje').data('original-value');
+
+    // Validar el nombre de la motonave (solo si se modificó)
+    if (nombreMotonave !== nombreMotonaveOriginal) {
+        if (!validarNombreMotonave(nombreMotonave)) {
+            alert('El nombre de la motonave no es válido. Debe contener solo letras y espacios.');
+            return;
+        }
+        // Verificar si el nuevo nombre de la motonave ya existe
+        verificarNombreMotonaveExistenteEditar(nombreMotonave, function (existe) {
+            if (existe) {
+                alert('La motonave ya existe en el sistema.');
+                return;
+            } else {
+                // Si el nuevo nombre no existe, continuar con las demás validaciones y el envío del formulario
+                validarYEnviarFormulario();
+            }
+        });
+    } else {
+        // Si no se modificó el nombre, continuar con las demás validaciones y el envío del formulario
+        validarYEnviarFormulario();
+    }
+
+    function validarYEnviarFormulario() {
+        // Validar la cantidad de bodegas (solo si se modificó)
+        if (cantidadBodegas !== cantidadBodegasOriginal && !validarCantidadBodegas(cantidadBodegas)) {
+            alert('La cantidad de bodegas debe ser un número entero positivo.');
+            return;
+        }
+
+        // Validar el número de viaje (solo si se modificó)
+        if (numeroViaje !== numeroViajeOriginal && !validarNumeroViaje(numeroViaje)) {
+            alert('El número de viaje debe ser un número entero positivo.');
+            return;
+        }
+
+        // Enviar el formulario
+        $.ajax({
+            url: modificarMotonaveURL,
+            method: 'POST',
+            data: {
+                'motonave_id': motonaveId,
+                'nombre_motonave': nombreMotonave,
+                'cantidad_bodegas': cantidadBodegas,
+                'numero_viaje': numeroViaje,
+                'csrfmiddlewaretoken': csrftoken
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Actualizar la tabla de motonaves después de una edición exitosa
+                    location.reload();
+                } else {
+                    console.error('Error al modificar la motonave:', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error al modificar la motonave:', error);
+            }
+        });
+    }
+});
+
+$(document).ready(function () {
     // Manejar el evento de clic en el botón "Eliminar"
-    $('#listaMotonaveModal').on('click', '#eliminarMotonave', function() {
+    $('#listaMotonaveModal').on('click', '#eliminarMotonave', function () {
         var motonaveId = $(this).data('motonave-id');
         var fila = $(this).closest('tr');
-    
+
         Swal.fire({
             title: '¿Estás seguro?',
             text: 'Esta acción eliminará la motonave de forma permanente.',
@@ -227,7 +256,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 var csrfToken = getCookie('csrftoken');
-    
+
                 $.ajax({
                     url: eliminarMotonaveURL,
                     type: 'POST',
@@ -235,7 +264,7 @@ $(document).ready(function () {
                         motonaveId: motonaveId,
                         csrfmiddlewaretoken: csrfToken
                     },
-                    success: function(response) {
+                    success: function (response) {
                         console.log('Motonave eliminada:', response);
                         fila.remove();
                         Swal.fire(
@@ -245,7 +274,7 @@ $(document).ready(function () {
                         );
                         location.reload();
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('Error al eliminar la motonave:', error);
                         Swal.fire(
                             '¡Error!',

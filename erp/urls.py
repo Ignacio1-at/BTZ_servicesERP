@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, eliminar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, renderizar_formulario, gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal, gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
+from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, renderizar_formulario, gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal, gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
 
 app_name = 'erp'  
 
@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='erp:home'), name='logout'),
     path('gestor-operaciones/', gestorOperaciones, name='gestor-operaciones'),
     path('crear_motonave/', crear_motonave, name='crear_motonave'),
+    path('modificar-motonave/', modificar_motonave, name='modificar_motonave'),
     path('eliminar-motonave/', eliminar_motonave, name='eliminar_motonave'),
     path('gestor-operaciones/obtener-detalles-motonave/', obtener_detalles_motonave, name='obtener_detalles_motonave'),
     path('gestor-operaciones/guardar-nuevo-estado/', guardar_nuevo_estado, name='guardar_nuevo_estado'),

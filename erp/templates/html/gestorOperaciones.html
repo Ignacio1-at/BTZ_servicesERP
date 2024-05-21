@@ -130,7 +130,7 @@
                       <td>{{ motonave.cantBodegas }}</td>
                       <td>{{ motonave.numero_viaje }}</td>
                       <td>
-                        <button type="button" id="editarMotonave" style="border: none; background: none;" title="Editar" data-motonave-id="{{ motonave.id }}"><img src="{% static 'images/Editar.png' %}" alt="Editar" width="40" height="40" style="cursor: pointer;" /></button>
+                        <button type="button" class="btn btn-editar-motonave" style="border: none; background: none;" data-bs-toggle="modal" data-bs-target="#modalEditarMotonave" data-motonave-id="{{ motonave.id }}" data-motonave-nombre="{{ motonave.nombre }}" data-motonave-bodegas="{{ motonave.cantBodegas }}" data-motonave-viaje="{{ motonave.numero_viaje }}"><img src="{% static 'images/Editar.png' %}" alt="Editar" width="40" height="40" style="cursor: pointer;" /></button>
                         <button type="button" id="eliminarMotonave" style="border: none; background: none;" title="Eliminar" data-motonave-id="{{ motonave.id }}"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" width="40" height="40" style="cursor: pointer;" /></button>
                       </td>
                     </tr>
@@ -139,6 +139,41 @@
               </table>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Editar Motonave -->
+    <div class="modal fade" id="modalEditarMotonave" tabindex="-1" aria-labelledby="modalEditarMotonaveLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+      <div class="modal-dialog modal-dialog-centered" style="width: 30vw;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- Logo -->
+            <img src="{% static 'images/Operaciones.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
+            <h5 class="modal-title" id="modalEditarMotonaveLabel">Editar Motonave</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="formEditarMotonave" method="post">
+            {% csrf_token %}
+            <input type="hidden" id="editarMotonaveId" name="motonaveId" value="" />
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="editarNombreMotonave" style="margin-left: 40px;" class="form-label">Nombre de la Motonave:</label>
+                <input type="text" class="form-control" name="nombreMotonave" style="width: 91%; margin-left: 40px;" id="editarNombreMotonave" required />
+              </div>
+              <div class="mb-3">
+                <label for="editarCantidadBodegas" style="margin-left: 40px;" class="form-label">Cantidad de Bodegas:</label>
+                <input type="number" class="form-control" name="cantidadBodegas" style="width: 91%; margin-left: 40px;" id="editarCantidadBodegas" min="1" required />
+              </div>
+              <div class="mb-3">
+                <label for="editarNumeroViaje" style="margin-left: 40px;" class="form-label">Número de Viaje:</label>
+                <input type="number" class="form-control" name="numeroViaje" style="width: 91%; margin-left: 40px;" id="editarNumeroViaje" min="1" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-custom-color" style="margin-right: 40px;">Guardar cambios</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -265,6 +300,14 @@
       window.location.href = "{% url 'erp:menu' %}"
     }
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var inputNombreMotonave = document.getElementById('editarNombreMotonave')
+      inputNombreMotonave.addEventListener('input', function (event) {
+        event.target.value = event.target.value.toUpperCase()
+      })
+    })
+  </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -283,6 +326,7 @@
     var rendFormularioURL = "{% url 'erp:renderizar_formulario' %}"
     var eliminarServicioURL = "{% url 'erp:eliminar_servicio' %}"
     var eliminarMotonaveURL = "{% url 'erp:eliminar_motonave' %}"
+    var modificarMotonaveURL = "{% url 'erp:modificar_motonave' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
