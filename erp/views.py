@@ -134,13 +134,10 @@ def modificar_motonave(request):
 @login_required
 def obtener_detalles_motonave(request):
     if request.method == 'GET':
-        # Obtener el nombre de la motonave desde la solicitud GET
         nombre_motonave = request.GET.get('nombre_motonave')
         if nombre_motonave:
             try:
-                # Buscar la motonave en la base de datos por su nombre
                 motonave = Motonave.objects.get(nombre=nombre_motonave)
-                # Construir un diccionario con los detalles de la motonave, incluyendo el nuevo campo 'viaje'
                 detalles = {
                     'nombre': motonave.nombre,
                     'estado_servicio': motonave.estado_servicio,
@@ -150,7 +147,7 @@ def obtener_detalles_motonave(request):
                     'cantidad_serviciosActual': motonave.cantidad_serviciosActual,
                     'viaje': motonave.numero_viaje,
                     'comentarioActual': motonave.comentarioActual,
-                    # Agrega otros campos según necesites
+                    'servicios': list(motonave.fichas_servicio.values('id', 'numero_servicio', 'tipo_servicio', 'fecha_inicioFaena', 'fecha_fin', 'estado_delServicio')),
                 }
                 return JsonResponse(detalles)
             except Motonave.DoesNotExist:
@@ -159,6 +156,38 @@ def obtener_detalles_motonave(request):
             return JsonResponse({'error': 'El parámetro "nombre_motonave" es obligatorio en la solicitud GET.'}, status=400)
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
+
+#-------------------ELIMINAR SERVICIO INDIVIDUAL
+@login_required
+def eliminar_servicio_individual(request):
+    if request.method == 'POST':
+        servicio_id = request.POST.get('servicio_id')
+
+        try:
+            ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+            motonave = ficha_servicio.motonave
+
+            # Eliminar la ficha de servicio
+            ficha_servicio.delete()
+
+            # Actualizar la cantidad de servicios actual de la motonave
+            motonave.cantidad_serviciosActual -= 1
+
+            # Verificar si la cantidad de servicios actual es cero
+            if motonave.cantidad_serviciosActual == 0:
+                # Si no hay más servicios, actualizar el estado de la motonave a "Disponible"
+                motonave.estado_servicio = 'Disponible'
+
+            # Guardar los cambios en la motonave
+            motonave.save()
+
+            return JsonResponse({'success': True})
+
+        except FichaServicio.DoesNotExist:
+            return JsonResponse({'error': 'El servicio especificado no existe.'}, status=404)
+
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
 
 #-------------------GUARDAR ESTADO DE MOTONAVES
 @login_required
@@ -226,78 +255,95 @@ def obtener_tabla_motonaves(request):
 
 #-------------------CREAR SERVICIO
 @login_required
+@csrf_exempt
 def crear_servicio(request):
     if request.method == 'POST':
-        # Obtener los datos del formulario
-        nombre_motonave = request.POST.get('nombreMotonave')
-        cantidad_servicios = int(request.POST.get('cantidadServicios'))
-        numero_viaje = int(request.POST.get('numeroViaje'))  # Obtener el número de viaje del formulario
-        
-        # Verificar si la motonave existe
+        nombre_motonave = request.POST.get('nombre_motonave')
+
         try:
             motonave = Motonave.objects.get(nombre=nombre_motonave)
         except Motonave.DoesNotExist:
             return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
 
-        # Verificar que la cantidad de servicios y el número de viaje sean números positivos
-        if cantidad_servicios <= 0:
-            return JsonResponse({'error': 'La cantidad de servicios debe ser un número positivo.'}, status=400)
-
-        if numero_viaje <= 0:
-            return JsonResponse({'error': 'El número de viaje debe ser un número positivo.'}, status=400)
-
-        # Obtener la fecha de nominación actual
         fecha_nominacion = timezone.now()
 
-        # Cambiar el estado de la motonave a "Nominado"
         motonave.estado_servicio = 'Nominado'
-        
-        # Actualizar la cantidad de servicios historial y actual de la motonave
-        motonave.cantidad_serviciosHistorial += cantidad_servicios
-        motonave.cantidad_serviciosActual = cantidad_servicios  # Actualizar la cantidad de servicios actual
-        motonave.numero_viaje = numero_viaje  # Asignar el número de viaje
-        motonave.fecha_nominacion = fecha_nominacion  # Asignar la fecha de nominación
-        
-        # Guardar la motonave
+        motonave.cantidad_serviciosHistorial += 1
+        motonave.cantidad_serviciosActual += 1
+        motonave.fecha_nominacion = fecha_nominacion
         motonave.save()
 
-        # Otros pasos para crear el servicio...
+        # Crear la nueva ficha de servicio relacionada con la motonave
+        ficha_servicio = FichaServicio(
+            motonave=motonave,
+            numero_servicio=motonave.cantidad_serviciosActual,
+            tipo_servicio='',
+            fecha_inicioFaena=fecha_nominacion.date(),
+            fecha_fin=fecha_nominacion.date(),
+            estado_delServicio='Nominado'
+        )
+        ficha_servicio.save()
 
-        return JsonResponse({'success': True})
+        # Obtener los detalles de la nueva ficha de servicio
+        servicio_data = {
+            'id': ficha_servicio.id,
+            'numero_servicio': ficha_servicio.numero_servicio,
+            'tipo_servicio': ficha_servicio.tipo_servicio,
+            'fecha_inicioFaena': ficha_servicio.fecha_inicioFaena.strftime('%Y-%m-%d'),
+            'estado_delServicio': ficha_servicio.estado_delServicio
+        }
+
+        return JsonResponse({'success': True, 'servicio': servicio_data})
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
     
-# ELIMINAR SERVICIO
+#-------------------ELIMINAR SERVICIO
 @login_required
 def eliminar_servicio(request):
     if request.method == 'POST':
         # Obtener el nombre de la motonave del cuerpo de la solicitud
         nombre_motonave = request.POST.get('nombreMotonave')
-        
+
         # Obtener la motonave
         try:
             motonave = Motonave.objects.get(nombre=nombre_motonave)
         except Motonave.DoesNotExist:
             return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
-        
+
+        # Eliminar todas las fichas de servicio relacionadas con la motonave
+        FichaServicio.objects.filter(motonave=motonave).delete()
+
         # Actualizar el estado de la motonave a "Disponible"
         motonave.estado_servicio = 'Disponible'
-        
         # Restar la cantidad de servicios actual del historial
         motonave.cantidad_serviciosHistorial = F('cantidad_serviciosHistorial') - motonave.cantidad_serviciosActual
-        
         # Restablecer la cantidad de servicios
         motonave.cantidad_serviciosActual = 0
-        
         # Restablecer el número de viaje a su valor predeterminado (0)
         motonave.numero_viaje = 0
-        
         # Guardar los cambios en la motonave
         motonave.save()
 
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+
+#-------------------OBTENER SERVICIOS
+@login_required
+def obtener_servicios_motonave(request):
+    if request.method == 'GET':
+        nombre_motonave = request.GET.get('nombre_motonave')
+        if nombre_motonave:
+            try:
+                motonave = Motonave.objects.get(nombre=nombre_motonave)
+                servicios = motonave.fichas_servicio.values('id', 'numero_servicio', 'tipo_servicio', 'fecha_inicioFaena', 'fecha_fin', 'estado_delServicio')
+                return JsonResponse(list(servicios), safe=False)
+            except Motonave.DoesNotExist:
+                return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
+        else:
+            return JsonResponse({'error': 'El parámetro "nombre_motonave" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
 
 #-------------------FILTRAR MOTONAVE POR ESTADO
 @login_required

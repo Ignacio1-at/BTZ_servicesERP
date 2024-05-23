@@ -48,7 +48,7 @@ class Motonave(models.Model):
     fecha_nominacion = models.DateTimeField(auto_now_add=True)
     cantBodegas = models.CharField(max_length=50)
     numero_viaje = models.IntegerField(default=0)
-
+       
     # Nuevo campo para el estado del servicio
     ESTADOS_SERVICIO = (
         ('Nominado', 'Nominado'),
@@ -60,29 +60,28 @@ class Motonave(models.Model):
 
     def __str__(self):
         return self.nombre
-    
+
 #----------------------FichaServicio----------------------------------------------------------------------------------------  
-    
+
 class FichaServicio(models.Model):
-    motonave_nombre = models.CharField(max_length=100)
-    procedencia = models.CharField(max_length=100)
+    motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='fichas_servicio')
+    numero_servicio = models.IntegerField()
     tipo_servicio = models.CharField(max_length=100)
-    armador = models.CharField(max_length=100)
-    agencia = models.CharField(max_length=100)
-    arribo = models.DateField()
-    hospedaje_desayuno = models.BooleanField()
-    lancha_grua = models.BooleanField()
-    cantBodegas_aRealizar = models.IntegerField(default=0)
-    arriendo_bomba = models.BooleanField()
-    navegacion = models.BooleanField()
-    prox_puerto = models.CharField(max_length=100)
-    loi = models.CharField(max_length=100)
-    fecha_ultima_modificacion = models.DateTimeField(auto_now=True)
-    descripcion = models.TextField()
+    fecha_inicioFaena = models.DateField()
+    fecha_fin = models.DateField()
+    ESTADOS_delSERVICIO = (
+        ('Nominado', 'Nominado'),
+        ('En Proceso', 'En Proceso'),
+        ('Terminado', 'Terminado'),
+        ('Disponible', 'Disponible'),  # Por defecto
+    )
+    estado_delServicio = models.CharField(max_length=20, choices=ESTADOS_delSERVICIO, default='Disponible')
+    # Otros campos de FichaServicio
+    # ...
 
     def __str__(self):
-        return f"Ficha de Servicio para {self.motonave_nombre}"
-
+        return f"Ficha de Servicio {self.numero_servicio} - Motonave: {self.motonave.nombre}"
+    
 #----------------------ESPECIALIDAD--------------------------------------------------------------------------
 class Especialidad(models.Model):
     nombre = models.CharField(max_length=50)

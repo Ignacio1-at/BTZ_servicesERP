@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, renderizar_formulario, gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal, gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
+from .views import home, login_view, menu_view, gestorOperaciones, fichaOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, eliminar_servicio, eliminar_servicio_individual,obtener_servicios_motonave, renderizar_formulario, gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal, gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
 
 app_name = 'erp'  
 
@@ -19,6 +19,8 @@ urlpatterns = [
     path('gestor-operaciones/obtener_tabla_motonaves/', obtener_tabla_motonaves, name='obtener_tabla_motonaves'),
     path('gestor-operaciones/crear_servicio/', crear_servicio, name='crear_servicio'),
     path('gestor-operaciones/eliminar_servicio/', eliminar_servicio, name='eliminar_servicio'),
+    path('gestor-operaciones/eliminar_servicio_individual/', eliminar_servicio_individual, name='eliminar_servicio_individual'),
+    path('gestor-operaciones/obtener_servicios_motonave/', obtener_servicios_motonave, name='obtener_servicios_motonave'),
     path('gestor-operaciones/rend_formulario/', renderizar_formulario, name='renderizar_formulario'),
     path('ficha-operaciones/', fichaOperaciones, name='ficha-operaciones'),
     path('gestor-personal/', gestorPersonal, name='gestor-personal'),

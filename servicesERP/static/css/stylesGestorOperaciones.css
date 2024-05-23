@@ -135,7 +135,7 @@
 }
 
 .modal-body {
-  color: #fff;
+  color: #fff !important;
   margin-top: 1% !important;
   margin-right: 5% !important;
   font-family: 'mifuente';

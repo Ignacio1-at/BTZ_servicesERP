@@ -226,9 +226,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <!-- Aquí colocarías los campos para gestionar los servicios -->
-            <!-- Por ejemplo, nombre del servicio, descripción, fechas, etc. -->
-            <!-- Puedes usar formularios o cualquier otro elemento según tus necesidades -->
+            <table id="tablaServicios" class="table text-white">
+              <thead>
+                <tr>
+                  <th>N Servicio</th>
+                  <th>Tipo Servicio</th>
+                  <th>Fecha Inicio Faena</th>
+                  <th>Estado</th>
+                  <th>Nominación</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Los servicios se agregarán dinámicamente aquí -->
+              </tbody>
+            </table>
+            <button type="button" id="btnCrearServicio" style="border: none; background: none;" title="Agregar Servicio"><img src="{% static 'images/AgregarServicio.png' %}" alt="Agregar" width="125" height="40" style="cursor: pointer;" /></button>
           </div>
         </div>
       </div>
@@ -272,7 +285,7 @@
               <p style="margin-right: 10px;">
                 Servicios: <span id="cantidadServiciosActual"></span>
               </p>
-              <button type="button" id="AbrirGestorServicio" title="Abrir Gestor de Servicios" onclick="abrirModalGestorServicios()" style="border: none; background: none; margin-left: 20%; margin-bottom: 10px;"><img src="{% static 'images/Ojo.png' %}" style="cursor: pointer; height: 5vh;" /></button>
+              <button type="button" id="AbrirGestorServicio" title="Abrir Gestor de Servicios" style="border: none; background: none; margin-left: 20%; margin-bottom: 10px;"><img src="{% static 'images/Ojo.png' %}" style="cursor: pointer; height: 5vh;" /></button>
             </div>
           </div>
         </div>
@@ -317,6 +330,7 @@
   <script src="{% static 'js/GestorOperaciones/servicios.js' %}"></script>
   <script src="{% static 'js/GestorOperaciones/panelLateral.js' %}"></script>
   <script src="{% static 'js/GestorOperaciones/utils.js' %}"></script>
+  <script src="{% static 'js/GestorOperaciones/gestionarServicios.js' %}"></script>
   <script>
     var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
     var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
@@ -326,11 +340,23 @@
     var rendFormularioURL = "{% url 'erp:renderizar_formulario' %}"
     var eliminarServicioURL = "{% url 'erp:eliminar_servicio' %}"
     var eliminarMotonaveURL = "{% url 'erp:eliminar_motonave' %}"
+    var eliminarServicioIndividualURL = "{% url 'erp:eliminar_servicio_individual' %}"
     var modificarMotonaveURL = "{% url 'erp:modificar_motonave' %}"
+    var obtenerServicioMotonaveURL = "{% url 'erp:obtener_servicios_motonave' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
       actualizarTableroMotonaves()
     })
+  </script>
+  <script>
+    var staticUrls = {
+      nominacionPersonal: "{% static 'images/nominacionPersonal.png' %}",
+      nominacionInventario: "{% static 'images/nominacionInventario.png' %}",
+      agregar: "{% static 'images/Agregar.png' %}",
+      editar: "{% static 'images/Editar.png' %}",
+      eliminar: "{% static 'images/Basurero.png' %}",
+      visualizar: "{% static 'images/Ojo.png' %}"
+    }
   </script>
 {% endblock %}

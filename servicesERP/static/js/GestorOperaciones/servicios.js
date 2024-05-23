@@ -56,6 +56,8 @@ $(document).ready(function () {
         // Obtener los datos del formulario
         var formData = $('#formCrearServicio').serialize();
 
+        console.log(formData)
+
         // Obtener la fecha de nominación actual
         var fechaNominacion = new Date().toISOString().split('T')[0];
 
@@ -76,13 +78,11 @@ $(document).ready(function () {
 
                 // Si la respuesta del servidor es verdadera (true), abrir el modal de gestión de servicios
                 if (response.success) {
-                    // Mostrar el modal de gestión de servicios
-                    $('#modalGestionarServicios').modal('show');
+
                 }
-                location.reload();
                 // Llamar a la función para actualizar el tablero de motonaves
                 actualizarTableroMotonaves();
-                actualizarTablaMotonavesModal()
+                actualizarTablaMotonavesModal();
             },
             error: function (xhr, status, error) {
                 // Manejar errores de AJAX aquí
@@ -93,7 +93,7 @@ $(document).ready(function () {
 });
 
 // Función para eliminar el servicio
-function eliminarServicio(nombreMotonave) {
+function eliminarServicioMotonave(nombreMotonave) {
     // Obtener el token CSRF de las cookies
     var csrftoken = getCookie('csrftoken');
 
@@ -149,6 +149,3 @@ function eliminarServicio(nombreMotonave) {
     });
 }
 
-function abrirModalGestorServicios() {
-    $('#modalGestionarServicios').modal('show');
-}

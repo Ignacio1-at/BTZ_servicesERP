@@ -24,7 +24,14 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, canti
 
     // Agregar evento de clic al botón de eliminar para capturar el nombre de la motonave
     $('#BotonEliminacionNomina').off('click').on('click', function () {
-        eliminarServicio(nombreMotonave);
+        eliminarServicioMotonave(nombreMotonave);
+    });
+
+    // Agregar evento de clic al botón "AbrirGestorServicio" y pasar el nombre de la motonave
+    $('#AbrirGestorServicio').off('click').on('click', function () {
+        obtenerServiciosMotonave(nombreMotonave);
+        $('#modalGestionarServicios').modal('show'); // Abrir el modal de gestor de servicios
+        $('#panelLateral').css('width', '0');
     });
 }
 
