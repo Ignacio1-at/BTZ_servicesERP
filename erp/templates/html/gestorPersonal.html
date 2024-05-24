@@ -70,13 +70,13 @@
                         <td>{{ personal.cargo }}</td>
                         <td>{{ personal.estado }}</td>
                         <td>
+                          <!-- Botón para ver detalles -->
+                          <button type="button" style="border: none; background: none;" class="btn btn-personalizado" onclick="abrirDetallePersonal('{{ personal.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
                           <!-- Formulario para eliminar -->
                           <form id="formEliminarPersonal{{ personal.id }}" method="POST" action="{% url 'erp:eliminar_personal' personal.id %}" style="display: inline-block;">
                             {% csrf_token %}
                             <button type="button" style="border: none; background: none;" title="Eliminar" onclick="eliminarPersonal('{{ personal.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" width="40" height="40" style="cursor: pointer;" /></button>
                           </form>
-                          <!-- Botón para ver detalles -->
-                          <button type="button" style="border: none; background: none;" class="btn btn-personalizado" onclick="abrirDetallePersonal('{{ personal.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
                         </td>
                       </tr>
                     {% endfor %}
@@ -234,7 +234,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
+
   <script src="{% static 'js/GestorPersonal/modal.js' %}"></script>
   <script src="{% static 'js/GestorPersonal/formulario.js' %}"></script>
   <script src="{% static 'js/GestorPersonal/personal.js' %}"></script>

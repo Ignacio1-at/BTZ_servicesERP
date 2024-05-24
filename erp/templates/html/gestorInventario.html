@@ -22,11 +22,11 @@
         <div class="menu">
           <ul class="menuVert">
             <li>
-              <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="10%" />
+              <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="8%" />
               <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
             </li>
             <li>
-              <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="10%" />
+              <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="15%" style="margin-left: -5px;" />
               <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
             </li>
             <li>
@@ -158,7 +158,7 @@
                   <td>{{ vehiculo.patente }}</td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Acciones">
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVehiculo{{ vehiculo.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                      <button type="button" style="border: none; background: none;" class="btn btn-personalizado" onclick="abrirDetalleVehiculo('{{ vehiculo.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
                       <form id="formEliminarVehiculo{{ vehiculo.id }}" method="POST" action="{% url 'erp:eliminar_vehiculo' vehiculo.id %}">
                         {% csrf_token %}
                         <!-- Otros campos del formulario si los tienes -->
@@ -167,67 +167,21 @@
                     </div>
                   </td>
                 </tr>
-                <!-- Modal para ver detalles del vehículo -->
-                <div class="modal fade" id="modalDetalleVehiculo{{ vehiculo.id }}" tabindex="-1" aria-labelledby="modalDetalleVehiculoLabel{{ vehiculo.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+                <!-- Modal Detalle Vehículo -->
+                <div class="modal fade" id="modalDetalleVehiculo" tabindex="-1" aria-labelledby="modalDetalleVehiculoLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="modalDetalleVehiculoLabel{{ vehiculo.id }}">Detalles del Vehículo</h5>
+                        <img src="{% static 'images/IconoAuto.png' %}" alt="Logo" width="45" height="25" style="margin-right: 10px;" />
+                        <h5 class="modal-title" id="modalDetalleVehiculoLabel">Detalles del Vehículo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <div class="datosGenerales" id="datosGenerales">
-                          <div class="headerDatosGenerales" id="headerDatosGenerales">
-                            <p style="font-size: 2.5vh;">Datos Generales</p>
-                          </div>
-                          <div class="bodyDatosGenerales" id="bodyDatosGenerales">
-                            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
-                              <p>
-                                <strong>Marca:</strong> {{ vehiculo.marca }} ||| <strong>Modelo:</strong> {{ vehiculo.modelo }} ||| <strong>Color:</strong> {{ vehiculo.color }}
-                              </p>
-                              <p>
-                                <strong>Número de Motor:</strong> {{ vehiculo.numero_motor }} |||||| <strong>Número de Chasis:</strong> {{ vehiculo.numero_chasis }}
-                              </p>
-                              <p>
-                                <strong>Cilindrada:</strong> {{ vehiculo.cilindrada }} |||||| <strong>Tipo de Vehículo:</strong> {{ vehiculo.tipo_vehiculo }}
-                              </p>
-                              <p>
-                                <strong>Tipo de Combustible:</strong> {{ vehiculo.tipo_combustible }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="historialDocumentacion" id="historialDocumentacion">
-                          <div class="headerhistorialDocumentacion" id="headerhistorialDocumentacion">
-                            <p style="font-size: 2.5vh;">Historial Y Documentacion</p>
-                          </div>
-                          <div class="bodyhistorialDocumentacion" id="bodyhistorialDocumentacion">
-                            <div class="textohistorialDocumentacion" id="textohistorialDocumentacion" style="margin-left: 3vw;">
-                              <p>
-                                <strong>Primer Ingreso:</strong> {{ vehiculo.primer_ingreso }} ||| <strong>Patente:</strong> {{ vehiculo.patente }} || <strong>Número de Póliza:</strong> {{ vehiculo.seguro_poliza }}
-                              </p>
-                              <p>
-                                <strong>Fecha de Permiso de Circulación:</strong> {{ vehiculo.fecha_permiso_circulacion }} || <strong>Fecha SOAP:</strong> {{ vehiculo.fecha_soap }}
-                              </p>
-                              <p>
-                                <strong>Fecha de Revisión Técnica:</strong> {{ vehiculo.fecha_revision_tecnica }} || <strong>Nombre del Seguro:</strong> {{ vehiculo.seguro_nombre }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="Estado" id="Estado">
-                          <div class="headerEstado" id="headerEstado">
-                            <p style="font-size: 2.5vh;">Estado</p>
-                          </div>
-                          <div class="bodyEstado" id="bodyEstado">
-                            <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
-                              <p>
-                                <strong>Estado:</strong> {{ vehiculo.estado }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Agrega más secciones según los detalles del vehiculo -->
+                        <!-- Aquí se cargarán los detalles del vehículo con JavaScript -->
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" id="btnCambiarModoAuto" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                        <button id="btnGuardarAuto" type="button" class="btn btn-custom-color">Guardar</button>
                       </div>
                     </div>
                   </div>
@@ -595,6 +549,12 @@
     function goBack() {
       window.location.href = "{% url 'erp:menu' %}"
     }
+  </script>
+  <script>
+    var obtenerDetallesVehiculoURL = "{% url 'erp:obtener_detalle_vehiculo' %}"
+    var guardarCambiosVehiculoURL = "{% url 'erp:guardar_cambios_vehiculo' %}"
+    var validarCampoUnicoVehiculoURL = "{% url 'erp:validar_campo_unicoVehiculo' %}"
+    var validarCampoUnicoVehiculoCambioURL = "{% url 'erp:validar_campo_unico_vehiculoCambio' %}"
   </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>

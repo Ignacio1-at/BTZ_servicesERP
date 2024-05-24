@@ -81,23 +81,23 @@ function mostrarDetallesModalEdicion(personal) {
 
             // Actualizar el contenido del modal con los detalles obtenidos y la lista de selección de especialidades
             var modalContent = `
-                <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${personal.nombre}"></p>
-                <p><strong>Rut:</strong> <input type="text" id="rutInput" value="${personal.rut}"></p>
+                <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${personal.nombre}" data-original-value="${personal.nombre}"></p>
+                <p><strong>Rut:</strong> <input type="text" id="rutInput" value="${personal.rut}" data-original-value="${personal.rut}"></p>
                 <p><strong>Cargo:</strong>
-                    <select id="cargoSelect" name="cargo" class="form-select" required>
+                    <select id="cargoSelect" name="cargo" class="form-select" data-original-value="${personal.cargo}" required>
                         <option value="Operario" ${personal.cargo === 'Operario' ? 'selected' : ''}>Operario</option>
                         <option value="Jefe de Cuadrilla" ${personal.cargo === 'Jefe de Cuadrilla' ? 'selected' : ''}>Jefe de Cuadrilla</option>
                         <option value="Supervisor" ${personal.cargo === 'Supervisor' ? 'selected' : ''}>Supervisor</option>
                     </select>
                 </p>
                 <p><strong>Conductor:</strong>
-                    <select id="conductorSelect">
+                    <select id="conductorSelect" data-original-value="${personal.conductor}">
                         <option value="Si" ${personal.conductor === 'Si' ? 'selected' : ''}>Si</option>
                         <option value="No" ${personal.conductor === 'No' ? 'selected' : ''}>No</option>
                     </select>
                 </p>
                 <p><strong>Tipo de Licencia:</strong>
-                    <select id="tipoLicenciaSelect">
+                    <select id="tipoLicenciaSelect" data-original-value="${personal.tipo_licencia}">
                         <option value="--" ${personal.tipo_licencia === '--' ? 'selected' : ''}>--</option>
                         <option value="A1" ${personal.tipo_licencia === 'A1' ? 'selected' : ''}>A1</option>
                         <option value="A2" ${personal.tipo_licencia === 'A2' ? 'selected' : ''}>A2</option>
@@ -188,21 +188,25 @@ function cambiarModo() {
 
 // Función para guardar los cambios realizados en el modo de edición
 function guardarCambios() {
-    // Llama a la función de validación antes de enviar los datos al servidor
-    if (!validarActualizacion()) {
-        // Si la validación falla, detén el proceso de guardado
-        return;
-    }
+    // Obtener los valores originales de los campos
+    var nombreOriginal = $("#nombreInput").data('original-value');
+    var rutOriginal = $("#rutInput").data('original-value');
+    var cargoOriginal = $("#cargoSelect").data('original-value');
+    var conductorOriginal = $("#conductorSelect").data('original-value');
+    var tipoLicenciaOriginal = $("#tipoLicenciaSelect").data('original-value');
 
     // Obtener los nuevos valores de los campos
-    var nombre = $("#nombreInput").val();
-    var rut = $("#rutInput").val();
+    var nombre = $("#nombreInput").val().trim().toUpperCase();
+    var rut = $("#rutInput").val().trim();
     var cargo = $("#cargoSelect").val();
     var conductor = $("#conductorSelect").val();
     var tipoLicencia = $("#tipoLicenciaSelect").val(); // Obtener el valor del tipo de licencia
 
-    // Validar el tipo de licencia usando la función validarConductorYLicencia
-    tipoLicencia = validarConductorYLicencia(conductor, tipoLicencia);
+    // Validar solo si los valores han cambiado
+    if (nombre !== nombreOriginal && !validarNombre(nombre)) return;
+    if (rut !== rutOriginal && !validarRut(rut)) return;
+    if (cargo !== cargoOriginal && !validarCargo(cargo)) return;
+    if ((conductor !== conductorOriginal || tipoLicencia !== tipoLicenciaOriginal) && !validarConductorYLicencia(conductor, tipoLicencia)) return;
 
     // Obtener la ID del personal
     var personalId = personal.id;
@@ -225,7 +229,7 @@ function guardarCambios() {
         // Agrega más campos según sea necesario
     };
 
-    console.log(datos)
+    console.log(datos);
 
     // Realizar la solicitud AJAX para guardar los cambios
     $.ajax({

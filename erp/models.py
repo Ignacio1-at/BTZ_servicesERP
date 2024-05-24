@@ -58,6 +58,14 @@ class Motonave(models.Model):
     )
     estado_servicio = models.CharField(max_length=20, choices=ESTADOS_SERVICIO, default='Disponible')
 
+    # Nuevos campos
+    puerto = models.CharField(max_length=100, null=True, blank=True)
+    prox_puerto = models.CharField(max_length=100, null=True, blank=True)
+    procedenciaCarga = models.CharField(max_length=100, null=True, blank=True)
+    armador = models.CharField(max_length=100, null=True, blank=True)
+    agencia = models.CharField(max_length=100, null=True, blank=True)
+
+    
     def __str__(self):
         return self.nombre
 

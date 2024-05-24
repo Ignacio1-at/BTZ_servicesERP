@@ -53,8 +53,6 @@ function obtenerServiciosMotonave(nombreMotonave) {
 }
 
 $(document).ready(function () {
-    // ...
-
     // Manejar el evento de clic del botón "Crear Servicio"
     $('#btnCrearServicio').click(function () {
         var nombreMotonave = $('#nombreMotonave').text();
@@ -71,7 +69,7 @@ function crearServicio() {
 
     // Realizar una solicitud AJAX al servidor para crear el nuevo servicio
     $.ajax({
-        url: crearServicioURL,
+        url: crearServicioIndividualURL,
         type: 'POST',
         data: {
             nombre_motonave: nombreMotonave,

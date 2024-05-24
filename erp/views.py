@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -157,38 +158,6 @@ def obtener_detalles_motonave(request):
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
 
-#-------------------ELIMINAR SERVICIO INDIVIDUAL
-@login_required
-def eliminar_servicio_individual(request):
-    if request.method == 'POST':
-        servicio_id = request.POST.get('servicio_id')
-
-        try:
-            ficha_servicio = FichaServicio.objects.get(id=servicio_id)
-            motonave = ficha_servicio.motonave
-
-            # Eliminar la ficha de servicio
-            ficha_servicio.delete()
-
-            # Actualizar la cantidad de servicios actual de la motonave
-            motonave.cantidad_serviciosActual -= 1
-
-            # Verificar si la cantidad de servicios actual es cero
-            if motonave.cantidad_serviciosActual == 0:
-                # Si no hay más servicios, actualizar el estado de la motonave a "Disponible"
-                motonave.estado_servicio = 'Disponible'
-
-            # Guardar los cambios en la motonave
-            motonave.save()
-
-            return JsonResponse({'success': True})
-
-        except FichaServicio.DoesNotExist:
-            return JsonResponse({'error': 'El servicio especificado no existe.'}, status=404)
-
-    else:
-        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
-
 #-------------------GUARDAR ESTADO DE MOTONAVES
 @login_required
 def guardar_nuevo_estado(request):
@@ -258,45 +227,68 @@ def obtener_tabla_motonaves(request):
 @csrf_exempt
 def crear_servicio(request):
     if request.method == 'POST':
-        nombre_motonave = request.POST.get('nombre_motonave')
-
+        # Obtener los datos del formulario
+        nombre_motonave = request.POST.get('nombreMotonave')
+        cantidad_servicios = int(request.POST.get('cantidadServicios'))
+        numero_viaje = int(request.POST.get('numeroViaje'))  # Obtener el número de viaje del formulario
+        
+        # Verificar si la motonave existe
         try:
             motonave = Motonave.objects.get(nombre=nombre_motonave)
         except Motonave.DoesNotExist:
             return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
 
+        # Verificar que la cantidad de servicios y el número de viaje sean números positivos
+        if cantidad_servicios <= 0:
+            return JsonResponse({'error': 'La cantidad de servicios debe ser un número positivo.'}, status=400)
+
+        if numero_viaje <= 0:
+            return JsonResponse({'error': 'El número de viaje debe ser un número positivo.'}, status=400)
+
+        # Obtener la fecha de nominación actual
         fecha_nominacion = timezone.now()
 
+        # Cambiar el estado de la motonave a "Nominado"
         motonave.estado_servicio = 'Nominado'
-        motonave.cantidad_serviciosHistorial += 1
-        motonave.cantidad_serviciosActual += 1
-        motonave.fecha_nominacion = fecha_nominacion
+        
+        # Actualizar la cantidad de servicios historial y actual de la motonave
+        motonave.cantidad_serviciosHistorial += cantidad_servicios
+        numero_servicio_inicio = motonave.cantidad_serviciosActual + 1  # El primer número de servicio nuevo
+        motonave.cantidad_serviciosActual += cantidad_servicios  # Incrementar la cantidad de servicios actual
+        motonave.numero_viaje = numero_viaje  # Asignar el número de viaje
+        motonave.fecha_nominacion = fecha_nominacion  # Asignar la fecha de nominación
+        
+        # Guardar la motonave
         motonave.save()
 
-        # Crear la nueva ficha de servicio relacionada con la motonave
-        ficha_servicio = FichaServicio(
-            motonave=motonave,
-            numero_servicio=motonave.cantidad_serviciosActual,
-            tipo_servicio='',
-            fecha_inicioFaena=fecha_nominacion.date(),
-            fecha_fin=fecha_nominacion.date(),
-            estado_delServicio='Nominado'
-        )
-        ficha_servicio.save()
+        # Crear las fichas de servicio relacionadas con la motonave
+        for i in range(cantidad_servicios):
+            ficha_servicio = FichaServicio(
+                motonave=motonave,
+                numero_servicio=numero_servicio_inicio + i,
+                tipo_servicio='',
+                fecha_inicioFaena=fecha_nominacion.date(),
+                fecha_fin=fecha_nominacion.date(),
+                estado_delServicio='Nominado'
+            )
+            ficha_servicio.save()
 
-        # Obtener los detalles de la nueva ficha de servicio
-        servicio_data = {
-            'id': ficha_servicio.id,
-            'numero_servicio': ficha_servicio.numero_servicio,
-            'tipo_servicio': ficha_servicio.tipo_servicio,
-            'fecha_inicioFaena': ficha_servicio.fecha_inicioFaena.strftime('%Y-%m-%d'),
-            'estado_delServicio': ficha_servicio.estado_delServicio
-        }
+        # Obtener los detalles de las nuevas fichas de servicio
+        servicios_data = [
+            {
+                'id': ficha.id,
+                'numero_servicio': ficha.numero_servicio,
+                'tipo_servicio': ficha.tipo_servicio,
+                'fecha_inicioFaena': ficha.fecha_inicioFaena.strftime('%Y-%m-%d'),
+                'estado_delServicio': ficha.estado_delServicio
+            }
+            for ficha in FichaServicio.objects.filter(motonave=motonave).order_by('-id')[:cantidad_servicios]
+        ]
 
-        return JsonResponse({'success': True, 'servicio': servicio_data})
+        return JsonResponse({'success': True, 'servicios': servicios_data})
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
-    
+
 #-------------------ELIMINAR SERVICIO
 @login_required
 def eliminar_servicio(request):
@@ -327,6 +319,95 @@ def eliminar_servicio(request):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+
+#-----------------CREAR SERVICIOS INDIVUALES
+@login_required
+@csrf_exempt
+def crear_servicio_individual(request):
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        nombre_motonave = request.POST.get('nombre_motonave')
+
+        # Verificar si la motonave existe
+        try:
+            motonave = Motonave.objects.get(nombre=nombre_motonave)
+        except Motonave.DoesNotExist:
+            return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
+
+        # Obtener la fecha de nominación actual
+        fecha_nominacion = timezone.now()
+
+        # Cambiar el estado de la motonave a "Nominado"
+        motonave.estado_servicio = 'Nominado'
+
+        # Actualizar la cantidad de servicios historial y actual de la motonave
+        motonave.cantidad_serviciosHistorial += 1
+        motonave.cantidad_serviciosActual += 1
+
+        numero_servicio = motonave.cantidad_serviciosActual
+
+        motonave.fecha_nominacion = fecha_nominacion  # Asignar la fecha de nominación
+
+        # Guardar la motonave
+        motonave.save()
+
+        # Crear la ficha de servicio relacionada con la motonave
+        ficha_servicio = FichaServicio(
+            motonave=motonave,
+            numero_servicio=numero_servicio,
+            tipo_servicio='',
+            fecha_inicioFaena=fecha_nominacion.date(),
+            fecha_fin=fecha_nominacion.date(),
+            estado_delServicio='Nominado'
+        )
+        ficha_servicio.save()
+
+        # Obtener los detalles de la nueva ficha de servicio
+        servicio_data = {
+            'id': ficha_servicio.id,
+            'numero_servicio': ficha_servicio.numero_servicio,
+            'tipo_servicio': ficha_servicio.tipo_servicio,
+            'fecha_inicioFaena': ficha_servicio.fecha_inicioFaena.strftime('%Y-%m-%d'),
+            'estado_delServicio': ficha_servicio.estado_delServicio
+        }
+
+        return JsonResponse({'success': True, 'servicio': servicio_data})
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+
+#-------------------ELIMINAR SERVICIO INDIVIDUAL
+@login_required
+def eliminar_servicio_individual(request):
+    if request.method == 'POST':
+        servicio_id = request.POST.get('servicio_id')
+
+        try:
+            ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+            motonave = ficha_servicio.motonave
+
+            # Eliminar la ficha de servicio
+            ficha_servicio.delete()
+
+            # Actualizar la cantidad de servicios actual de la motonave
+            motonave.cantidad_serviciosActual -= 1
+            motonave.cantidad_serviciosHistorial -= 1
+
+            # Verificar si la cantidad de servicios actual es cero
+            if motonave.cantidad_serviciosActual == 0:
+                # Si no hay más servicios, actualizar el estado de la motonave a "Disponible"
+                motonave.estado_servicio = 'Disponible'
+
+            # Guardar los cambios en la motonave
+            motonave.save()
+
+            return JsonResponse({'success': True})
+
+        except FichaServicio.DoesNotExist:
+            return JsonResponse({'error': 'El servicio especificado no existe.'}, status=404)
+
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
+
 
 #-------------------OBTENER SERVICIOS
 @login_required
@@ -424,12 +505,13 @@ def eliminar_personal(request, personal_id):
     return redirect('erp:gestor-personal')
 
 #-------Obtener Personal
-@login_required  
+@csrf_exempt
+@login_required
 def obtener_personal(request):
-    # Obtener el ID personal de la solicitud
+    # Obtener el ID personal o el RUT de la solicitud
     personal_id = request.GET.get('personal_id')
+    rut = request.GET.get('rut')
 
-    # Filtrar los detalles del personal por el ID
     if personal_id:
         try:
             personal = Personal.objects.filter(pk=personal_id)
@@ -437,8 +519,11 @@ def obtener_personal(request):
             return JsonResponse(data, safe=False)
         except Personal.DoesNotExist:
             return JsonResponse({'error': 'No se encontró información para el personal con ID proporcionado'}, status=404)
+    elif rut:
+        existe = Personal.objects.filter(rut=rut).exists()
+        return JsonResponse({'duplicado': existe})
     else:
-        return JsonResponse({'error': 'Se requiere proporcionar un ID de personal'}, status=400)
+        return JsonResponse({'error': 'Se requiere proporcionar un ID de personal o un RUT'}, status=400)
     
 #-------Obtener Especialidad X ID
 @login_required
@@ -604,7 +689,7 @@ def agregar_vehiculo(request):
     # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-inventario')
 
-# Valida campo UNICO EN VEHICULO.
+#---------------Valida campo UNICO EN VEHICULO.
 @login_required
 def validar_campo_unicoVehiculo(request):
     if request.method == 'POST':
@@ -627,8 +712,125 @@ def validar_campo_unicoVehiculo(request):
 
     return JsonResponse({'error': 'Método no permitido'})
 
-#-----------------Obtener detalles de VEHICULO.
+#-------------Validar campo UNICO EN VEHICULO CAMBIO.
+@login_required
+@csrf_exempt
+def validar_campo_unico_vehiculoCambio(request):
+    if request.method == 'POST':
+        valor = request.POST.get('valor')
+        campo = request.POST.get('campo')
+        vehiculo_id = request.POST.get('vehiculo_id')
 
+        try:
+            # Excluir el vehículo actual de la validación
+            vehiculos = Vehiculo.objects.exclude(id=vehiculo_id)
+
+            if campo == 'numero_motor':
+                existe = vehiculos.filter(numero_motor=valor).exists()
+            elif campo == 'numero_chasis':
+                existe = vehiculos.filter(numero_chasis=valor).exists()
+            elif campo == 'patente':
+                existe = vehiculos.filter(patente=valor).exists()
+            else:
+                existe = False
+
+            return JsonResponse({'existe': existe})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=400)
+
+#-----------------Obtener detalles de VEHICULO
+@login_required
+def obtener_detalle_vehiculo(request):
+    vehiculo_id = request.GET.get('vehiculo_id')
+
+    if vehiculo_id:
+        try:
+            vehiculo = Vehiculo.objects.get(pk=vehiculo_id)
+            # Aquí puedes serializar el objeto vehículo a JSON o devolver los datos de otra manera que prefieras
+            data = {
+                'id': vehiculo.id,
+                'marca': vehiculo.marca,
+                'modelo': vehiculo.modelo,
+                'color': vehiculo.color,
+                'numero_motor': vehiculo.numero_motor,
+                'numero_chasis': vehiculo.numero_chasis,
+                'cilindrada': vehiculo.cilindrada,
+                'tipo_vehiculo': vehiculo.tipo_vehiculo,
+                'primer_ingreso': vehiculo.primer_ingreso.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
+                'patente': vehiculo.patente,
+                'fecha_permiso_circulacion': vehiculo.fecha_permiso_circulacion.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
+                'fecha_soap': vehiculo.fecha_soap.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
+                'fecha_revision_tecnica': vehiculo.fecha_revision_tecnica.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
+                'seguro_nombre': vehiculo.seguro_nombre,
+                'seguro_poliza': vehiculo.seguro_poliza,
+                'tipo_combustible': vehiculo.tipo_combustible,
+                'estado': vehiculo.estado,
+            }
+            return JsonResponse(data)
+        except Vehiculo.DoesNotExist:
+            return JsonResponse({'error': 'No se encontró información para el vehículo con el ID proporcionado'}, status=404)
+    else:
+        return JsonResponse({'error': 'Se requiere proporcionar un ID de vehículo'}, status=400)
+
+#-----------------GUARDAR CAMBIOS DE VEHICULO
+@login_required
+@csrf_exempt
+def guardar_cambios_vehiculo(request):
+    if request.method == 'POST':
+        vehiculo_id = request.POST.get('vehiculo_id')
+        marca = request.POST.get('marca')
+        modelo = request.POST.get('modelo')
+        color = request.POST.get('color')
+        numero_motor = request.POST.get('numero_motor')
+        numero_chasis = request.POST.get('numero_chasis')
+        cilindrada = request.POST.get('cilindrada')
+        tipo_vehiculo = request.POST.get('tipo_vehiculo')
+        primer_ingreso = request.POST.get('primer_ingreso')
+        patente = request.POST.get('patente')
+        fecha_permiso_circulacion = request.POST.get('fecha_permiso_circulacion')
+        fecha_soap = request.POST.get('fecha_soap')
+        fecha_revision_tecnica = request.POST.get('fecha_revision_tecnica')
+        seguro_nombre = request.POST.get('seguro_nombre')
+        seguro_poliza = request.POST.get('seguro_poliza')
+        tipo_combustible = request.POST.get('tipo_combustible')
+
+        try:
+            vehiculo = Vehiculo.objects.get(id=vehiculo_id)
+            vehiculo.marca = marca
+            vehiculo.modelo = modelo
+            vehiculo.color = color
+            vehiculo.numero_motor = numero_motor
+            vehiculo.numero_chasis = numero_chasis
+            vehiculo.cilindrada = cilindrada
+            vehiculo.tipo_vehiculo = tipo_vehiculo
+            vehiculo.primer_ingreso = primer_ingreso
+            vehiculo.patente = patente
+            vehiculo.fecha_permiso_circulacion = fecha_permiso_circulacion
+            vehiculo.fecha_soap = fecha_soap
+            vehiculo.fecha_revision_tecnica = fecha_revision_tecnica
+            vehiculo.seguro_nombre = seguro_nombre
+            vehiculo.seguro_poliza = seguro_poliza
+            vehiculo.tipo_combustible = tipo_combustible
+
+            try:
+                vehiculo.save()
+                return JsonResponse({'success': True})
+            except IntegrityError as e:
+                if 'numero_motor' in str(e):
+                    return JsonResponse({'success': False, 'field': 'numero_motor', 'message': 'El número de motor ya existe'})
+                elif 'numero_chasis' in str(e):
+                    return JsonResponse({'success': False, 'field': 'numero_chasis', 'message': 'El número de chasis ya existe'})
+                elif 'patente' in str(e):
+                    return JsonResponse({'success': False, 'field': 'patente', 'message': 'La patente ya existe'})
+                else:
+                    return JsonResponse({'success': False, 'message': 'Error al guardar los cambios del vehículo'})
+
+        except Vehiculo.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'El vehículo no existe'})
+
+    return JsonResponse({'success': False, 'message': 'Método no permitido'})
 #-----------------Agregar Vario
 @login_required
 @csrf_exempt

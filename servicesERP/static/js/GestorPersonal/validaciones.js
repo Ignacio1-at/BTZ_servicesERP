@@ -29,7 +29,27 @@ function validarRut(rut) {
         return false;
     }
 
-    return true; // La validación pasó
+    // Verificar si el RUT está duplicado en la base de datos
+    var isDuplicate = false;
+    $.ajax({
+        url: obtenerDetallesPersonalURL,
+        type: 'GET',
+        dataType: 'json',
+        data: { rut: rut },
+        async: false, // Necesario para que la validación funcione correctamente
+        success: function(response) {
+            if (response.duplicado) {
+                alert('Este RUT ya está registrado. Por favor, ingrese un RUT diferente.');
+                isDuplicate = true;
+            }
+        },
+        error: function() {
+            alert('Error al verificar el RUT.');
+            isDuplicate = true;
+        }
+    });
+
+    return !isDuplicate; // La validación pasa solo si no está duplicado
 }
 
 // Función para validar el campo cargo
@@ -71,18 +91,25 @@ function validarNuevaEspecialidad(nuevaEspecialidad) {
 }
 
 function validarActualizacion() {
-    var nombre = $("#nombreInput").val();
-    var rut = $("#rutInput").val();
+    var nombre = $("#nombreInput").val().trim().toUpperCase();
+    var rut = $("#rutInput").val().trim();
     var cargo = $("#cargoSelect").val();
     var conductor = $("#conductorSelect").val();
     var tipoLicencia = $("#tipoLicenciaSelect").val();
     var nuevaEspecialidad = $("#nuevaEspecialidadSelect").val();
 
-    // Llamar a las funciones de validación correspondientes según el campo que se esté modificando
-    if (nombre !== '' && !validarNombre(nombre)) return false;
-    if (rut !== '' && !validarRut(rut)) return false;
-    if (cargo !== '' && !validarCargo(cargo)) return false;
-    if (!validarConductorYLicencia(conductor, tipoLicencia)) return false;
+    // Obtener los valores originales de los campos
+    var nombreOriginal = $("#nombreInput").data('original-value');
+    var rutOriginal = $("#rutInput").data('original-value');
+    var cargoOriginal = $("#cargoSelect").data('original-value');
+    var conductorOriginal = $("#conductorSelect").data('original-value');
+    var tipoLicenciaOriginal = $("#tipoLicenciaSelect").data('original-value');
+
+    // Validar solo si los valores han cambiado
+    if (nombre !== nombreOriginal && !validarNombre(nombre)) return false;
+    if (rut !== rutOriginal && !validarRut(rut)) return false;
+    if (cargo !== cargoOriginal && !validarCargo(cargo)) return false;
+    if ((conductor !== conductorOriginal || tipoLicencia !== tipoLicenciaOriginal) && !validarConductorYLicencia(conductor, tipoLicencia)) return false;
 
     // Validar la nueva especialidad sólo si se ha seleccionado una opción diferente de la opción vacía
     if (nuevaEspecialidad !== '') {
@@ -91,3 +118,4 @@ function validarActualizacion() {
 
     return true; // Todas las validaciones pasaron
 }
+

@@ -78,11 +78,8 @@ $(document).ready(function () {
 
                 // Si la respuesta del servidor es verdadera (true), abrir el modal de gestión de servicios
                 if (response.success) {
-
+                    location.reload();
                 }
-                // Llamar a la función para actualizar el tablero de motonaves
-                actualizarTableroMotonaves();
-                actualizarTablaMotonavesModal();
             },
             error: function (xhr, status, error) {
                 // Manejar errores de AJAX aquí

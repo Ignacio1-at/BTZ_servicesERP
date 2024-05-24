@@ -183,7 +183,7 @@ function validarCampoUnico(valor, campo) {
     var csrftoken = getCookie('csrftoken'); // Obtener el token CSRF de una cookie
 
     $.ajax({
-        url: '/erp/validar-campo-unico/',
+        url: validarCampoUnicoVehiculoURL,
         method: 'POST',
         data: {
             valor: valor,
