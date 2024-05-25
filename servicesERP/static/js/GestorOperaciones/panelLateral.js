@@ -1,10 +1,14 @@
-function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual) {
+function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual, puerto, proxPuerto, procedencia_carga, armador, agencia ) {
     $('#panelLateral').css('width', '30vw');
     $('#panelLateral').css('height', '100vh');
     $('#panelNombre h4').text(nombreMotonave); // Establecer el nombre de la motonave
     $('#viajeMotonave').text(viaje); // Establecer el valor del viaje
     $('#fechaNominacionMotonave').text(fechaNominacion); // Mostrar la fecha de nominación
     $('#cantidadServiciosActual').text(cantidad_serviciosActual); // Mostrar la cantidad de servicios actuales
+    $('#cargaMotonave').text(procedencia_carga); // Establecer el valor de la procedencia
+    $('#puertoMotonave').text(puerto); // Establecer el valor del puerto
+    $('#armadorMotonave').text(armador); // Establecer el valor del armador
+    $('#agenciaMotonave').text(agencia); // Establecer el valor del armador
 
     console.log('Estado:', estado); // Agregar console.log para verificar el valor del estado
 

@@ -224,3 +224,72 @@ function validarFormularioAgregarVarios() {
 
     return true;
 }
+
+// Validar cambios de quimico
+function validarCambiosQuimico(quimicoId) {
+    var tipoQuimico = $(`#tipoQuimicoInput${quimicoId}`).val();
+    var fechaIngreso = $(`#fechaIngresoInput${quimicoId}`).val();
+    var numeroFactura = $(`#numeroFacturaInput${quimicoId}`).val();
+    var litrosIngreso = $(`#litrosIngresoInput${quimicoId}`).val();
+
+    // Validar que se haya seleccionado un tipo de químico
+    if (tipoQuimico === "") {
+        alert("Por favor, seleccione un tipo de químico.");
+        return false;
+    }
+
+    // Validar que se haya ingresado una fecha de ingreso
+    if (fechaIngreso === "") {
+        alert("Por favor, ingrese una fecha de ingreso.");
+        return false;
+    }
+
+    // Validar que la fecha de ingreso no sea una fecha futura
+    var fechaActual = new Date().toISOString().split("T")[0];
+    if (fechaIngreso > fechaActual) {
+        alert("La fecha de ingreso no puede ser una fecha futura.");
+        return false;
+    }
+
+    // Validar que los litros ingresados sean un número positivo
+    if (litrosIngreso <= 0) {
+        alert("Los litros ingresados deben ser un número positivo.");
+        return false;
+    }
+
+    // Validar que el número de factura no esté vacío
+    if (numeroFactura === "") {
+        alert("Por favor, ingrese un número de factura.");
+        return false;
+    }
+
+    // Validar que el número de factura tenga un formato válido (solo dígitos numéricos)
+    if (!/^\d+$/.test(numeroFactura)) {
+        alert("El número de factura debe contener solo dígitos numéricos.");
+        return false;
+    }
+
+    return true;
+
+}
+
+// Validar cambios de vario
+function validarCambiosVario() {
+    var nombre = $('#nombreInput').val();
+    var fechaIngreso = $('#fechaIngresoInput').val();
+
+    // Validar que el nombre no esté vacío y tenga una longitud máxima de 100 caracteres
+    if (nombre === "" || nombre.length > 100) {
+        alert("Por favor, ingrese un nombre válido (máximo 100 caracteres).");
+        return false;
+    }
+
+    // Validar que la fecha de ingreso no sea una fecha futura
+    var fechaActual = new Date().toISOString().split("T")[0];
+    if (fechaIngreso > fechaActual) {
+        alert("La fecha de ingreso no puede ser una fecha futura.");
+        return false;
+    }
+
+    return true;
+}

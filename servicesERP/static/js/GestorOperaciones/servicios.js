@@ -52,6 +52,41 @@ $(document).ready(function () {
             return; // Detener la ejecución del código
         }
 
+        // Validar que se haya seleccionado un puerto
+        var puerto = $('#puerto').val();
+        if (puerto === '') {
+            alert('Por favor, seleccione un puerto válido.');
+            return; // Detener la ejecución del código
+        }
+
+        // Validar que se haya seleccionado un próximo puerto
+        var proxPuerto = $('#proxPuerto').val();
+        if (proxPuerto === '') {
+            alert('Por favor, seleccione un próximo puerto válido.');
+            return; // Detener la ejecución del código
+        }
+
+        // Validar que se haya ingresado una procedencia de carga
+        var procedenciaCarga = $('#procedenciaCarga').val();
+        if (procedenciaCarga === '') {
+            alert('Por favor, ingrese la procedencia de la carga.');
+            return; // Detener la ejecución del código
+        }
+
+        // Validar que se haya ingresado un armador
+        var armador = $('#armador').val();
+        if (armador === '') {
+            alert('Por favor, ingrese el armador.');
+            return; // Detener la ejecución del código
+        }
+
+        // Validar que se haya ingresado una agencia
+        var agencia = $('#agencia').val();
+        if (agencia === '') {
+            alert('Por favor, ingrese la agencia.');
+            return; // Detener la ejecución del código
+        }
+
         // Si la validación es exitosa, enviar la solicitud AJAX
         // Obtener los datos del formulario
         var formData = $('#formCrearServicio').serialize();

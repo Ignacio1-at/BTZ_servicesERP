@@ -19,12 +19,9 @@ function obtenerServiciosMotonave(nombreMotonave) {
                     '<td>' + servicio.fecha_inicioFaena + '</td>' +
                     '<td>' + servicio.estado_delServicio + '</td>' +
                     '<td>' +
-                    '<button type="button" style="border: none; background: none;" title="Personal" onclick="nominacionPersonal(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
-                    '<img src="' + staticUrls.nominacionPersonal + '" alt="Personal" width="40" height="40" style="cursor: pointer;" />' +
+                    '<button type="button" style="border: none; background: none;" title="Nominacion" onclick="nominacion(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
+                    '<img src="' + staticUrls.nominacion + '" alt="Nominacion" width="40" height="40" style="cursor: pointer;" />' +
                     '</button> ' +
-                    '<button type="button" style="border: none; background: none;" title="Inventario" onclick="nominacionInventario(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
-                    '<img src="' + staticUrls.nominacionInventario + '" alt="Inventario" width="40" height="40" style="cursor: pointer;" />' +
-                    '</button>' +
                     '</td>' +
                     '<td>' +
                     '<button type="button" style="border: none; background: none;" title="Agregar" onclick="agregarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
@@ -93,22 +90,22 @@ function crearServicio() {
     });
 }
 
-function nominacionPersonal(servicioId) {
-    console.log('Nominación Personal para el servicio con ID:', servicioId);
+function nominacion(servicioId) {
+    console.log('Nominación para el servicio con ID:', servicioId);
     // Implementa la lógica que deseas para el botón de nominación personal
 }
 
-function nominacionInventario(servicioId) {
-    console.log('Nominación Inventario para el servicio con ID:', servicioId);
-    // Implementa la lógica que deseas para el botón de nominación inventario
-}
-
-function agregarServicio(servicioId) {
+function agregarServicio(nombreMotonave, servicioId) {
     console.log('Agregar servicio con ID:', servicioId);
-    // Implementa la lógica que deseas para el botón de agregar servicio
+    
+    // Construye la URL con el parámetro servicio_id
+    var urlConParametros = fichaServicioURL + "?servicio_id=" + servicioId;
+
+    // Redirige a la URL construida
+    window.location.href = urlConParametros;
 }
 
-function editarServicio(servicioId) {
+function editarServicio(nombreMotonave, servicioId) {
     console.log('Editar servicio con ID:', servicioId);
     // Implementa la lógica que deseas para el botón de editar servicio
 }
@@ -170,7 +167,7 @@ function eliminarServicio(nombreMotonave, servicioId) {
 }
 
 
-function visualizarServicio(servicioId) {
+function visualizarServicio(nombreMotonave, servicioId) {
     console.log('Visualizar servicio con ID:', servicioId);
     // Implementa la lógica que deseas para el botón de visualizar servicio
 }

@@ -12,7 +12,6 @@ from django.core import serializers
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
-import json
 
 #---Excel
 #---------------------------------------------------
@@ -148,6 +147,11 @@ def obtener_detalles_motonave(request):
                     'cantidad_serviciosActual': motonave.cantidad_serviciosActual,
                     'viaje': motonave.numero_viaje,
                     'comentarioActual': motonave.comentarioActual,
+                    'puerto' : motonave.puerto,
+                    'proxPuerto' : motonave.prox_puerto,
+                    'procedencia_carga' : motonave.procedenciaCarga,
+                    'armador' : motonave.armador,
+                    'agencia' : motonave.agencia,
                     'servicios': list(motonave.fichas_servicio.values('id', 'numero_servicio', 'tipo_servicio', 'fecha_inicioFaena', 'fecha_fin', 'estado_delServicio')),
                 }
                 return JsonResponse(detalles)
@@ -232,6 +236,13 @@ def crear_servicio(request):
         cantidad_servicios = int(request.POST.get('cantidadServicios'))
         numero_viaje = int(request.POST.get('numeroViaje'))  # Obtener el número de viaje del formulario
         
+        # Obtener los valores de los nuevos campos del formulario
+        puerto = request.POST.get('puerto')
+        prox_puerto = request.POST.get('proxPuerto')
+        procedenciaCarga = request.POST.get('procedenciaCarga')
+        armador = request.POST.get('armador')
+        agencia = request.POST.get('agencia')
+        
         # Verificar si la motonave existe
         try:
             motonave = Motonave.objects.get(nombre=nombre_motonave)
@@ -257,6 +268,11 @@ def crear_servicio(request):
         motonave.cantidad_serviciosActual += cantidad_servicios  # Incrementar la cantidad de servicios actual
         motonave.numero_viaje = numero_viaje  # Asignar el número de viaje
         motonave.fecha_nominacion = fecha_nominacion  # Asignar la fecha de nominación
+        motonave.puerto = puerto
+        motonave.prox_puerto = prox_puerto
+        motonave.procedenciaCarga = procedenciaCarga
+        motonave.armador = armador
+        motonave.agencia = agencia
         
         # Guardar la motonave
         motonave.save()
@@ -311,8 +327,18 @@ def eliminar_servicio(request):
         motonave.cantidad_serviciosHistorial = F('cantidad_serviciosHistorial') - motonave.cantidad_serviciosActual
         # Restablecer la cantidad de servicios
         motonave.cantidad_serviciosActual = 0
-        # Restablecer el número de viaje a su valor predeterminado (0)
-        motonave.numero_viaje = 0
+        # Restablecer el comentario
+        motonave.comentarioActual = ""
+        # Restablecer el puerto
+        motonave.puerto = ""
+        # Restablecer el prox puerto
+        motonave.prox_puerto = ""
+        # Restablecer la procedencia 
+        motonave.procedenciaCarga = ""
+        # Restablecer el armador
+        motonave.armador = ""
+        # Restablecer la agencia
+        motonave.agencia = ""
         # Guardar los cambios en la motonave
         motonave.save()
 
@@ -850,6 +876,7 @@ def agregar_vario(request):
     # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-inventario')
 
+#------------------Eliminar Quimico
 @login_required
 def eliminar_quimico(request, quimico_id):
     # Obtener el objeto Quimico correspondiente al ID
@@ -861,6 +888,7 @@ def eliminar_quimico(request, quimico_id):
     # Devolver una respuesta JSON indicando que el objeto se ha eliminado correctamente
     return redirect('erp:gestor-inventario')
 
+#-------------------Eliminar Vehiculo
 @login_required
 def eliminar_vehiculo(request, vehiculo_id):
     # Obtener el objeto Vehiculo correspondiente al ID
@@ -872,6 +900,7 @@ def eliminar_vehiculo(request, vehiculo_id):
     # Redirigir a la página del gestor de inventario
     return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVehiculo')
 
+#------------------------Eliminar Vario
 @login_required
 def eliminar_vario(request, vario_id):
     # Obtener el objeto Vario correspondiente al ID
@@ -883,3 +912,133 @@ def eliminar_vario(request, vario_id):
     # Redirigir a la página del gestor de inventario
     return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVarios')
 
+#-------------------------Obtener detalles VARIO
+@login_required
+def obtener_detalles_vario(request):
+    if request.method == 'GET':
+        vario_id = request.GET.get('varioId')
+        if vario_id:
+            try:
+                vario = Vario.objects.get(id=vario_id)
+                detalle = {
+                    'id': vario.id,
+                    'nombre': vario.nombre,
+                    'fecha_ingreso': vario.fecha_ingreso.strftime('%Y-%m-%d'),
+                    'estado': vario.estado,
+                }
+                return JsonResponse(detalle)
+            except Vario.DoesNotExist:
+                return JsonResponse({'error': 'El vario especificado no existe.'}, status=404)
+        else:
+            return JsonResponse({'error': 'El parámetro "varioId" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
+
+#----------------------ACTUALIZAR VARIO
+@csrf_exempt
+@login_required
+def actualizar_vario(request):
+    if request.method == 'POST':
+        vario_id = request.POST.get('vario_id')
+        if vario_id:
+            nombre = request.POST.get('nombre')
+            fecha_ingreso = request.POST.get('fecha_ingreso')
+
+            if nombre and fecha_ingreso:
+                try:
+                    vario = Vario.objects.get(id=vario_id)
+                    vario.nombre = nombre
+                    vario.fecha_ingreso = fecha_ingreso
+                    vario.save()
+                    return JsonResponse({'message': 'Cambios guardados exitosamente'})
+                except Vario.DoesNotExist:
+                    return JsonResponse({'error': 'El vario no existe'}, status=404)
+            else:
+                return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
+        else:
+            return JsonResponse({'error': 'El parámetro "vario_id" es obligatorio en la solicitud POST.'}, status=400)
+    else:
+        return JsonResponse({'error': 'Se espera una solicitud POST'}, status=405)
+
+#-------------------------Obtener detalles QUIMICO
+@login_required
+def obtener_detalles_quimico(request):
+    if request.method == 'GET':
+        quimico_id = request.GET.get('quimicoId')
+        if quimico_id:
+            try:
+                quimico = Quimico.objects.get(id=quimico_id)
+                quimico_data = {
+                    'id': quimico.id,
+                    'tipo_quimico': quimico.tipo_quimico,
+                    'fecha_ingreso': quimico.fecha_ingreso.strftime('%Y-%m-%d'),
+                    'numero_factura': quimico.numero_factura,
+                    'litros_ingreso': quimico.litros_ingreso,
+                    'estado': quimico.estado,
+                }
+                return JsonResponse(quimico_data)
+            except Quimico.DoesNotExist:
+                return JsonResponse({'error': 'Químico no encontrado'}, status=404)
+        else:
+            return JsonResponse({'error': 'El parámetro "quimicoId" es obligatorio en la solicitud GET.'}, status=400)
+    else:
+        return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
+
+#--------------------------GUARDAR CAMBIOS QUIMICOS
+@csrf_exempt
+@login_required
+def guardar_cambios_quimico(request):
+    if request.method == 'POST':
+        quimico_id = request.POST.get('quimico_id')
+        if quimico_id:
+            tipo_quimico = request.POST.get('tipo_quimico')
+            fecha_ingreso = request.POST.get('fecha_ingreso')
+            numero_factura = request.POST.get('numero_factura')
+            litros_ingreso = request.POST.get('litros_ingreso')
+            
+            if tipo_quimico and fecha_ingreso and numero_factura and litros_ingreso:
+                try:
+                    quimico = Quimico.objects.get(id=quimico_id)
+                    quimico.tipo_quimico = tipo_quimico
+                    quimico.fecha_ingreso = fecha_ingreso
+                    quimico.numero_factura = numero_factura
+                    quimico.litros_ingreso = litros_ingreso
+                    quimico.save()
+                    return JsonResponse({'message': 'Cambios guardados exitosamente'})
+                except Quimico.DoesNotExist:
+                    return JsonResponse({'error': 'El quimico no existe'}, status=404)
+            else:
+                return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
+        else:
+            return JsonResponse({'error': 'El parámetro "vario_id" es obligatorio en la solicitud POST.'}, status=400)
+    else:
+        return JsonResponse({'error': 'Se espera una solicitud POST'}, status=405)
+
+#-------------------Ficha Servicio dirigir
+@login_required
+def ficha_servicio(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    servicio_id = request.GET.get('servicio_id')
+    if servicio_id:
+        try:
+            ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+            motonave = ficha_servicio.motonave
+            context = {
+                'ficha_servicio': ficha_servicio,
+                'motonave': motonave,
+                'nombre_usuario': nombre_usuario
+            }
+            return render(request, 'html/fichaServicio.html', context)
+        except FichaServicio.DoesNotExist:
+            # Manejar el caso en que no se encuentre la ficha de servicio
+            context = {
+                'servicio_id': servicio_id,
+                'nombre_usuario': nombre_usuario
+            }
+            return render(request, 'html/fichaServicio.html', context)
+    else:
+        # Manejar el caso en que no se proporcione el servicio_id
+        context = {
+            'nombre_usuario': nombre_usuario
+        }
+        return render(request, 'html/fichaServicio.html', context)

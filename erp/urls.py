@@ -1,11 +1,12 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import home, login_view, menu_view
-from .views import gestorOperaciones, fichaOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves 
+from .views import gestorOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves 
 from .views import crear_servicio, crear_servicio_individual, eliminar_servicio, eliminar_servicio_individual,obtener_servicios_motonave, renderizar_formulario 
 from .views import gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal 
-from .views import gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, validar_campo_unico_vehiculoCambio, obtener_detalle_vehiculo, guardar_cambios_vehiculo, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
-
+from .views import gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, validar_campo_unico_vehiculoCambio, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
+from .views import obtener_detalle_vehiculo, guardar_cambios_vehiculo, obtener_detalles_vario, actualizar_vario, obtener_detalles_quimico, guardar_cambios_quimico
+from .views import ficha_servicio
 
 app_name = 'erp'  
 
@@ -28,7 +29,7 @@ urlpatterns = [
     path('gestor-operaciones/eliminar_servicio_individual/', eliminar_servicio_individual, name='eliminar_servicio_individual'),
     path('gestor-operaciones/obtener_servicios_motonave/', obtener_servicios_motonave, name='obtener_servicios_motonave'),
     path('gestor-operaciones/rend_formulario/', renderizar_formulario, name='renderizar_formulario'),
-    path('ficha-operaciones/', fichaOperaciones, name='ficha-operaciones'),
+    path('gestor-operaciones/ficha-servicio/', ficha_servicio, name='ficha_servicio'),
     path('gestor-personal/', gestorPersonal, name='gestor-personal'),
     path('gestor-personal/agregar_personal', crear_personal, name='crear_personal'),
     path('gestor-personal/agregar_personal/validar_rut/', validar_rut, name='validar_rut'),
@@ -48,5 +49,9 @@ urlpatterns = [
     path('gestor-inventario/eliminar_quimico/<int:quimico_id>/', eliminar_quimico, name='eliminar_quimico'),
     path('gestor-inventario/eliminar_vehiculo/<int:vehiculo_id>/', eliminar_vehiculo, name='eliminar_vehiculo'),
     path('gestor-inventario/eliminar_vario/<int:vario_id>/', eliminar_vario, name='eliminar_vario'),
+    path('gestor-inventario/obtener_detalles_vario/', obtener_detalles_vario, name='obtener_detalles_vario'),
+    path('gestor-inventario/actualizar_vario/', actualizar_vario, name='actualizar_vario'),
+    path('gestor-inventario/obtener_detalles_quimico/', obtener_detalles_quimico, name='obtener_detalles_quimico'),
+    path('gestor-inventario/guardar_cambios_quimico/', guardar_cambios_quimico, name='guardar_cambios_quimico'),
     # Otras rutas aquí...
 ]

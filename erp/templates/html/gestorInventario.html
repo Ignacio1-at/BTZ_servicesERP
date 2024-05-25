@@ -75,7 +75,7 @@
                   <td>{{ quimico.numero_factura }}</td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Acciones">
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}" onclick="abrirModalQuimico({{ quimico.id }})"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
                       <form id="formEliminarQuimico{{ quimico.id }}" method="POST" action="{% url 'erp:eliminar_quimico' quimico.id %}">
                         {% csrf_token %}
                         <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
@@ -83,7 +83,7 @@
                     </div>
                   </td>
                 </tr>
-                <!-- Modal para ver detalles del químico -->
+                <!-- Modal para ver detalles del Quimico -->
                 <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -91,45 +91,12 @@
                         <h5 class="modal-title" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="modal-body">
-                        <div class="datosGenerales" id="datosGenerales">
-                          <div class="headerDatosGenerales" id="headerDatosGenerales">
-                            <p style="font-size: 2.5vh;">Datos Generales</p>
-                          </div>
-                          <div class="bodyDatosGenerales" id="bodyDatosGenerales">
-                            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
-                              <p>
-                                <strong>Tipo de Químico:</strong> {{ quimico.tipo_quimico }}
-                              </p>
-                              <p>
-                                <strong>Fecha de Ingreso:</strong> {{ quimico.fecha_ingreso }}
-                              </p>
-                              <p>
-                                <strong>Número de Factura:</strong> {{ quimico.numero_factura }}
-                              </p>
-                              <p>
-                                <strong>Litros Ingresados:</strong> {{ quimico.litros_ingreso }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="Estado" id="Estado">
-                          <div class="headerEstado" id="headerEstado">
-                            <p style="font-size: 2.5vh;">Estado</p>
-                          </div>
-                          <div class="bodyEstado" id="bodyEstado">
-                            <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
-                              <p>
-                                <strong>Estado:</strong> {{ quimico.estado }}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Agrega más secciones según los detalles del químico -->
+                      <div class="modal-body" id="modalBodyQuimico{{ quimico.id }}">
+                        <!-- Contenido dinámico cargado por JavaScript -->
                       </div>
                       <div class="modal-footer">
-                        <button type="button" id="btnCambiarModo" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> <!-- Botón para guardar en modo edición -->
+                        <button type="button" id="btnCambiarModoQuimico{{ quimico.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                        <button type="button" id="btnGuardarQuimico{{ quimico.id }}" class="btn btn-primary" style="display: none;">Guardar</button>
                       </div>
                     </div>
                   </div>
@@ -208,10 +175,9 @@
                   <td>{{ vario.fecha_ingreso }}</td>
                   <td>
                     <div class="btn-group" role="group" aria-label="Acciones">
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVario{{ vario.id }}"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVario{{ vario.id }}" onclick="abrirModalVario({{ vario.id }})"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
                       <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
                         {% csrf_token %}
-                        <!-- Otros campos del formulario si los tienes -->
                         <button type="button" class="btn btn-danger" onclick="eliminarVario('{{ vario.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
                       </form>
                     </div>
@@ -225,35 +191,12 @@
                         <h5 class="modal-title" id="modalDetalleVarioLabel{{ vario.id }}">Detalles del Vario</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="modal-body">
-                        <div class="datosGenerales" id="datosGenerales">
-                          <div class="headerDatosGenerales" id="headerDatosGenerales">
-                            <p style="font-size: 2.5vh;">Datos Generales</p>
-                          </div>
-                          <div class="bodyDatosGenerales" id="bodyDatosGenerales">
-                            <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
-                              <p>
-                                <strong>Nombre:</strong> {{ vario.nombre }}
-                              </p>
-                              <p>
-                                <strong>Fecha de Ingreso:</strong> {{ vario.fecha_ingreso }}
-                              </p>
-                            </div>
-                          </div>
-                          <div class="Estado" id="Estado">
-                            <div class="headerEstado" id="headerEstado">
-                              <p style="font-size: 2.5vh;">Estado</p>
-                            </div>
-                            <div class="bodyEstado" id="bodyEstado">
-                              <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
-                                <p>
-                                  <strong>Estado:</strong> {{ vario.estado }}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <!-- Agrega más secciones según los detalles de vario -->
-                        </div>
+                      <div class="modal-body" id="modalBodyVario{{ vario.id }}">
+                        <!-- Contenido dinámico cargado por JavaScript -->
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" id="btnCambiarModoVario{{ vario.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                        <button type="button" id="btnGuardarVario{{ vario.id }}" class="btn btn-primary" style="display: none;">Guardar</button>
                       </div>
                     </div>
                   </div>

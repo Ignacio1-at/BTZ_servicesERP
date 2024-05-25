@@ -180,7 +180,7 @@
 
     <!-- Modal Servicio -->
     <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-      <div class="modal-dialog modal-dialog-centered" style="width: 30vw;">
+      <div class="modal-dialog modal-dialog-centered" style="width: 60vw;">
         <div class="modal-content">
           <div class="modal-header">
             <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
@@ -189,21 +189,104 @@
           <div class="modal-body" style="margin-left: 30px;">
             <form id="formCrearServicio" method="post" action="">
               {% csrf_token %}
-              <div class="mb-3">
-                <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
-                <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
-                  {% for nombre_motonave in nombres_motonaves_disponibles %}
-                    <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
-                <input type="number" class="form-control" style="width: 99%; margin-bottom: 10px;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
-              </div>
-              <div class="mb-3">
-                <label for="numeroViaje" class="form-label">Viaje:</label>
-                <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="nombreMotonave" class="form-label">Selecciona una Motonave:</label>
+                    <select class="form-select" name="nombreMotonave" style="width: 99%;" id="nombreMotonave" required>
+                      {% for nombre_motonave in nombres_motonaves_disponibles %}
+                        <option value="{{ nombre_motonave }}">{{ nombre_motonave }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="cantidadServicios" class="form-label">Cantidad de Servicios:</label>
+                    <input type="number" class="form-control" style="width: 99%;" name="cantidadServicios" id="cantidadServicios" required min="1" pattern="\d+" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="puerto" class="form-label">Puerto:</label>
+                    <select class="form-select" name="puerto" id="puerto" style="width: 99%;" required>
+                      <option value="">Seleccione un puerto</option>
+                      <option value="Puerto de Ancud">Puerto de Ancud</option>
+                      <option value="Puerto de Antofagasta">Puerto de Antofagasta</option>
+                      <option value="Puerto de Arica">Puerto de Arica</option>
+                      <option value="Puerto de Chañaral">Puerto de Chañaral</option>
+                      <option value="Puerto de Calbuco">Puerto de Calbuco</option>
+                      <option value="Puerto de Caleta Coloso">Puerto de Caleta Coloso</option>
+                      <option value="Puerto de Coquimbo">Puerto de Coquimbo</option>
+                      <option value="Puerto de Caldera">Puerto de Caldera</option>
+                      <option value="Puerto de Coronel">Puerto de Coronel</option>
+                      <option value="Puerto de Corral">Puerto de Corral</option>
+                      <option value="Puerto Guacolda II">Puerto Guacolda II</option>
+                      <option value="Puerto de Huasco">Puerto de Huasco</option>
+                      <option value="Puerto de Iquique">Puerto de Iquique</option>
+                      <option value="Puerto de Lirquén">Puerto de Lirquén</option>
+                      <option value="Puerto de Lota">Puerto de Lota</option>
+                      <option value="Puerto de Mejillones">Puerto de Mejillones</option>
+                      <option value="Puerto de Las Ventanas">Puerto de Las Ventanas</option>
+                      <option value="Puerto Montt">Puerto Montt</option>
+                      <option value="Puerto de Punta Arenas">Puerto de Punta Arenas</option>
+                      <option value="Puerto de Quintero">Puerto de Quintero</option>
+                      <option value="Puerto de San Antonio">Puerto de San Antonio</option>
+                      <option value="Puerto de San Vicente">Puerto de San Vicente</option>
+                      <option value="Puerto de Talcahuano">Puerto de Talcahuano</option>
+                      <option value="Puerto de Taltal">Puerto de Taltal</option>
+                      <option value="Puerto de Tocopilla">Puerto de Tocopilla</option>
+                      <option value="Puerto de Valparaíso">Puerto de Valparaíso</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="proxPuerto" class="form-label">Próximo Puerto:</label>
+                    <select class="form-select" name="proxPuerto" id="proxPuerto" style="width: 99%;" required>
+                      <option value="">Seleccione un próximo puerto</option>
+                      <option value="Puerto de Ancud">Puerto de Ancud</option>
+                      <option value="Puerto de Antofagasta">Puerto de Antofagasta</option>
+                      <option value="Puerto de Arica">Puerto de Arica</option>
+                      <option value="Puerto de Chañaral">Puerto de Chañaral</option>
+                      <option value="Puerto de Calbuco">Puerto de Calbuco</option>
+                      <option value="Puerto de Caleta Coloso">Puerto de Caleta Coloso</option>
+                      <option value="Puerto de Coquimbo">Puerto de Coquimbo</option>
+                      <option value="Puerto de Caldera">Puerto de Caldera</option>
+                      <option value="Puerto de Coronel">Puerto de Coronel</option>
+                      <option value="Puerto de Corral">Puerto de Corral</option>
+                      <option value="Puerto Guacolda II">Puerto Guacolda II</option>
+                      <option value="Puerto de Huasco">Puerto de Huasco</option>
+                      <option value="Puerto de Iquique">Puerto de Iquique</option>
+                      <option value="Puerto de Lirquén">Puerto de Lirquén</option>
+                      <option value="Puerto de Lota">Puerto de Lota</option>
+                      <option value="Puerto de Mejillones">Puerto de Mejillones</option>
+                      <option value="Puerto de Las Ventanas">Puerto de Las Ventanas</option>
+                      <option value="Puerto Montt">Puerto Montt</option>
+                      <option value="Puerto de Punta Arenas">Puerto de Punta Arenas</option>
+                      <option value="Puerto de Quintero">Puerto de Quintero</option>
+                      <option value="Puerto de San Antonio">Puerto de San Antonio</option>
+                      <option value="Puerto de San Vicente">Puerto de San Vicente</option>
+                      <option value="Puerto de Talcahuano">Puerto de Talcahuano</option>
+                      <option value="Puerto de Taltal">Puerto de Taltal</option>
+                      <option value="Puerto de Tocopilla">Puerto de Tocopilla</option>
+                      <option value="Puerto de Valparaíso">Puerto de Valparaíso</option>
+                      <option value="NO APLICA">NO APLICA</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="procedenciaCarga" class="form-label">Procedencia de la Carga:</label>
+                    <input type="text" class="form-control" style="width: 99%;" name="procedenciaCarga" id="procedenciaCarga" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="armador" class="form-label">Armador:</label>
+                    <input type="text" class="form-control" style="width: 99%;" name="armador" id="armador" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="agencia" class="form-label">Agencia:</label>
+                    <input type="text" class="form-control" style="width: 99%;" name="agencia" id="agencia" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="numeroViaje" class="form-label">Viaje:</label>
+                    <input type="number" class="form-control" style="width: 99%;" name="numeroViaje" id="numeroViaje" required min="1" pattern="\d+" />
+                  </div>
+                </div>
               </div>
               <!-- Campo oculto para almacenar la fecha de nominación -->
               <input type="hidden" id="fechaNominacion" name="fechaNominacion" value="" />
@@ -254,24 +337,34 @@
           <h4 id="nombreMotonave"></h4>
         </div>
         <div id="panelInfo" class="panel-info">
-          <div class="info-container">
-            <!-- Viaje -->
-            <p style="display: inline;">Viaje:</p>
-            <p id="viajeMotonave" style="display: inline; margin-left: 5%;"></p>
-            <!-- Estado -->
-            <p style="display: inline; margin-left: 5vw;">
-              Estado:<select id="nuevoEstadoMotonave" style="border-radius: 10px;">
+          <div class="nuevo-info-container">
+            <div class="info-item">
+              <p>Viaje:</p>
+              <p id="viajeMotonave"></p>
+            </div>
+            <div class="info-item">
+              <p>Armador:</p>
+              <p id="armadorMotonave"></p>
+            </div>
+            <div class="info-item">
+              <p>Procedencia:</p>
+              <p id="cargaMotonave"></p>
+            </div>
+            <div class="info-item puerto-item">
+              <p id="puertoMotonave"></p>
+            </div>
+            <div class="info-item estado-item">
+              <p>Estado:</p>
+              <select id="nuevoEstadoMotonave">
                 <option value="Nominado">Nominado</option>
                 <option value="En Proceso">En Proceso</option>
                 <option value="Terminado">Terminado</option>
               </select>
-            </p>
-            <!-- Carga -->
-            <p style="margin-top: 15px;">Carga:</p>
-            <!-- Puerto -->
-            <p style="margin-top: 15px;">Puerto:</p>
-            <!-- Armador -->
-            <p style="margin-top: 15px;">Armador:</p>
+            </div>
+            <div class="info-item agencia-item">
+              <p>Agencia:</p>
+              <p id="agenciaMotonave"></p>
+            </div>
           </div>
         </div>
         <div id="panelInfo2" class="panel-info2">
@@ -344,16 +437,17 @@
     var eliminarServicioIndividualURL = "{% url 'erp:eliminar_servicio_individual' %}"
     var modificarMotonaveURL = "{% url 'erp:modificar_motonave' %}"
     var obtenerServicioMotonaveURL = "{% url 'erp:obtener_servicios_motonave' %}"
+    var fichaServicioURL = "{% url 'erp:ficha_servicio' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
       actualizarTableroMotonaves()
     })
   </script>
+  <script id="fichaServicioURL" data-url="{% url 'erp:ficha_servicio' %}"></script>
   <script>
     var staticUrls = {
-      nominacionPersonal: "{% static 'images/nominacionPersonal.png' %}",
-      nominacionInventario: "{% static 'images/nominacionInventario.png' %}",
+      nominacion: "{% static 'images/Docs.png' %}",
       agregar: "{% static 'images/Agregar.png' %}",
       editar: "{% static 'images/Editar.png' %}",
       eliminar: "{% static 'images/Basurero.png' %}",

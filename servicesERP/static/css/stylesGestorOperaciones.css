@@ -209,14 +209,43 @@
   width: 27vw;
   padding: 2vw;
   height: 25vh;
-  margin-top: 2vh; 
-  border-radius: 1vw; 
+  margin-top: 2vh;
+  border-radius: 1vw;
 }
 
-.info-container {
-  width: 26vw;
-  height: 15vh; 
-  font-size: 1.125vw; 
+.nuevo-info-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  gap: 5px;
+  width: 100%;
+  height: 100%;
+  font-size: 17.5px; /* Tamaño de fuente inicial */
+}
+
+.nuevo-info-container .info-item {
+  display: flex;
+  align-items: center;
+}
+
+.nuevo-info-container .info-item p {
+  margin: 4px;
+}
+
+.nuevo-info-container .estado-item {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+}
+
+.nuevo-info-container .agencia-item {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.nuevo-info-container .puerto-item {
+  grid-column: 1;
+  grid-row: 4;
 }
 
 .panel-info2 {
@@ -235,7 +264,6 @@
   display: flex;
   flex-direction: column;
 }
-
 
 .panel-comentario {
   background-color: #01172f;
@@ -264,6 +292,7 @@
   cursor: pointer;
   border-radius: 1vw;
 }
+
 
 #dragbar {
   cursor: ew-resize;

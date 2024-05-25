@@ -92,7 +92,7 @@ function seleccionarMotonaveDesdeTablero(nombreMotonave) {
             // Verificar si se recibieron los detalles correctamente
             if (data.nombre && data.estado_servicio) {
                 // Abrir el panel lateral y mostrar los detalles de la motonave desde el tablero
-                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion, data.cantidad_serviciosActual, data.comentarioActual);
+                abrirPanelLateral(data.nombre, data.estado_servicio, data.viaje, data.fecha_nominacion, data.cantidad_serviciosActual, data.comentarioActual, data.puerto, data.proxPuerto, data.procedencia_carga, data.armador, data.agencia);
             } else {
                 console.error('No se recibieron los detalles de la motonave correctamente desde el tablero.');
             }
