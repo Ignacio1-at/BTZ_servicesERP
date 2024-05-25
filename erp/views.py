@@ -1019,16 +1019,45 @@ def guardar_cambios_quimico(request):
 def ficha_servicio(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
     servicio_id = request.GET.get('servicio_id')
+
     if servicio_id:
         try:
             ficha_servicio = FichaServicio.objects.get(id=servicio_id)
             motonave = ficha_servicio.motonave
+
+            if request.method == 'POST':
+                # Obtener los IDs de los elementos nominados desde el formulario
+                personal_ids = request.POST.getlist('personal_nominado')
+                vehiculo_ids = request.POST.getlist('vehiculos_nominados')
+                quimico_ids = request.POST.getlist('quimicos_nominados')
+                vario_ids = request.POST.getlist('varios_nominados')
+
+                # Actualizar las nominaciones en la ficha de servicio
+                ficha_servicio.personal_nominado.set(personal_ids)
+                ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
+                ficha_servicio.quimicos_nominados.set(quimico_ids)
+                ficha_servicio.varios_nominados.set(vario_ids)
+
+                # Redireccionar a la misma página después de guardar las nominaciones
+                return redirect('ficha_servicio')
+
+            # Obtener los datos para mostrar en el formulario de nominación
+            personal = Personal.objects.all()
+            vehiculos = Vehiculo.objects.all()
+            quimicos = Quimico.objects.all()
+            varios = Vario.objects.all()
+
             context = {
                 'ficha_servicio': ficha_servicio,
                 'motonave': motonave,
-                'nombre_usuario': nombre_usuario
+                'nombre_usuario': nombre_usuario,
+                'personal': personal,
+                'vehiculos': vehiculos,
+                'quimicos': quimicos,
+                'varios': varios
             }
             return render(request, 'html/fichaServicio.html', context)
+
         except FichaServicio.DoesNotExist:
             # Manejar el caso en que no se encuentre la ficha de servicio
             context = {
@@ -1036,6 +1065,7 @@ def ficha_servicio(request):
                 'nombre_usuario': nombre_usuario
             }
             return render(request, 'html/fichaServicio.html', context)
+
     else:
         # Manejar el caso en que no se proporcione el servicio_id
         context = {

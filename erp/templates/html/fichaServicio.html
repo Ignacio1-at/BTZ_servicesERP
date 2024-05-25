@@ -16,7 +16,7 @@
       <div class="col-md-3" style="width: 100vw; margin-top: 2vh;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div style="display: flex; align-items: center;">
-            <span style="color: white; margin-left: 1vw; font-size: 2.5em ;margin-right: 5vw;">Nueva Ficha</span>
+            <span style="color: white; margin-left: 1vw; font-size: 2.5em; margin-right: 5vw;">Nueva Ficha</span>
           </div>
         </div>
       </div>
@@ -31,88 +31,92 @@
             <label>NOMBRE MN</label>
           </div>
           <div>
-            <input type="text" name="n_viaje" value="{{ motonave.numero_viaje }}" readonly/>
+            <input type="text" name="n_viaje" value="{{ motonave.numero_viaje }}" readonly />
             <label>N VIAJE</label>
           </div>
           <div>
-            <input type="text" name="bodegas_totales" value="{{ motonave.cantBodegas }}" readonly/>
+            <input type="text" name="bodegas_totales" value="{{ motonave.cantBodegas }}" readonly />
             <label>BODEGAS TOTALES</label>
           </div>
           <div>
-            <select name="puerto" id="puerto">
-              <option value="Puerto de Ancud" {% if motonave.puerto == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
-              <option value="Puerto de Antofagasta" {% if motonave.puerto == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
-              <option value="Puerto de Arica" {% if motonave.puerto == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
-              <option value="Puerto de Chañaral" {% if motonave.puerto == 'Puerto de Chañaral' %}selected{% endif %}>Puerto de Chañaral</option>
-              <option value="Puerto de Calbuco" {% if motonave.puerto == 'Puerto de Calbuco' %}selected{% endif %}>Puerto de Calbuco</option>
-              <option value="Puerto de Caleta Coloso" {% if motonave.puerto == 'Puerto de Caleta Coloso' %}selected{% endif %}>Puerto de Caleta Coloso</option>
-              <option value="Puerto de Coquimbo" {% if motonave.puerto == 'Puerto de Coquimbo' %}selected{% endif %}>Puerto de Coquimbo</option>
-              <option value="Puerto de Caldera" {% if motonave.puerto == 'Puerto de Caldera' %}selected{% endif %}>Puerto de Caldera</option>
-              <option value="Puerto de Coronel" {% if motonave.puerto == 'Puerto de Coronel' %}selected{% endif %}>Puerto de Coronel</option>
-              <option value="Puerto de Corral" {% if motonave.puerto == 'Puerto de Corral' %}selected{% endif %}>Puerto de Corral</option>
-              <option value="Puerto Guacolda II" {% if motonave.puerto == 'Puerto Guacolda II' %}selected{% endif %}>Puerto Guacolda II</option>
-              <option value="Puerto de Huasco" {% if motonave.puerto == 'Puerto de Huasco' %}selected{% endif %}>Puerto de Huasco</option>
-              <option value="Puerto de Iquique" {% if motonave.puerto == 'Puerto de Iquique' %}selected{% endif %}>Puerto de Iquique</option>
-              <option value="Puerto de Lirquén" {% if motonave.puerto == 'Puerto de Lirquén' %}selected{% endif %}>Puerto de Lirquén</option>
-              <option value="Puerto de Lota" {% if motonave.puerto == 'Puerto de Lota' %}selected{% endif %}>Puerto de Lota</option>
-              <option value="Puerto de Mejillones" {% if motonave.puerto == 'Puerto de Mejillones' %}selected{% endif %}>Puerto de Mejillones</option>
-              <option value="Puerto de Las Ventanas" {% if motonave.puerto == 'Puerto de Las Ventanas' %}selected{% endif %}>Puerto de Las Ventanas</option>
-              <option value="Puerto Montt" {% if motonave.puerto == 'Puerto Montt' %}selected{% endif %}>Puerto Montt</option>
-              <option value="Puerto de Punta Arenas" {% if motonave.puerto == 'Puerto de Punta Arenas' %}selected{% endif %}>Puerto de Punta Arenas</option>
-              <option value="Puerto de Quintero" {% if motonave.puerto == 'Puerto de Quintero' %}selected{% endif %}>Puerto de Quintero</option>
-              <option value="Puerto de San Antonio" {% if motonave.puerto == 'Puerto de San Antonio' %}selected{% endif %}>Puerto de San Antonio</option>
-              <option value="Puerto de San Vicente" {% if motonave.puerto == 'Puerto de San Vicente' %}selected{% endif %}>Puerto de San Vicente</option>
-              <option value="Puerto de Talcahuano" {% if motonave.puerto == 'Puerto de Talcahuano' %}selected{% endif %}>Puerto de Talcahuano</option>
-              <option value="Puerto de Taltal" {% if motonave.puerto == 'Puerto de Taltal' %}selected{% endif %}>Puerto de Taltal</option>
-              <option value="Puerto de Tocopilla" {% if motonave.puerto == 'Puerto de Tocopilla' %}selected{% endif %}>Puerto de Tocopilla</option>
-              <option value="Puerto de Valparaíso" {% if motonave.puerto == 'Puerto de Valparaíso' %}selected{% endif %}>Puerto de Valparaíso</option>
-            </select>
+            {% with puerto_selected=motonave.puerto %}
+              <select name="puerto" id="puerto">
+                <option value="Puerto de Ancud" {% if puerto_selected == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
+                <option value="Puerto de Antofagasta" {% if puerto_selected == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
+                <option value="Puerto de Arica" {% if puerto_selected == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
+                <option value="Puerto de Chañaral" {% if puerto_selected == 'Puerto de Chañaral' %}selected{% endif %}>Puerto de Chañaral</option>
+                <option value="Puerto de Calbuco" {% if puerto_selected == 'Puerto de Calbuco' %}selected{% endif %}>Puerto de Calbuco</option>
+                <option value="Puerto de Caleta Coloso" {% if puerto_selected == 'Puerto de Caleta Coloso' %}selected{% endif %}>Puerto de Caleta Coloso</option>
+                <option value="Puerto de Coquimbo" {% if puerto_selected == 'Puerto de Coquimbo' %}selected{% endif %}>Puerto de Coquimbo</option>
+                <option value="Puerto de Caldera" {% if puerto_selected == 'Puerto de Caldera' %}selected{% endif %}>Puerto de Caldera</option>
+                <option value="Puerto de Coronel" {% if puerto_selected == 'Puerto de Coronel' %}selected{% endif %}>Puerto de Coronel</option>
+                <option value="Puerto de Corral" {% if puerto_selected == 'Puerto de Corral' %}selected{% endif %}>Puerto de Corral</option>
+                <option value="Puerto Guacolda II" {% if puerto_selected == 'Puerto Guacolda II' %}selected{% endif %}>Puerto Guacolda II</option>
+                <option value="Puerto de Huasco" {% if puerto_selected == 'Puerto de Huasco' %}selected{% endif %}>Puerto de Huasco</option>
+                <option value="Puerto de Iquique" {% if puerto_selected == 'Puerto de Iquique' %}selected{% endif %}>Puerto de Iquique</option>
+                <option value="Puerto de Lirquén" {% if puerto_selected == 'Puerto de Lirquén' %}selected{% endif %}>Puerto de Lirquén</option>
+                <option value="Puerto de Lota" {% if puerto_selected == 'Puerto de Lota' %}selected{% endif %}>Puerto de Lota</option>
+                <option value="Puerto de Mejillones" {% if puerto_selected == 'Puerto de Mejillones' %}selected{% endif %}>Puerto de Mejillones</option>
+                <option value="Puerto de Las Ventanas" {% if puerto_selected == 'Puerto de Las Ventanas' %}selected{% endif %}>Puerto de Las Ventanas</option>
+                <option value="Puerto Montt" {% if puerto_selected == 'Puerto Montt' %}selected{% endif %}>Puerto Montt</option>
+                <option value="Puerto de Punta Arenas" {% if puerto_selected == 'Puerto de Punta Arenas' %}selected{% endif %}>Puerto de Punta Arenas</option>
+                <option value="Puerto de Quintero" {% if puerto_selected == 'Puerto de Quintero' %}selected{% endif %}>Puerto de Quintero</option>
+                <option value="Puerto de San Antonio" {% if puerto_selected == 'Puerto de San Antonio' %}selected{% endif %}>Puerto de San Antonio</option>
+                <option value="Puerto de San Vicente" {% if puerto_selected == 'Puerto de San Vicente' %}selected{% endif %}>Puerto de San Vicente</option>
+                <option value="Puerto de Talcahuano" {% if puerto_selected == 'Puerto de Talcahuano' %}selected{% endif %}>Puerto de Talcahuano</option>
+                <option value="Puerto de Taltal" {% if puerto_selected == 'Puerto de Taltal' %}selected{% endif %}>Puerto de Taltal</option>
+                <option value="Puerto de Tocopilla" {% if puerto_selected == 'Puerto de Tocopilla' %}selected{% endif %}>Puerto de Tocopilla</option>
+                <option value="Puerto de Valparaíso" {% if puerto_selected == 'Puerto de Valparaíso' %}selected{% endif %}>Puerto de Valparaíso</option>
+              </select>
+            {% endwith %}
             <label>PUERTO</label>
           </div>
           <div>
-            <input type="text" name="procedencia_carga" value="{{ motonave.procedenciaCarga }}"/>
+            <input type="text" name="procedencia_carga" value="{{ motonave.procedenciaCarga }}" />
             <label>PROCEDENCIA CARGA</label>
           </div>
         </div>
         <div class="fila-dosNavio">
           <div>
-            <input type="text" name="armador" value="{{ motonave.armador }}"/>
+            <input type="text" name="armador" value="{{ motonave.armador }}" />
             <label>ARMADOR</label>
           </div>
           <div>
-            <input type="text" name="agencia" value="{{ motonave.agencia }}"/>
+            <input type="text" name="agencia" value="{{ motonave.agencia }}" />
             <label>AGENCIA</label>
           </div>
           <div>
-            <select name="puerto" id="puerto">
-              <option value="Puerto de Ancud" {% if motonave.prox_puerto == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
-              <option value="Puerto de Antofagasta" {% if motonave.prox_puerto == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
-              <option value="Puerto de Arica" {% if motonave.prox_puerto == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
-              <option value="Puerto de Chañaral" {% if motonave.prox_puerto == 'Puerto de Chañaral' %}selected{% endif %}>Puerto de Chañaral</option>
-              <option value="Puerto de Calbuco" {% if motonave.prox_puerto == 'Puerto de Calbuco' %}selected{% endif %}>Puerto de Calbuco</option>
-              <option value="Puerto de Caleta Coloso" {% if motonave.prox_puerto == 'Puerto de Caleta Coloso' %}selected{% endif %}>Puerto de Caleta Coloso</option>
-              <option value="Puerto de Coquimbo" {% if motonave.prox_puerto == 'Puerto de Coquimbo' %}selected{% endif %}>Puerto de Coquimbo</option>
-              <option value="Puerto de Caldera" {% if motonave.prox_puerto == 'Puerto de Caldera' %}selected{% endif %}>Puerto de Caldera</option>
-              <option value="Puerto de Coronel" {% if motonave.prox_puerto == 'Puerto de Coronel' %}selected{% endif %}>Puerto de Coronel</option>
-              <option value="Puerto de Corral" {% if motonave.prox_puerto == 'Puerto de Corral' %}selected{% endif %}>Puerto de Corral</option>
-              <option value="Puerto Guacolda II" {% if motonave.prox_puerto == 'Puerto Guacolda II' %}selected{% endif %}>Puerto Guacolda II</option>
-              <option value="Puerto de Huasco" {% if motonave.prox_puerto == 'Puerto de Huasco' %}selected{% endif %}>Puerto de Huasco</option>
-              <option value="Puerto de Iquique" {% if motonave.prox_puerto == 'Puerto de Iquique' %}selected{% endif %}>Puerto de Iquique</option>
-              <option value="Puerto de Lirquén" {% if motonave.prox_puerto == 'Puerto de Lirquén' %}selected{% endif %}>Puerto de Lirquén</option>
-              <option value="Puerto de Lota" {% if motonave.prox_puerto == 'Puerto de Lota' %}selected{% endif %}>Puerto de Lota</option>
-              <option value="Puerto de Mejillones" {% if motonave.prox_puerto == 'Puerto de Mejillones' %}selected{% endif %}>Puerto de Mejillones</option>
-              <option value="Puerto de Las Ventanas" {% if motonave.prox_puerto == 'Puerto de Las Ventanas' %}selected{% endif %}>Puerto de Las Ventanas</option>
-              <option value="Puerto Montt" {% if motonave.prox_puerto == 'Puerto Montt' %}selected{% endif %}>Puerto Montt</option>
-              <option value="Puerto de Punta Arenas" {% if motonave.prox_puerto == 'Puerto de Punta Arenas' %}selected{% endif %}>Puerto de Punta Arenas</option>
-              <option value="Puerto de Quintero" {% if motonave.prox_puerto == 'Puerto de Quintero' %}selected{% endif %}>Puerto de Quintero</option>
-              <option value="Puerto de San Antonio" {% if motonave.prox_puerto == 'Puerto de San Antonio' %}selected{% endif %}>Puerto de San Antonio</option>
-              <option value="Puerto de San Vicente" {% if motonave.prox_puerto == 'Puerto de San Vicente' %}selected{% endif %}>Puerto de San Vicente</option>
-              <option value="Puerto de Talcahuano" {% if motonave.prox_puerto == 'Puerto de Talcahuano' %}selected{% endif %}>Puerto de Talcahuano</option>
-              <option value="Puerto de Taltal" {% if motonave.prox_puerto == 'Puerto de Taltal' %}selected{% endif %}>Puerto de Taltal</option>
-              <option value="Puerto de Tocopilla" {% if motonave.prox_puerto == 'Puerto de Tocopilla' %}selected{% endif %}>Puerto de Tocopilla</option>
-              <option value="Puerto de Valparaíso" {% if motonave.prox_puerto == 'Puerto de Valparaíso' %}selected{% endif %}>Puerto de Valparaíso</option>
-              <option value="NO APLICA" {% if motonave.prox_puerto == 'NO APLICA' %}selected{% endif %}>NO APLICA</option>
-            </select>
+            {% with prox_puerto_selected=motonave.prox_puerto %}
+              <select name="puerto" id="puerto">
+                <option value="Puerto de Ancud" {% if prox_puerto_selected == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
+                <option value="Puerto de Antofagasta" {% if prox_puerto_selected == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
+                <option value="Puerto de Arica" {% if prox_puerto_selected == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
+                <option value="Puerto de Chañaral" {% if prox_puerto_selected == 'Puerto de Chañaral' %}selected{% endif %}>Puerto de Chañaral</option>
+                <option value="Puerto de Calbuco" {% if prox_puerto_selected == 'Puerto de Calbuco' %}selected{% endif %}>Puerto de Calbuco</option>
+                <option value="Puerto de Caleta Coloso" {% if prox_puerto_selected == 'Puerto de Caleta Coloso' %}selected{% endif %}>Puerto de Caleta Coloso</option>
+                <option value="Puerto de Coquimbo" {% if prox_puerto_selected == 'Puerto de Coquimbo' %}selected{% endif %}>Puerto de Coquimbo</option>
+                <option value="Puerto de Caldera" {% if prox_puerto_selected == 'Puerto de Caldera' %}selected{% endif %}>Puerto de Caldera</option>
+                <option value="Puerto de Coronel" {% if prox_puerto_selected == 'Puerto de Coronel' %}selected{% endif %}>Puerto de Coronel</option>
+                <option value="Puerto de Corral" {% if prox_puerto_selected == 'Puerto de Corral' %}selected{% endif %}>Puerto de Corral</option>
+                <option value="Puerto Guacolda II" {% if prox_puerto_selected == 'Puerto Guacolda II' %}selected{% endif %}>Puerto Guacolda II</option>
+                <option value="Puerto de Huasco" {% if prox_puerto_selected == 'Puerto de Huasco' %}selected{% endif %}>Puerto de Huasco</option>
+                <option value="Puerto de Iquique" {% if prox_puerto_selected == 'Puerto de Iquique' %}selected{% endif %}>Puerto de Iquique</option>
+                <option value="Puerto de Lirquén" {% if prox_puerto_selected == 'Puerto de Lirquén' %}selected{% endif %}>Puerto de Lirquén</option>
+                <option value="Puerto de Lota" {% if prox_puerto_selected == 'Puerto de Lota' %}selected{% endif %}>Puerto de Lota</option>
+                <option value="Puerto de Mejillones" {% if prox_puerto_selected == 'Puerto de Mejillones' %}selected{% endif %}>Puerto de Mejillones</option>
+                <option value="Puerto de Las Ventanas" {% if prox_puerto_selected == 'Puerto de Las Ventanas' %}selected{% endif %}>Puerto de Las Ventanas</option>
+                <option value="Puerto Montt" {% if prox_puerto_selected == 'Puerto Montt' %}selected{% endif %}>Puerto Montt</option>
+                <option value="Puerto de Punta Arenas" {% if prox_puerto_selected == 'Puerto de Punta Arenas' %}selected{% endif %}>Puerto de Punta Arenas</option>
+                <option value="Puerto de Quintero" {% if prox_puerto_selected == 'Puerto de Quintero' %}selected{% endif %}>Puerto de Quintero</option>
+                <option value="Puerto de San Antonio" {% if prox_puerto_selected == 'Puerto de San Antonio' %}selected{% endif %}>Puerto de San Antonio</option>
+                <option value="Puerto de San Vicente" {% if prox_puerto_selected == 'Puerto de San Vicente' %}selected{% endif %}>Puerto de San Vicente</option>
+                <option value="Puerto de Talcahuano" {% if prox_puerto_selected == 'Puerto de Talcahuano' %}selected{% endif %}>Puerto de Talcahuano</option>
+                <option value="Puerto de Taltal" {% if prox_puerto_selected == 'Puerto de Taltal' %}selected{% endif %}>Puerto de Taltal</option>
+                <option value="Puerto de Tocopilla" {% if prox_puerto_selected == 'Puerto de Tocopilla' %}selected{% endif %}>Puerto de Tocopilla</option>
+                <option value="Puerto de Valparaíso" {% if prox_puerto_selected == 'Puerto de Valparaíso' %}selected{% endif %}>Puerto de Valparaíso</option>
+                <option value="NO APLICA" {% if prox_puerto_selected == 'NO APLICA' %}selected{% endif %}>NO APLICA</option>
+              </select>
+            {% endwith %}
             <label>PROXIMO PUERTO</label>
           </div>
         </div>
@@ -157,8 +161,31 @@
       </div>
     </div>
 
+    <form method="POST">
+      {% csrf_token %}
+      <h3>Nominar Personal</h3>
+      <select name="personal_nominado" multiple>
+        {% for persona in personal %}
+          <option value="{{ persona.id }}" {% if persona in ficha_servicio.personal_nominado.all %}selected{% endif %}>{{ persona.nombre }}</option>
+        {% endfor %}
+      </select>
+
+      <h3>Nominar Vehículos</h3>
+      <select name="vehiculos_nominados" multiple>
+        {% for vehiculo in vehiculos %}
+          <option value="{{ vehiculo.id }}" {% if vehiculo in ficha_servicio.vehiculos_nominados.all %}selected{% endif %}>{{ vehiculo.patente }}</option>
+        {% endfor %}
+      </select>
+
+      <!-- Campos similares para quimicos_nominados y varios_nominados -->
+
+      <button type="submit">Guardar Nominaciones</button>
+    </form>
+
     <div class="botones">
-      <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
+      <button type="button" onclick="goBack()" style="border: none; background: none;">
+        <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
+      </button>
       <button class="guardar">GUARDAR</button>
       <button class="siguiente">SIGUIENTE</button>
     </div>
@@ -168,7 +195,7 @@
 {% block module_scripts %}
   <script>
     function goBack() {
-      history.back()
+      history.back();
     }
   </script>
   <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
