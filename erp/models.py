@@ -68,27 +68,6 @@ class Motonave(models.Model):
     
     def __str__(self):
         return self.nombre
-
-#----------------------FichaServicio----------------------------------------------------------------------------------------  
-
-class FichaServicio(models.Model):
-    motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='fichas_servicio')
-    numero_servicio = models.IntegerField()
-    tipo_servicio = models.CharField(max_length=100)
-    fecha_inicioFaena = models.DateField()
-    fecha_fin = models.DateField()
-    ESTADOS_delSERVICIO = (
-        ('Nominado', 'Nominado'),
-        ('En Proceso', 'En Proceso'),
-        ('Terminado', 'Terminado'),
-        ('Disponible', 'Disponible'),  # Por defecto
-    )
-    estado_delServicio = models.CharField(max_length=20, choices=ESTADOS_delSERVICIO, default='Disponible')
-    # Otros campos de FichaServicio
-    # ...
-
-    def __str__(self):
-        return f"Ficha de Servicio {self.numero_servicio} - Motonave: {self.motonave.nombre}"
     
 #----------------------ESPECIALIDAD--------------------------------------------------------------------------
 class Especialidad(models.Model):
@@ -218,3 +197,28 @@ class Vario(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+#----------------------FichaServicio----------------------------------------------------------------------------------------  
+
+class FichaServicio(models.Model):
+    motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='fichas_servicio')
+    numero_servicio = models.IntegerField()
+    tipo_servicio = models.CharField(max_length=100)
+    fecha_inicioFaena = models.DateField()
+    fecha_fin = models.DateField()
+    ESTADOS_delSERVICIO = (
+        ('Nominado', 'Nominado'),
+        ('En Proceso', 'En Proceso'),
+        ('Terminado', 'Terminado'),
+        ('Disponible', 'Disponible'),  # Por defecto
+    )
+    estado_delServicio = models.CharField(max_length=20, choices=ESTADOS_delSERVICIO, default='Disponible')
+    
+    # Relaciones de muchos a muchos con Personal, Vehiculo, Quimico y Vario
+    personal_nominado = models.ManyToManyField(Personal, blank=True, related_name='fichas_servicio')
+    vehiculos_nominados = models.ManyToManyField(Vehiculo, blank=True, related_name='fichas_servicio')
+    quimicos_nominados = models.ManyToManyField(Quimico, blank=True, related_name='fichas_servicio')
+    varios_nominados = models.ManyToManyField(Vario, blank=True, related_name='fichas_servicio')
+    
+    def __str__(self):
+        return f"Ficha de Servicio {self.numero_servicio} - Motonave: {self.motonave.nombre}" 
