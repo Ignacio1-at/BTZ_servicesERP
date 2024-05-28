@@ -324,5 +324,51 @@ span::after {
     /* Altura máxima del contenido antes de que aparezca el scroll */
     margin-top: 2vh;
     overflow-y: auto;
+    text-align: center;
     /* Mostrar scroll vertical si el contenido excede la altura máxima */
+}
+
+.ficha-elemento {
+    background-color: #052242;
+    color: white;
+    padding: 40px;
+    width: 18vw;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 3%;
+}
+
+/* Estilos para el modal */
+.modal-dialog {
+    max-width: 50vw !important;
+    /* Ancho máximo del modal */
+    min-width: 30vw !important;
+    /* Ancho mínimo del modal */
+    max-height: 50vh !important;
+}
+
+.modal-content {
+    background-color: #001d43 !important;
+}
+
+.modal-header {
+    background-color: #860909c9;
+    border-bottom: #860909c9 !important;
+}
+
+.modal-title {
+    color: #fff;
+    font-family: 'mifuente';
+}
+
+.modal-body {
+    color: #fff !important;
+    margin-top: 1% !important;
+    margin-right: 5% !important;
+    font-family: 'mifuente';
+}
+
+.modal-footer {
+    border-top: #001d43 !important;
 }

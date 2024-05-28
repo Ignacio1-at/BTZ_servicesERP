@@ -1073,11 +1073,17 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             navegacion = request.POST.get('navegacion')
             
             # Obtener los IDs de los elementos nominados desde el formulario
-            personal_ids = request.POST.getlist('personal_nominado')
-            vehiculo_ids = request.POST.getlist('vehiculos_nominados')
-            quimico_ids = request.POST.getlist('quimicos_nominados')
-            vario_ids = request.POST.getlist('varios_nominados')
-
+            personal_ids_str = request.POST.get('personal_nominado', '')
+            vehiculo_ids_str = request.POST.get('vehiculos_nominados', '')
+            quimico_ids_str = request.POST.get('quimicos_nominados', '')
+            vario_ids_str = request.POST.get('varios_nominados', '')
+            
+            # Convertir cada ID individual a un número entero
+            personal_ids = [int(id) for ids in personal_ids_str.split(',') for id in ids.split() if id.isdigit()]
+            vehiculo_ids = [int(id) for ids in vehiculo_ids_str.split(',') for id in ids.split() if id.isdigit()]
+            quimico_ids = [int(id) for ids in quimico_ids_str.split(',') for id in ids.split() if id.isdigit()]
+            vario_ids = [int(id) for ids in vario_ids_str.split(',') for id in ids.split() if id.isdigit()]
+            
             # Actualizar los campos de la ficha de servicio
             ficha_servicio.tipo_servicio = tipo_servicio
             ficha_servicio.fecha_arribo_cuadrilla = fecha_arribo_cuadrilla
