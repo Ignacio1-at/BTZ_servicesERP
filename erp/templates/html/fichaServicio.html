@@ -178,21 +178,11 @@
           </div>
         </div>
       </div>
-      <!-- ... -->
-      <div class="botones">
-        <button type="button" onclick="goBack()" style="border: none; background: none;">
-            <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
-        </button>
-        <button type="submit" class="guardar">GUARDAR</button>
-      </div>
-    </form>  
+      
+      <!-- FLECHA PA BAJAR -->
+      <div class="arrow-down"></div>
 
-    <!-- FLECHA PA BAJAR -->
-    <div class="arrow-down"></div>
-
-    <!--NOMINACION-->
-    <form method="POST" style="margin-left: 3vw;">
-      {% csrf_token %}
+      <!--NOMINACION-->
       <h3 class="nominacionh3">Nominación</h3>
       
       <!-- TABLERO NOMINACIONES -->
@@ -214,7 +204,7 @@
             </div>
           </div>
         </div>
-  
+
         <div id="columnTerminado" class="columna">
           <h3>Quimicos</h3>
           <div class="lineaGris">
@@ -233,16 +223,16 @@
           </div>
         </div>
       </div>
-
+      <!-- ... -->
+      <div class="botones">
+        <button type="button" onclick="goBack()" style="border: none; background: none;">
+            <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
+        </button>
+        <button type="submit" class="guardar">GUARDAR</button>
+      </div>
       <!-- Campos similares para quimicos_nominados y varios_nominados -->
     </form>
 
-    <div class="botones">
-      <button type="button" onclick="goBack()" style="border: none; background: none;">
-        <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
-      </button>
-      <button type="submit" class="guardar">GUARDAR</button>
-    </div>
   </div>
 {% endblock %}
 

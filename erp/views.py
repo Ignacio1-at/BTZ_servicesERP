@@ -1033,22 +1033,6 @@ def ficha_servicio(request, servicio_id):
         ficha_servicio = FichaServicio.objects.get(id=servicio_id)
         motonave = ficha_servicio.motonave
 
-        if request.method == 'POST':
-            # Obtener los IDs de los elementos nominados desde el formulario
-            personal_ids = request.POST.getlist('personal_nominado')
-            vehiculo_ids = request.POST.getlist('vehiculos_nominados')
-            quimico_ids = request.POST.getlist('quimicos_nominados')
-            vario_ids = request.POST.getlist('varios_nominados')
-
-            # Actualizar las nominaciones en la ficha de servicio
-            ficha_servicio.personal_nominado.set(personal_ids)
-            ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
-            ficha_servicio.quimicos_nominados.set(quimico_ids)
-            ficha_servicio.varios_nominados.set(vario_ids)
-
-            # Redireccionar a la misma página después de guardar las nominaciones
-            return redirect('ficha_servicio', servicio_id=servicio_id)
-
         # Obtener los datos para mostrar en el formulario de nominación
         personal = Personal.objects.all()
         vehiculos = Vehiculo.objects.all()
@@ -1087,6 +1071,12 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             lancha_grua = request.POST.get('lancha_grua')
             arriendo_bomba = request.POST.get('arriendo_bomba')
             navegacion = request.POST.get('navegacion')
+            
+            # Obtener los IDs de los elementos nominados desde el formulario
+            personal_ids = request.POST.getlist('personal_nominado')
+            vehiculo_ids = request.POST.getlist('vehiculos_nominados')
+            quimico_ids = request.POST.getlist('quimicos_nominados')
+            vario_ids = request.POST.getlist('varios_nominados')
 
             # Actualizar los campos de la ficha de servicio
             ficha_servicio.tipo_servicio = tipo_servicio
@@ -1096,6 +1086,12 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             ficha_servicio.lancha_grua = lancha_grua
             ficha_servicio.arriendo_bomba = arriendo_bomba
             ficha_servicio.navegacion = navegacion
+            
+            # Actualizar las nominaciones en la ficha de servicio
+            ficha_servicio.personal_nominado.set(personal_ids)
+            ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
+            ficha_servicio.quimicos_nominados.set(quimico_ids)
+            ficha_servicio.varios_nominados.set(vario_ids)
 
             # Guardar los cambios en la ficha de servicio
             ficha_servicio.save()
@@ -1107,6 +1103,7 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
 
             url = reverse('erp:gestor-operaciones') + '?open_modal=true&nombre_motonave=' + nombre_motonave
             return redirect(url)
+
     except FichaServicio.DoesNotExist:
         messages.error(request, 'No se encontró la ficha de servicio.')
 
