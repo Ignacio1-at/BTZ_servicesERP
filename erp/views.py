@@ -13,9 +13,6 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 
-#---Excel
-#---------------------------------------------------
-
 def home(request):
     return render(request, 'html/home.html')
 
