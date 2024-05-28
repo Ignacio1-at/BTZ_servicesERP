@@ -55,74 +55,78 @@ function obtenerDetallesVehiculo(vehiculoId) {
 function mostrarDetallesModalVisualizacion(vehiculo) {
     // Construir el contenido del modal en modo visualización
     var modalContent = `
-        <div class="modal-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col"><strong>Marca:</strong></div>
-                    <div class="col">${vehiculo.marca}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Modelo:</strong></div>
-                    <div class="col">${vehiculo.modelo}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Color:</strong></div>
-                    <div class="col">${vehiculo.color}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Número de Motor:</strong></div>
-                    <div class="col">${vehiculo.numero_motor}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Número de Chasis:</strong></div>
-                    <div class="col">${vehiculo.numero_chasis}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Cilindrada:</strong></div>
-                    <div class="col">${vehiculo.cilindrada}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Tipo de Vehículo:</strong></div>
-                    <div class="col">${vehiculo.tipo_vehiculo}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Primer Ingreso:</strong></div>
-                    <div class="col">${vehiculo.primer_ingreso}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Patente:</strong></div>
-                    <div class="col">${vehiculo.patente}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Fecha de Permiso de Circulación:</strong></div>
-                    <div class="col">${vehiculo.fecha_permiso_circulacion}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Fecha SOAP:</strong></div>
-                    <div class="col">${vehiculo.fecha_soap}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Fecha de Revisión Técnica:</strong></div>
-                    <div class="col">${vehiculo.fecha_revision_tecnica}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Nombre del Seguro:</strong></div>
-                    <div class="col">${vehiculo.seguro_nombre}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Número de Póliza:</strong></div>
-                    <div class="col">${vehiculo.seguro_poliza}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Tipo de Combustible:</strong></div>
-                    <div class="col">${vehiculo.tipo_combustible}</div>
-                </div>
-                <div class="row">
-                    <div class="col"><strong>Estado:</strong></div>
-                    <div class="col">${vehiculo.estado}</div>
+    <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
+        <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales">
+            <div class="modal-body">
+                <div class="container" style="padding: 1px !important;">
+                    <div class="row">
+                        <div class="col"><strong>Marca:</strong></div>
+                        <div class="col">${vehiculo.marca}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Modelo:</strong></div>
+                        <div class="col">${vehiculo.modelo}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Color:</strong></div>
+                        <div class="col">${vehiculo.color}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Número de Motor:</strong></div>
+                        <div class="col">${vehiculo.numero_motor}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Número de Chasis:</strong></div>
+                        <div class="col">${vehiculo.numero_chasis}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Cilindrada:</strong></div>
+                        <div class="col">${vehiculo.cilindrada}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Tipo de Vehículo:</strong></div>
+                        <div class="col">${vehiculo.tipo_vehiculo}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Primer Ingreso:</strong></div>
+                        <div class="col">${vehiculo.primer_ingreso}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Patente:</strong></div>
+                        <div class="col">${vehiculo.patente}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Fecha de Permiso de Circulación:</strong></div>
+                        <div class="col">${vehiculo.fecha_permiso_circulacion}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Fecha SOAP:</strong></div>
+                        <div class="col">${vehiculo.fecha_soap}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Fecha de Revisión Técnica:</strong></div>
+                        <div class="col">${vehiculo.fecha_revision_tecnica}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Nombre del Seguro:</strong></div>
+                        <div class="col">${vehiculo.seguro_nombre}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Número de Póliza:</strong></div>
+                        <div class="col">${vehiculo.seguro_poliza}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Tipo de Combustible:</strong></div>
+                        <div class="col">${vehiculo.tipo_combustible}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Estado:</strong></div>
+                        <div class="col">${vehiculo.estado}</div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     `;
 
     // Actualizar el contenido del modal y ocultar el botón de guardar
@@ -305,7 +309,7 @@ function guardarCambiosVehiculo() {
         validarCampoUnicoCambio(numeroMotor, 'numero_motor', vehiculoId),
         validarCampoUnicoCambio(numeroChasis, 'numero_chasis', vehiculoId),
         validarCampoUnicoCambio(patente, 'patente', vehiculoId)
-    ).done(function(resultMotor, resultChasis, resultPatente) {
+    ).done(function (resultMotor, resultChasis, resultPatente) {
         if (resultMotor[0] === false || resultChasis[0] === false || resultPatente[0] === false) {
             // Al menos uno de los campos no es único, no se envían los datos al servidor
             return;
@@ -345,7 +349,7 @@ function guardarCambiosVehiculo() {
             success: function (response) {
                 if (response.success) {
                     console.log("Cambios guardados exitosamente:", response);
-                    $('#tablaVehiculo').load(location.href + ' #tablaVehiculo>*', function() {
+                    $('#tablaVehiculo').load(location.href + ' #tablaVehiculo>*', function () {
                         $('#modalDetalleVehiculo').modal('hide');
                     });
                 } else {
@@ -373,13 +377,13 @@ function validarCampoUnicoCambio(valor, campo, vehiculoId) {
             vehiculo_id: vehiculoId,
             csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
         }
-    }).then(function(response) {
+    }).then(function (response) {
         if (response.existe) {
             alert("El " + campo + " ingresado ya existe en otro vehículo.");
             return false;
         }
         return true;
-    }).fail(function(xhr, status, error) {
+    }).fail(function (xhr, status, error) {
         console.log('Error en la solicitud de validación:', error);
         alert("Ocurrió un error al validar el " + campo + ". Por favor, intenta nuevamente.");
         return false;

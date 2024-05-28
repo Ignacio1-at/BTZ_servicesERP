@@ -32,13 +32,19 @@ menu{
     background-color: #01152a; 
     border-radius: 10px; 
     overflow-y: auto;
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 .table{
     color: white !important;
+    border-color: #263749;
     margin-top: 1vh;
-    text-align: center;
+    text-align: left;
+    margin-left: 1vw;
+}
+
+.table>:not(:last-child)>:last-child>* {
+    border-bottom-color: #263749;
 }
 
 .contenido-principal {
@@ -183,8 +189,6 @@ menu{
     border-top: #001d43 !important;
 }
 
-
-
 .btn.btn-danger{
     border: none;
     background-color: transparent;
@@ -221,7 +225,7 @@ menu{
 .headerhistorialDocumentacion{
     background: #01172f;
     border-radius: 10px;
-    width: 30vw;
+    width: 25vw;
 }
 
 .bodyhistorialDocumentacion{
@@ -234,7 +238,7 @@ menu{
 .headerEstado{
     background: #01172f;
     border-radius: 10px;
-    width: 15vw;
+    width: 10vw;
 }
 
 .bodyEstado{
@@ -246,18 +250,28 @@ menu{
 
 .form-control {
     border-radius: 10px !important;
-
 }
 
 .form-select{
     border-radius: 10px !important;
-
 }
 
 .inputHeaderDatosGenerales{
     background: #01172f;
     border-radius: 10px;
     width: 17vw;
+}
+
+.inputHeaderDatosGeneralesQuimico{
+    background: #01172f;
+    border-radius: 10px;
+    width: 8vw;
+}
+
+.inputHeaderDatosGeneralesVario{
+    background: #01172f;
+    border-radius: 10px;
+    width: 8vw;
 }
 
 .inputBodyDatosGenerales{
@@ -268,4 +282,8 @@ menu{
     margin-bottom: 2vh;
 }
 
-/* DETALLES AUTO */
+
+.inputTextoDatosGenerales .form-label {
+    margin-bottom: .5rem;
+    width: 100vw;
+}

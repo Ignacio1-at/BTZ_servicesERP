@@ -1,5 +1,4 @@
 function obtenerServiciosMotonave(nombreMotonave) {
-    console.log('Nombre de la motonave:', nombreMotonave);
 
     $.ajax({
         url: obtenerServicioMotonaveURL,
@@ -40,6 +39,9 @@ function obtenerServiciosMotonave(nombreMotonave) {
                     '</tr>';
                 $('#tablaServicios tbody').append(fila);
             });
+
+            // Llamar a la función para ordenar la tabla automáticamente
+            sortTable(0);
             // Agregar el atributo data-nombre-motonave al botón "Crear Servicio"
             $('#btnCrearServicio').attr('data-nombre-motonave', nombreMotonave);
         },
@@ -97,9 +99,9 @@ function nominacion(servicioId) {
 
 function agregarServicio(nombreMotonave, servicioId) {
     console.log('Agregar servicio con ID:', servicioId);
-    
+
     // Construye la URL con el parámetro servicio_id
-    var urlConParametros = fichaServicioURL + "?servicio_id=" + servicioId;
+    var urlConParametros = fichaServicioURL + servicioId + "/";
 
     // Redirige a la URL construida
     window.location.href = urlConParametros;
@@ -172,3 +174,8 @@ function visualizarServicio(nombreMotonave, servicioId) {
     // Implementa la lógica que deseas para el botón de visualizar servicio
 }
 
+$('#modalGestionarServicios').on('hidden.bs.modal', function () {
+    // Actualizar la URL eliminando los parámetros open_modal y nombre_motonave
+    var newUrl = window.location.pathname;
+    window.history.pushState({}, '', newUrl);
+});

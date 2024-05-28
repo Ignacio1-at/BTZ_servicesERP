@@ -91,8 +91,6 @@ $(document).ready(function () {
         // Obtener los datos del formulario
         var formData = $('#formCrearServicio').serialize();
 
-        console.log(formData)
-
         // Obtener la fecha de nominación actual
         var fechaNominacion = new Date().toISOString().split('T')[0];
 
@@ -113,7 +111,11 @@ $(document).ready(function () {
 
                 // Si la respuesta del servidor es verdadera (true), abrir el modal de gestión de servicios
                 if (response.success) {
-                    location.reload();
+                    // Obtener el nombre de la motonave desde los datos del formulario
+                    var formData = $('#formCrearServicio').serialize();
+                    var nombreMotonave = getParameterByName('nombreMotonave', formData);
+                    abrirModalGestionServicios(nombreMotonave);
+                    actualizarTableroMotonaves();
                 }
             },
             error: function (xhr, status, error) {
@@ -123,6 +125,25 @@ $(document).ready(function () {
         });
     });
 });
+
+function getParameterByName(name, url) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function abrirModalGestionServicios(nombreMotonave) {
+    // Abrir el modal
+    $('#modalGestionarServicios').modal('show');
+
+    // Establecer el título del modal con el nombre de la motonave
+    $('#nombreMotonaveSeleccionada').text(nombreMotonave);
+    // Cargar los servicios de la motonave
+    obtenerServiciosMotonave(nombreMotonave);
+}
 
 // Función para eliminar el servicio
 function eliminarServicioMotonave(nombreMotonave) {

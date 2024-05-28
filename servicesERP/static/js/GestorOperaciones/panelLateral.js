@@ -1,4 +1,4 @@
-function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual, puerto, proxPuerto, procedencia_carga, armador, agencia ) {
+function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual, puerto, proxPuerto, procedencia_carga, armador, agencia) {
     $('#panelLateral').css('width', '30vw');
     $('#panelLateral').css('height', '100vh');
     $('#panelNombre h4').text(nombreMotonave); // Establecer el nombre de la motonave
@@ -33,8 +33,7 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, canti
 
     // Agregar evento de clic al botón "AbrirGestorServicio" y pasar el nombre de la motonave
     $('#AbrirGestorServicio').off('click').on('click', function () {
-        obtenerServiciosMotonave(nombreMotonave);
-        $('#modalGestionarServicios').modal('show'); // Abrir el modal de gestor de servicios
+        abrirModalGestionServicios(nombreMotonave);
         $('#panelLateral').css('width', '0');
     });
 }

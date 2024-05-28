@@ -42,8 +42,8 @@ function abrirModalQuimico(quimicoId) {
 function mostrarDetallesQuimicoVisualizacion(quimico) {
     var contenidoModal = `
         <div class="datosGenerales" id="datosGenerales">
-            <div class="headerDatosGenerales" id="headerDatosGenerales">
-                <p style="font-size: 2.5vh;">Datos Generales</p>
+            <div class="inputHeaderDatosGeneralesQuimico" id="inputHeaderDatosGeneralesQuimico">
+                <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales" id="bodyDatosGenerales">
                 <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
@@ -56,7 +56,7 @@ function mostrarDetallesQuimicoVisualizacion(quimico) {
         </div>
         <div class="Estado" id="Estado">
             <div class="headerEstado" id="headerEstado">
-                <p style="font-size: 2.5vh;">Estado</p>
+                <p style="font-size: 2.5vh; margin-left: 2vw;">Estado</p>
             </div>
             <div class="bodyEstado" id="bodyEstado">
                 <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
@@ -85,17 +85,16 @@ function cambiarModoQuimico(quimico) {
 }
 
 // Función para mostrar los detalles del químico en modo edición
-// Función para mostrar los detalles del químico en modo edición
 function mostrarDetallesQuimicoEdicion(quimico) {
     var contenidoModal = `
         <div class="datosGenerales" id="datosGenerales">
-            <div class="headerDatosGenerales" id="headerDatosGenerales">
-                <p style="font-size: 2.5vh;">Datos Generales</p>
+            <div class="inputHeaderDatosGeneralesQuimico" id="inputHeaderDatosGeneralesQuimico">
+                <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales" id="bodyDatosGenerales">
                 <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
                     <p><strong>Tipo de Químico:</strong> 
-                        <select id="tipoQuimicoInput${quimico.id}">
+                        <select id="tipoQuimicoInput${quimico.id}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 3px;">
                             <option value="Bidones OCN 01" ${quimico.tipo_quimico === 'Bidones OCN 01' ? 'selected' : ''}>Bidones OCN 01</option>
                             <option value="Bidones OCN 08" ${quimico.tipo_quimico === 'Bidones OCN 08' ? 'selected' : ''}>Bidones OCN 08</option>
                             <option value="Bidones Acido Clorhídrico" ${quimico.tipo_quimico === 'Bidones Acido Clorhídrico' ? 'selected' : ''}>Bidones Acido Clorhídrico</option>
@@ -103,14 +102,14 @@ function mostrarDetallesQuimicoEdicion(quimico) {
                             <option value="Bidones Hold Coat" ${quimico.tipo_quimico === 'Bidones Hold Coat' ? 'selected' : ''}>Bidones Hold Coat</option>
                         </select>
                     </p>
-                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput${quimico.id}" value="${quimico.fecha_ingreso}"></p>
-                    <p><strong>Número de Factura:</strong> <input type="number" id="numeroFacturaInput${quimico.id}" value="${quimico.numero_factura}"></p>
-                    <p><strong>Litros Ingresados:</strong> <input type="number" id="litrosIngresoInput${quimico.id}" value="${quimico.litros_ingreso}"></p>
+                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput${quimico.id}" value="${quimico.fecha_ingreso}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;"></p>
+                    <p><strong>Número de Factura:</strong> <input type="number" id="numeroFacturaInput${quimico.id}" value="${quimico.numero_factura}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;"></p>
+                    <p><strong>Litros Ingresados:</strong> <input type="number" id="litrosIngresoInput${quimico.id}" value="${quimico.litros_ingreso}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;"></p>
                 </div>
             </div>
         </div>
     `;
-
+    
     $(`#modalBodyQuimico${quimico.id}`).html(contenidoModal);
     $(`#btnGuardarQuimico${quimico.id}`).show();
 }

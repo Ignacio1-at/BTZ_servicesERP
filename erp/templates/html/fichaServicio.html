@@ -40,7 +40,7 @@
           </div>
           <div>
             {% with puerto_selected=motonave.puerto %}
-              <select name="puerto" id="puerto">
+              <select name="puerto" id="puerto" required>
                 <option value="Puerto de Ancud" {% if puerto_selected == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
                 <option value="Puerto de Antofagasta" {% if puerto_selected == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
                 <option value="Puerto de Arica" {% if puerto_selected == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
@@ -72,22 +72,22 @@
             <label>PUERTO</label>
           </div>
           <div>
-            <input type="text" name="procedencia_carga" value="{{ motonave.procedenciaCarga }}" />
+            <input type="text" name="procedencia_carga" value="{{ motonave.procedenciaCarga }}" required/>
             <label>PROCEDENCIA CARGA</label>
           </div>
         </div>
         <div class="fila-dosNavio">
           <div>
-            <input type="text" name="armador" value="{{ motonave.armador }}" />
+            <input type="text" name="armador" value="{{ motonave.armador }}" required/>
             <label>ARMADOR</label>
           </div>
           <div>
-            <input type="text" name="agencia" value="{{ motonave.agencia }}" />
+            <input type="text" name="agencia" value="{{ motonave.agencia }}" required/>
             <label>AGENCIA</label>
           </div>
           <div>
             {% with prox_puerto_selected=motonave.prox_puerto %}
-              <select name="puerto" id="puerto">
+              <select name="prox puerto" id="proxPuerto" required>
                 <option value="Puerto de Ancud" {% if prox_puerto_selected == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
                 <option value="Puerto de Antofagasta" {% if prox_puerto_selected == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
                 <option value="Puerto de Arica" {% if prox_puerto_selected == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
@@ -122,72 +122,126 @@
         </div>
       </div>
     </div>
-
-    <div class="datos-servicio">
-      <h3>DATOS DEL SERVICIO</h3>
-      <div class="direccion-servicio">
-        <div class="fila-unoServicio">
-          <div>
-            <input type="text" name="tipo_servicio" />
-            <label>TIPO SERVICIO</label>
+    
+    <form method="POST" action="{% url 'erp:actualizar_ficha_servicio_por_id' servicio_id=ficha_servicio.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="nombre_motonave" value="{{ motonave.nombre }}"/>
+      <div class="datos-servicio">
+        <h3>DATOS DEL SERVICIO</h3>
+        <div class="direccion-servicio">
+          <div class="fila-unoServicio">
+            <div>
+              <input type="text" name="tipo_servicio" required/>
+              <label>TIPO SERVICIO</label>
+            </div>
+            <div>
+              <input type="date" name="fecha_arribo_cuadrilla" required/>
+              <label>FECHA ARRIBO CUADRILLA</label>
+            </div>
+            <div>
+              <input type="number" name="bodegas_a_realizar" required/>
+              <label>BODEGAS A REALIZAR</label>
+            </div>
+            <div>
+              <select name="hospedaje_desayuno" id="hospedaje_desayuno" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+                <option value="NO_APLICA">NO APLICA</option>
+              </select>
+              <label>HOSPEDAJE/DESAYUNO</label>
+            </div>
           </div>
-          <div>
-            <input type="date" name="fecha_arribo_cuadrilla" />
-            <label>FECHA ARRIBO CUADRILLA</label>
-          </div>
-          <div>
-            <input type="text" name="bodegas_a_realizar" />
-            <label>BODEGAS A REALIZAR</label>
-          </div>
-          <div>
-            <input type="text" name="hospedaje_desayuno" />
-            <label>HOSPEDAJE/DESAYUNO</label>
-          </div>
-        </div>
-        <div class="fila-dosServicio">
-          <div>
-            <input type="text" name="lancha_grua" />
-            <label>LANCHA/GRUA</label>
-          </div>
-          <div>
-            <input type="text" name="arriendo_bomba" />
-            <label>ARRIENDO BOMBA</label>
-          </div>
-          <div>
-            <input type="text" name="navegacion" />
-            <label>NAVEGACION</label>
+          <div class="fila-dosServicio">
+            <div>
+              <select name="lancha_grua" id="lancha_grua" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+                <option value="NO_APLICA">NO APLICA</option>
+              </select>
+              <label>LANCHA/GRUA</label>
+            </div>
+            <div>
+              <select name="arriendo_bomba" id="arriendo_bomba" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+                <option value="NO_APLICA">NO APLICA</option>
+              </select>
+              <label>ARRIENDO BOMBA</label>
+            </div>
+            <div>
+              <input type="text" name="navegacion" required/>
+              <label>NAVEGACION</label>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <!-- ... -->
+      <div class="botones">
+        <button type="button" onclick="goBack()" style="border: none; background: none;">
+            <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
+        </button>
+        <button type="submit" class="guardar">GUARDAR</button>
+      </div>
+    </form>  
 
-    <form method="POST">
+    <!-- FLECHA PA BAJAR -->
+    <div class="arrow-down"></div>
+
+    <!--NOMINACION-->
+    <form method="POST" style="margin-left: 3vw;">
       {% csrf_token %}
-      <h3>Nominar Personal</h3>
-      <select name="personal_nominado" multiple>
-        {% for persona in personal %}
-          <option value="{{ persona.id }}" {% if persona in ficha_servicio.personal_nominado.all %}selected{% endif %}>{{ persona.nombre }}</option>
-        {% endfor %}
-      </select>
+      <h3 class="nominacionh3">Nominación</h3>
+      
+      <!-- TABLERO NOMINACIONES -->
+      <div class="cuadro-azul" id="tableroMotonaves">
+        <div id="columnNominado" class="columna">
+          <h3>Personal</h3>
+          <div class="lineaGris">
+            <div class="columna-contenido">
+            
+            </div>
+          </div>
+        </div>
+        
+        <div id="columnEnProceso" class="columna">
+          <h3>Vehículos</h3>
+          <div class="lineaGris">
+            <div class="columna-contenido">
+              
+            </div>
+          </div>
+        </div>
+  
+        <div id="columnTerminado" class="columna">
+          <h3>Quimicos</h3>
+          <div class="lineaGris">
+            <div class="columna-contenido">
+              
+            </div>
+          </div>
+        </div>
 
-      <h3>Nominar Vehículos</h3>
-      <select name="vehiculos_nominados" multiple>
-        {% for vehiculo in vehiculos %}
-          <option value="{{ vehiculo.id }}" {% if vehiculo in ficha_servicio.vehiculos_nominados.all %}selected{% endif %}>{{ vehiculo.patente }}</option>
-        {% endfor %}
-      </select>
+        <div id="columnTerminado" class="columna">
+          <h3>Varios</h3>
+          <div class="sinLineaGris">
+            <div class="columna-contenido">
+              
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Campos similares para quimicos_nominados y varios_nominados -->
-
-      <button type="submit">Guardar Nominaciones</button>
     </form>
 
     <div class="botones">
       <button type="button" onclick="goBack()" style="border: none; background: none;">
         <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
       </button>
-      <button class="guardar">GUARDAR</button>
-      <button class="siguiente">SIGUIENTE</button>
+      <button type="submit" class="guardar">GUARDAR</button>
     </div>
   </div>
 {% endblock %}

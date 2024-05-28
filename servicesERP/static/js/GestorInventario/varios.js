@@ -40,8 +40,8 @@ function abrirModalVario(varioId) {
 function mostrarDetallesVarioVisualizacion(vario) {
     var contenidoModal = `
         <div class="datosGenerales">
-            <div class="headerDatosGenerales">
-                <p style="font-size: 2.5vh;">Datos Generales</p>
+            <div class="inputHeaderDatosGeneralesQuimico">
+                <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales">
                 <div class="textoDatosGenerales" style="margin-left: 3vw;">
@@ -51,7 +51,7 @@ function mostrarDetallesVarioVisualizacion(vario) {
             </div>
             <div class="Estado">
                 <div class="headerEstado">
-                    <p style="font-size: 2.5vh;">Estado</p>
+                    <p style="font-size: 2.5vh; margin-left: 2vw;"">Estado</p>
                 </div>
                 <div class="bodyEstado">
                     <div class="textoEstado" style="margin-left: 3vw;">
@@ -84,13 +84,13 @@ function cambiarModoVario(vario) {
 function mostrarDetallesVarioEdicion(vario) {
     var contenidoModal = `
         <div class="datosGenerales">
-            <div class="headerDatosGenerales">
-                <p style="font-size: 2.5vh;">Datos Generales</p>
+            <div class="inputHeaderDatosGeneralesQuimico">
+                <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales" id="bodyDatosGenerales">
                 <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
-                    <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${vario.nombre}" required></p>
-                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput" value="${vario.fecha_ingreso}" required></p>
+                    <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${vario.nombre}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;" required></p>
+                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput" value="${vario.fecha_ingreso}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;" required></p>
                 </div>
             </div>
         </div>

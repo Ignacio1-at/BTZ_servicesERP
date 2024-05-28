@@ -54,14 +54,27 @@ def menu_view(request):
 @login_required
 def gestorOperaciones(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    
+
     # Recuperar todas las motonaves de la base de datos
     motonaves = Motonave.objects.all()
 
     # Obtener las motonaves en formato JSON para usar en JavaScript
     motonaves_json = [{'nombre': motonave.nombre} for motonave in motonaves]
 
-    return render(request, 'html/gestorOperaciones.html', {'nombre_usuario': nombre_usuario, 'motonaves': motonaves, 'motonaves_json': motonaves_json})
+    # Obtener el nombre de la motonave desde la URL
+    nombre_motonave = request.GET.get('nombre_motonave', None)
+
+    open_modal = request.GET.get('open_modal', False)
+
+    context = {
+        'nombre_usuario': nombre_usuario,
+        'motonaves': motonaves,
+        'motonaves_json': motonaves_json,
+        'open_modal': open_modal,
+        'nombre_motonave': nombre_motonave,
+    }
+
+    return render(request, 'html/gestorOperaciones.html', context)
 
 #-----------------Crear Motonaves
 @login_required
@@ -1014,61 +1027,90 @@ def guardar_cambios_quimico(request):
     else:
         return JsonResponse({'error': 'Se espera una solicitud POST'}, status=405)
 
-#-------------------Ficha Servicio dirigir
+#-------------------Ficha Servicio especifica x id
 @login_required
-def ficha_servicio(request):
+def ficha_servicio(request, servicio_id):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    servicio_id = request.GET.get('servicio_id')
 
-    if servicio_id:
-        try:
-            ficha_servicio = FichaServicio.objects.get(id=servicio_id)
-            motonave = ficha_servicio.motonave
+    try:
+        ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+        motonave = ficha_servicio.motonave
 
-            if request.method == 'POST':
-                # Obtener los IDs de los elementos nominados desde el formulario
-                personal_ids = request.POST.getlist('personal_nominado')
-                vehiculo_ids = request.POST.getlist('vehiculos_nominados')
-                quimico_ids = request.POST.getlist('quimicos_nominados')
-                vario_ids = request.POST.getlist('varios_nominados')
+        if request.method == 'POST':
+            # Obtener los IDs de los elementos nominados desde el formulario
+            personal_ids = request.POST.getlist('personal_nominado')
+            vehiculo_ids = request.POST.getlist('vehiculos_nominados')
+            quimico_ids = request.POST.getlist('quimicos_nominados')
+            vario_ids = request.POST.getlist('varios_nominados')
 
-                # Actualizar las nominaciones en la ficha de servicio
-                ficha_servicio.personal_nominado.set(personal_ids)
-                ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
-                ficha_servicio.quimicos_nominados.set(quimico_ids)
-                ficha_servicio.varios_nominados.set(vario_ids)
+            # Actualizar las nominaciones en la ficha de servicio
+            ficha_servicio.personal_nominado.set(personal_ids)
+            ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
+            ficha_servicio.quimicos_nominados.set(quimico_ids)
+            ficha_servicio.varios_nominados.set(vario_ids)
 
-                # Redireccionar a la misma página después de guardar las nominaciones
-                return redirect('ficha_servicio')
+            # Redireccionar a la misma página después de guardar las nominaciones
+            return redirect('ficha_servicio', servicio_id=servicio_id)
 
-            # Obtener los datos para mostrar en el formulario de nominación
-            personal = Personal.objects.all()
-            vehiculos = Vehiculo.objects.all()
-            quimicos = Quimico.objects.all()
-            varios = Vario.objects.all()
+        # Obtener los datos para mostrar en el formulario de nominación
+        personal = Personal.objects.all()
+        vehiculos = Vehiculo.objects.all()
+        quimicos = Quimico.objects.all()
+        varios = Vario.objects.all()
 
-            context = {
-                'ficha_servicio': ficha_servicio,
-                'motonave': motonave,
-                'nombre_usuario': nombre_usuario,
-                'personal': personal,
-                'vehiculos': vehiculos,
-                'quimicos': quimicos,
-                'varios': varios
-            }
-            return render(request, 'html/fichaServicio.html', context)
+        context = {
+            'ficha_servicio': ficha_servicio,
+            'motonave': motonave,
+            'nombre_usuario': nombre_usuario,
+            'personal': personal,
+            'vehiculos': vehiculos,
+            'quimicos': quimicos,
+            'varios': varios
+        }
 
-        except FichaServicio.DoesNotExist:
-            # Manejar el caso en que no se encuentre la ficha de servicio
-            context = {
-                'servicio_id': servicio_id,
-                'nombre_usuario': nombre_usuario
-            }
-            return render(request, 'html/fichaServicio.html', context)
+        return render(request, 'html/fichaServicio.html', context)
 
-    else:
-        # Manejar el caso en que no se proporcione el servicio_id
+    except FichaServicio.DoesNotExist:
+        # Manejar el caso en que no se encuentre la ficha de servicio
         context = {
             'nombre_usuario': nombre_usuario
         }
         return render(request, 'html/fichaServicio.html', context)
+    
+#-------------------Actualizar Ficha Servicio x ID. 
+@login_required
+def actualizar_ficha_servicio_por_id(request, servicio_id):
+    try:
+        ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+        if request.method == 'POST':
+            tipo_servicio = request.POST.get('tipo_servicio')
+            fecha_arribo_cuadrilla = request.POST.get('fecha_arribo_cuadrilla')
+            bodegas_a_realizar = request.POST.get('bodegas_a_realizar')
+            hospedaje_desayuno = request.POST.get('hospedaje_desayuno')
+            lancha_grua = request.POST.get('lancha_grua')
+            arriendo_bomba = request.POST.get('arriendo_bomba')
+            navegacion = request.POST.get('navegacion')
+
+            # Actualizar los campos de la ficha de servicio
+            ficha_servicio.tipo_servicio = tipo_servicio
+            ficha_servicio.fecha_arribo_cuadrilla = fecha_arribo_cuadrilla
+            ficha_servicio.bodegas_a_realizar = bodegas_a_realizar
+            ficha_servicio.hospedaje_desayuno = hospedaje_desayuno
+            ficha_servicio.lancha_grua = lancha_grua
+            ficha_servicio.arriendo_bomba = arriendo_bomba
+            ficha_servicio.navegacion = navegacion
+
+            # Guardar los cambios en la ficha de servicio
+            ficha_servicio.save()
+
+            messages.success(request, 'La ficha de servicio se ha actualizado correctamente.')
+
+            # Obtener el nombre de la motonave
+            nombre_motonave = ficha_servicio.motonave.nombre
+
+            url = reverse('erp:gestor-operaciones') + '?open_modal=true&nombre_motonave=' + nombre_motonave
+            return redirect(url)
+    except FichaServicio.DoesNotExist:
+        messages.error(request, 'No se encontró la ficha de servicio.')
+
+    return redirect('erp:gestor-operaciones')

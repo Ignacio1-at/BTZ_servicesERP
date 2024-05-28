@@ -203,9 +203,15 @@ class Vario(models.Model):
 class FichaServicio(models.Model):
     motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='fichas_servicio')
     numero_servicio = models.IntegerField()
-    tipo_servicio = models.CharField(max_length=100)
+    tipo_servicio = models.CharField(max_length=100, null=True, blank=True)
     fecha_inicioFaena = models.DateField()
     fecha_fin = models.DateField()
+    fecha_arribo_cuadrilla = models.DateField(null=True, blank=True)
+    bodegas_a_realizar = models.CharField(max_length=100, null=True, blank=True)
+    hospedaje_desayuno = models.CharField(max_length=100, null=True, blank=True)
+    lancha_grua = models.CharField(max_length=100, null=True, blank=True)
+    arriendo_bomba = models.CharField(max_length=100, null=True, blank=True)
+    navegacion = models.CharField(max_length=100, null=True, blank=True)
     ESTADOS_delSERVICIO = (
         ('Nominado', 'Nominado'),
         ('En Proceso', 'En Proceso'),

@@ -20,7 +20,7 @@
             <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
             <img src="{% static 'images/LogoRRHH.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 5vh;" />
             <span style="color: white; margin-left: 1vw; font-size: 2vh; margin-right: 5vw;">Recursos Humanos</span>
-            <input class="bg-personalizado rounded-pill" type="text" id="Buscar" placeholder="   Buscar" style="color: #ffffff; background-color: #01152a; border: none;" oninput="filtrarPersonal()" />
+            <input class="buscador rounded-pill" type="text" id="Buscar" placeholder="Buscar" oninput="filtrarPersonal()" />
           </div>
         </div>
       </div>
@@ -29,7 +29,10 @@
     <div class="row mt-4">
       <div class="col-md-3" style="width: 100vw;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <button type="button" class="btn btn-personalizado" onclick="abrirModalAgregarPersonal()" style="background-color: #860909c9;border-radius: 10px; margin-bottom: 60vh; margin-right: 5vw;">+ Agregar Personal</button>
+          <button type="button" class="botonAgregarPersonal" onclick="abrirModalAgregarPersonal()">
+            <img src="{% static 'images/mas.png' %}" alt="Icono" class="icono-boton" />
+            Agregar Personal
+          </button>
 
           <div class="cuadro-azul">
             <div class="table-header">
@@ -71,7 +74,7 @@
                         <td>{{ personal.estado }}</td>
                         <td>
                           <!-- Botón para ver detalles -->
-                          <button type="button" style="border: none; background: none;" class="btn btn-personalizado" onclick="abrirDetallePersonal('{{ personal.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
+                          <button type="button" style="border: none; background: none; padding: 1px;" class="btn btn-personalizado" onclick="abrirDetallePersonal('{{ personal.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
                           <!-- Formulario para eliminar -->
                           <form id="formEliminarPersonal{{ personal.id }}" method="POST" action="{% url 'erp:eliminar_personal' personal.id %}" style="display: inline-block;">
                             {% csrf_token %}
