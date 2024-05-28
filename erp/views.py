@@ -1098,6 +1098,8 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
             ficha_servicio.quimicos_nominados.set(quimico_ids)
             ficha_servicio.varios_nominados.set(vario_ids)
+            
+            ficha_servicio.estado_delServicio = 'En Proceso'
 
             # Guardar los cambios en la ficha de servicio
             ficha_servicio.save()
