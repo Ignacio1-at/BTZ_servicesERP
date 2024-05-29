@@ -1057,8 +1057,8 @@ def ficha_servicio(request, servicio_id):
             'nombre_usuario': nombre_usuario
         }
         return render(request, 'html/fichaServicio.html', context)
-    
-#-------------------Actualizar Ficha Servicio x ID. 
+
+#-------------------Actualizar Ficha Servicio x ID.     
 @login_required
 def actualizar_ficha_servicio_por_id(request, servicio_id):
     try:
@@ -1071,19 +1071,50 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             lancha_grua = request.POST.get('lancha_grua')
             arriendo_bomba = request.POST.get('arriendo_bomba')
             navegacion = request.POST.get('navegacion')
-            
+
             # Obtener los IDs de los elementos nominados desde el formulario
-            personal_ids_str = request.POST.get('personal_nominado', '')
-            vehiculo_ids_str = request.POST.get('vehiculos_nominados', '')
-            quimico_ids_str = request.POST.get('quimicos_nominados', '')
-            vario_ids_str = request.POST.get('varios_nominados', '')
-            
-            # Convertir cada ID individual a un número entero
-            personal_ids = [int(id) for ids in personal_ids_str.split(',') for id in ids.split() if id.isdigit()]
-            vehiculo_ids = [int(id) for ids in vehiculo_ids_str.split(',') for id in ids.split() if id.isdigit()]
-            quimico_ids = [int(id) for ids in quimico_ids_str.split(',') for id in ids.split() if id.isdigit()]
-            vario_ids = [int(id) for ids in vario_ids_str.split(',') for id in ids.split() if id.isdigit()]
-            
+            personal_ids_str = request.POST.getlist('personal_nominado')
+            vehiculo_ids_str = request.POST.getlist('vehiculos_nominados')
+            quimico_ids_str = request.POST.getlist('quimicos_nominados')
+            vario_ids_str = request.POST.getlist('varios_nominados')
+
+            # Imprimir los valores recibidos en la consola
+            print("------- Valores recibidos -------")
+            print("personal_ids_str:", personal_ids_str)
+            print("vehiculo_ids_str:", vehiculo_ids_str)
+            print("quimico_ids_str:", quimico_ids_str)
+            print("vario_ids_str:", vario_ids_str)
+            print("---------------------------------")
+
+            # Convertir las cadenas de IDs en listas de enteros
+            personal_ids = []
+            for ids_str in personal_ids_str:
+                ids = ids_str.split(',')
+                personal_ids.extend([int(id) for id in ids if id])
+
+            vehiculo_ids = []
+            for ids_str in vehiculo_ids_str:
+                ids = ids_str.split(',')
+                vehiculo_ids.extend([int(id) for id in ids if id])
+
+            quimico_ids = []
+            for ids_str in quimico_ids_str:
+                ids = ids_str.split(',')
+                quimico_ids.extend([int(id) for id in ids if id])
+
+            vario_ids = []
+            for ids_str in vario_ids_str:
+                ids = ids_str.split(',')
+                vario_ids.extend([int(id) for id in ids if id])
+
+            # Imprimir las listas de IDs convertidas
+            print("------- IDs convertidos -------")
+            print("personal_ids:", personal_ids)
+            print("vehiculo_ids:", vehiculo_ids)
+            print("quimico_ids:", quimico_ids)
+            print("vario_ids:", vario_ids)
+            print("-------------------------------")
+
             # Actualizar los campos de la ficha de servicio
             ficha_servicio.tipo_servicio = tipo_servicio
             ficha_servicio.fecha_arribo_cuadrilla = fecha_arribo_cuadrilla
@@ -1092,13 +1123,13 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             ficha_servicio.lancha_grua = lancha_grua
             ficha_servicio.arriendo_bomba = arriendo_bomba
             ficha_servicio.navegacion = navegacion
-            
+
             # Actualizar las nominaciones en la ficha de servicio
             ficha_servicio.personal_nominado.set(personal_ids)
             ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
             ficha_servicio.quimicos_nominados.set(quimico_ids)
             ficha_servicio.varios_nominados.set(vario_ids)
-            
+
             ficha_servicio.estado_delServicio = 'En Proceso'
 
             # Guardar los cambios en la ficha de servicio
@@ -1111,8 +1142,41 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
 
             url = reverse('erp:gestor-operaciones') + '?open_modal=true&nombre_motonave=' + nombre_motonave
             return redirect(url)
-
     except FichaServicio.DoesNotExist:
         messages.error(request, 'No se encontró la ficha de servicio.')
 
     return redirect('erp:gestor-operaciones')
+
+#-------------------DETALLE FICHA SERVICIO PARA VISUALIZAR
+@login_required
+def detalle_ficha_servicio(request, servicio_id):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+
+    try:
+        ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+        motonave = ficha_servicio.motonave
+
+        # Obtener los datos para mostrar en el formulario de nominación
+        personal = Personal.objects.all()
+        vehiculos = Vehiculo.objects.all()
+        quimicos = Quimico.objects.all()
+        varios = Vario.objects.all()
+
+        context = {
+            'ficha_servicio': ficha_servicio,
+            'motonave': motonave,
+            'nombre_usuario': nombre_usuario,
+            'personal': personal,
+            'vehiculos': vehiculos,
+            'quimicos': quimicos,
+            'varios': varios
+        }
+
+        return render(request, 'html/detalleFichaServicio.html', context)
+
+    except FichaServicio.DoesNotExist:
+        # Manejar el caso en que no se encuentre la ficha de servicio
+        context = {
+            'nombre_usuario': nombre_usuario
+        }
+        return render(request, 'html/detalleFichaServicio.html', context)

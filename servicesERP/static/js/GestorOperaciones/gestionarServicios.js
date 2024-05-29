@@ -171,8 +171,19 @@ function eliminarServicio(nombreMotonave, servicioId) {
 
 function visualizarServicio(nombreMotonave, servicioId) {
     console.log('Visualizar servicio con ID:', servicioId);
-    // Implementa la lógica que deseas para el botón de visualizar servicio
+
+    // Construye la URL con el parámetro servicio_id
+    var urlConParametros = '/erp/gestor-operaciones/detalle_ficha_servicio/' + servicioId + "/";
+
+    // Redirige a la URL construida
+    window.location.href = urlConParametros;
 }
+
+$('#modalGestionarServicios').on('hidden.bs.modal', function () {
+    // Actualizar la URL eliminando los parámetros open_modal y nombre_motonave
+    var newUrl = window.location.pathname;
+    window.history.pushState({}, '', newUrl);
+});
 
 $('#modalGestionarServicios').on('hidden.bs.modal', function () {
     // Actualizar la URL eliminando los parámetros open_modal y nombre_motonave

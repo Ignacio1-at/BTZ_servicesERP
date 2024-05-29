@@ -1,0 +1,171 @@
+{% extends 'html/base.html' %}
+
+{% block title %}
+  Detalle Ficha Servicio
+{% endblock %}
+{% block module_styles %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styleDetalleFichaServicio.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <div id="contenidoPrincipal" class="contenido-principal">
+    <div class="row">
+      <div class="col-md-3" style="width: 100vw; margin-top: 2vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center;">
+            <span style="color: white; margin-left: 1vw; font-size: 2.5em; margin-right: 5vw;">FICHA SERVICIO RESUMEN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="datos-navio">
+      <h3>DATOS NAVIO</h3>
+      <div class="direccion-navio">
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="nombre_mn">NOMBRE MN:</label>
+            <input type="text" id="nombre_mn" name="nombre_mn" value="{{ motonave.nombre }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="procedencia_carga">PROCEDENCIA CARGA:</label>
+            <input type="text" id="procedencia_carga" name="procedencia_carga" value="{{ motonave.procedenciaCarga }}" readonly />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="n_viaje">N VIAJE:</label>
+            <input type="text" id="n_viaje" name="n_viaje" value="{{ motonave.numero_viaje }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="armador">ARMADOR:</label>
+            <input type="text" id="armador" name="armador" value="{{ motonave.armador }}" readonly />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="bodegas_totales">BODEGAS TOTALES:</label>
+            <input type="text" id="bodegas_totales" name="bodegas_totales" value="{{ motonave.cantBodegas }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="agencia">AGENCIA:</label>
+            <input type="text" id="agencia" name="agencia" value="{{ motonave.agencia }}" readonly />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="puerto">PUERTO:</label>
+            <input type="text" id="puerto" name="puerto" value="{{ motonave.puerto }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="proxPuerto">PROXIMO PUERTO:</label>
+            <input type="text" id="proxPuerto" name="proxPuerto" value="{{ motonave.prox_puerto }}" readonly />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="datos-servicio">
+      <h3>DATOS DEL SERVICIO</h3>
+      <div class="direccion-servicio">
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="tipo_servicio">TIPO SERVICIO:</label>
+            <input type="text" id="tipo_servicio" value="{{ ficha_servicio.tipo_servicio }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="fecha_arribo_cuadrilla">FECHA ARRIBO CUADRILLA:</label>
+            <input type="text" id="fecha_arribo_cuadrilla" value="{{ ficha_servicio.fecha_arribo_cuadrilla }}" readonly />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="bodegas_a_realizar">BODEGAS A REALIZAR:</label>
+            <input type="text" id="bodegas_a_realizar" value="{{ ficha_servicio.bodegas_a_realizar }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="hospedaje_desayuno">HOSPEDAJE/DESAYUNO:</label>
+            <input type="text" id="hospedaje_desayuno" value="{{ ficha_servicio.hospedaje_desayuno }}" readonly />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="lancha_grua">LANCHA/GRUA:</label>
+            <input type="text" id="lancha_grua" value="{{ ficha_servicio.lancha_grua }}" readonly />
+          </div>
+          <div class="datonavioColumna">
+            <label for="arriendo_bomba">ARRIENDO BOMBA:</label>
+            <input type="text" id="arriendo_bomba" value="{{ ficha_servicio.arriendo_bomba }}" readonly />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="datonavioColumna">
+            <label for="navegacion">NAVEGACION:</label>
+            <input type="text" id="navegacion" value="{{ ficha_servicio.navegacion }}" readonly />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLECHA PA BAJAR -->
+    <div class="arrow-down"></div>
+
+    <!-- SECCIONES DE NOMINACIONES -->
+    <div class="nominaciones">
+      <div class="seccion">
+        <h3>Personal</h3>
+        <div class="rectangulo">
+          {% for personal in ficha_servicio.personal_nominado.all %}
+            <p>{{ personal.nombre }}</p>
+            <p>{{ personal.cargo }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="seccion">
+        <h3>Vehículos</h3>
+        <div class="rectangulo">
+          {% for vehiculo in ficha_servicio.vehiculos_nominados.all %}
+            <p>{{ vehiculo.tipo_vehiculo }}</p>
+            <p>{{ vehiculo.patente }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="seccion">
+        <h3>Químicos</h3>
+        <div class="rectangulo">
+          {% for quimico in ficha_servicio.quimicos_nominados.all %}
+            <p>{{ quimico.tipo_quimico }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="seccion">
+        <h3>Varios</h3>
+        <div class="rectangulo">
+          {% for vario in ficha_servicio.varios_nominados.all %}
+            <p>{{ vario.nombre }}</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="botones">
+      <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
+    </div>
+  </div>
+{% endblock %}
+
+{% block module_scripts %}
+  <script>
+    function goBack() {
+      history.back()
+    }
+  </script>
+  <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'js/scriptFichaServicio.js' %}"></script>
+{% endblock %}

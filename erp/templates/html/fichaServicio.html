@@ -123,7 +123,7 @@
       </div>
     </div>
     
-    <form method="POST" action="{% url 'erp:actualizar_ficha_servicio_por_id' servicio_id=ficha_servicio.id %}">
+    <form id="fichaServicioForm" method="POST" action="{% url 'erp:actualizar_ficha_servicio_por_id' servicio_id=ficha_servicio.id %}">
       {% csrf_token %}
 
       <input type="hidden" name="personal_nominado" id="personal_nominado" value="" required autocomplete="off">
@@ -339,6 +339,7 @@
         <button type="button" onclick="goBack()" style="border: none; background: none;">
           <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
         </button>
+        <div id="selectedElementsOutput" style="color: white; margin-right: 2vw;"></div>
         <button type="submit" class="guardar">GUARDAR</button>
       </div>
     </form>
@@ -352,27 +353,5 @@
     }
   </script>
   <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-  <script>
-    $(document).ready(function() {
-      // Función para agregar elementos seleccionados al campo oculto correspondiente
-      function agregarElemento(tipo, valor) {
-        var campo = $("#" + tipo + "_nominado");
-        var valores = campo.val() ? campo.val().split(',') : [];
-        if (!valores.includes(valor)) {
-          valores.push(valor);
-          campo.val(valores.join(','));
-        }
-      }
-    
-      // Manejo del botón de agregar en los modales
-      $(".modal-add").on("click", function() {
-        var tipo = $(this).data("type");
-        var select = $("#" + tipo + "Select");
-        var valor = select.val();
-        agregarElemento(tipo, valor);
-        $('#' + tipo + 'Modal').modal('hide'); // Cerrar modal
-      });
-    });
-    </script>
   <script src="{% static 'js/scriptFichaServicio.js' %}"></script>
 {% endblock %}

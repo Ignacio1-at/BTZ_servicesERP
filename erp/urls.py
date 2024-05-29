@@ -6,7 +6,7 @@ from .views import crear_servicio, crear_servicio_individual, eliminar_servicio,
 from .views import gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal 
 from .views import gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, validar_campo_unico_vehiculoCambio, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
 from .views import obtener_detalle_vehiculo, guardar_cambios_vehiculo, obtener_detalles_vario, actualizar_vario, obtener_detalles_quimico, guardar_cambios_quimico
-from .views import ficha_servicio, actualizar_ficha_servicio_por_id
+from .views import ficha_servicio, actualizar_ficha_servicio_por_id, detalle_ficha_servicio
 
 app_name = 'erp'  
 
@@ -31,6 +31,7 @@ urlpatterns = [
     path('gestor-operaciones/rend_formulario/', renderizar_formulario, name='renderizar_formulario'),
     path('gestor-operaciones/ficha-servicio/<int:servicio_id>/', ficha_servicio, name='ficha_servicio'),
     path('gestor-operaciones/ficha-servicio/actualizar-ficha-servicio/<int:servicio_id>/', actualizar_ficha_servicio_por_id, name='actualizar_ficha_servicio_por_id'),
+    path('gestor-operaciones/detalle_ficha_servicio/<int:servicio_id>/', detalle_ficha_servicio, name='detalle_ficha_servicio'),
     path('gestor-personal/', gestorPersonal, name='gestor-personal'),
     path('gestor-personal/agregar_personal', crear_personal, name='crear_personal'),
     path('gestor-personal/agregar_personal/validar_rut/', validar_rut, name='validar_rut'),

@@ -38,66 +38,63 @@ document.addEventListener('DOMContentLoaded', function () {
                 fichaElemento.textContent = selectedText;
                 fichaElemento.setAttribute('data-id', selectedOption.value);
 
+                // Agregar evento de clic para eliminar el elemento
+                fichaElemento.addEventListener('click', function () {
+                    this.remove();
+                    getSelectedElements();
+                });
+
                 const columnaContenido = document.querySelector(`#column${type.charAt(0).toUpperCase() + type.slice(1)} .columna-contenido`);
                 columnaContenido.insertBefore(fichaElemento, columnaContenido.firstChild);
 
                 modal.style.display = 'none';
+
+                getSelectedElements();
             }
         });
     });
+
+    const form = document.getElementById('fichaServicioForm');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault(); // Evita que el formulario se envíe de inmediato
+
+        // Obtener los valores de los campos ocultos
+        const personalNominado = document.getElementById('personal_nominado').value;
+        const vehiculosNominados = document.getElementById('vehiculos_nominados').value;
+        const quimicosNominados = document.getElementById('quimicos_nominados').value;
+        const variosNominados = document.getElementById('varios_nominados').value;
+
+        // Mostrar los valores en la consola del navegador
+        console.log("Datos enviados:");
+        console.log("Personal nominado:", personalNominado);
+        console.log("Vehículos nominados:", vehiculosNominados);
+        console.log("Químicos nominados:", quimicosNominados);
+        console.log("Varios nominados:", variosNominados);
+
+        // Enviar el formulario manualmente
+        this.submit();
+    });
+
 });
 
 function getSelectedElements() {
+    console.log("Ejecutando getSelectedElements()");
     const selectedPersonalIds = Array.from(document.querySelectorAll('#columnPersonal .ficha-elemento')).map(el => el.getAttribute('data-id'));
     const selectedVehiculoIds = Array.from(document.querySelectorAll('#columnVehiculo .ficha-elemento')).map(el => el.getAttribute('data-id'));
     const selectedQuimicoIds = Array.from(document.querySelectorAll('#columnQuimico .ficha-elemento')).map(el => el.getAttribute('data-id'));
     const selectedVarioIds = Array.from(document.querySelectorAll('#columnVario .ficha-elemento')).map(el => el.getAttribute('data-id'));
 
-    const selectedElements = {};
+    document.getElementById('personal_nominado').value = selectedPersonalIds.join(',');
+    document.getElementById('vehiculos_nominados').value = selectedVehiculoIds.join(',');
+    document.getElementById('quimicos_nominados').value = selectedQuimicoIds.join(',');
+    document.getElementById('varios_nominados').value = selectedVarioIds.join(',');
 
-    if (selectedPersonalIds.length > 0) {
-        selectedElements.personal = selectedPersonalIds;
-    }
-
-    if (selectedVehiculoIds.length > 0) {
-        selectedElements.vehiculos = selectedVehiculoIds;
-    }
-
-    if (selectedQuimicoIds.length > 0) {
-        selectedElements.quimicos = selectedQuimicoIds;
-    }
-
-    if (selectedVarioIds.length > 0) {
-        selectedElements.varios = selectedVarioIds;
-    }
-
-    return selectedElements;
+    // Mostrar los valores en el elemento <div>
+    const outputElement = document.getElementById('selectedElementsOutput');
+    outputElement.innerHTML = `
+        <p>Personal IDs: ${selectedPersonalIds.join(', ')}</p>
+        <p>Vehículo IDs: ${selectedVehiculoIds.join(', ')}</p>
+        <p>Químico IDs: ${selectedQuimicoIds.join(', ')}</p>
+        <p>Vario IDs: ${selectedVarioIds.join(', ')}</p>
+    `;
 }
-
-const form = document.querySelector('form');
-form.addEventListener('submit', function (event) {
-    const selectedElements = getSelectedElements();
-
-    // Limpiar los valores de los campos ocultos antes de actualizar
-    document.getElementById('personal_nominado').value = '';
-    document.getElementById('vehiculos_nominados').value = '';
-    document.getElementById('quimicos_nominados').value = '';
-    document.getElementById('varios_nominados').value = '';
-
-    // Actualizar los valores de los campos ocultos solo si hay elementos seleccionados
-    if (selectedElements.personal) {
-        document.getElementById('personal_nominado').value = selectedElements.personal.join(',');
-    }
-
-    if (selectedElements.vehiculos) {
-        document.getElementById('vehiculos_nominados').value = selectedElements.vehiculos.join(',');
-    }
-
-    if (selectedElements.quimicos) {
-        document.getElementById('quimicos_nominados').value = selectedElements.quimicos.join(',');
-    }
-
-    if (selectedElements.varios) {
-        document.getElementById('varios_nominados').value = selectedElements.varios.join(',');
-    }
-});
