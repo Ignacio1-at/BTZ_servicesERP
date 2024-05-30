@@ -149,24 +149,33 @@
               <label>BODEGAS A REALIZAR</label>
             </div>
             <div>
-              <select name="hospedaje_desayuno" id="hospedaje_desayuno" required>
+              <select name="hospedaje" id="hospedaje" required>
                 <option value="">Seleccione una opción</option>
                 <option value="SI">SI</option>
                 <option value="NO">NO</option>
                 <option value="NO_APLICA">NO APLICA</option>
               </select>
-              <label>HOSPEDAJE/DESAYUNO</label>
+              <label>HOSPEDAJE</label>
             </div>
           </div>
           <div class="fila-dosServicio">
             <div>
-              <select name="lancha_grua" id="lancha_grua" required>
+              <select name="lancha" id="lancha" required>
                 <option value="">Seleccione una opción</option>
                 <option value="SI">SI</option>
                 <option value="NO">NO</option>
                 <option value="NO_APLICA">NO APLICA</option>
               </select>
-              <label>LANCHA/GRUA</label>
+              <label>LANCHA</label>
+            </div>
+            <div>
+              <select name="grua" id="grua" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI">SI</option>
+                <option value="NO">NO</option>
+                <option value="NO_APLICA">NO APLICA</option>
+              </select>
+              <label>GRÚA</label>
             </div>
             <div>
               <select name="arriendo_bomba" id="arriendo_bomba" required>
@@ -179,7 +188,7 @@
             </div>
             <div>
               <input type="text" name="navegacion" required/>
-              <label>NAVEGACION</label>
+              <label>NAVEGACIÓN</label>
             </div>
           </div>
         </div>
@@ -221,7 +230,7 @@
         </div>
     
         <div id="columnVario" class="columna">
-          <h3>Varios</h3>
+          <h3>Equipos</h3>
           <div class="sinLineaGris">
             <div class="columna-contenido">
               <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border-color: #052242;" class="modal-trigger" data-target="varioModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
@@ -237,21 +246,22 @@
           <div class="modal-content">
             <div class="modal-header">
               <img src="{% static 'images/Logo_Anadir_Personal.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
-              <h5 class="modal-title" style="margin-right: 50%;" id="personalModalLabel">Personal</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title" style="margin-right: 75%;" id="personalModalLabel">Personal</h5>
             </div>
             <div class="modal-body">
               <div class="mb-3">
                 <label for="personalSelect" style="margin-left: 20px;" class="form-label">Seleccione Personal:</label>
                 <select name="personal_nominado" id="personalSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                  <option value="">Seleccione un personal</option>
                   {% for persona in personal %}
-                    <option value="{{ persona.id }}">{{ persona.nombre }}</option>
+                    <option value="{{ persona.id }}" data-nombre="{{ persona.nombre }}" data-rut="{{ persona.rut }}" data-cargo="{{ persona.cargo }}" data-especialidades="{% for especialidad in persona.especialidades.all %}{{ especialidad.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" data-conductor="{{ persona.conductor }}" data-tipo-licencia="{{ persona.tipo_licencia }}" data-estado="{{ persona.estado }}">{{ persona.nombre }}</option>
                   {% endfor %}
                 </select>
               </div>
+              <div id="personalInfo" style="margin-left: 20px;"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="modal-add btn btn-custom-color" data-type="personal" style="width: 6.5vw; margin: 0 auto; color: white ; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
+              <button type="button" class="modal-add btn btn-custom-color" data-type="personal" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
             </div>
           </div>
         </div>
@@ -263,8 +273,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <img src="{% static 'images/IconoAuto.png' %}" alt="Logo" width="45" height="25" style="margin-right: 10px;" />
-              <h5 class="modal-title" style="margin-right: 50%;" id="vehiculoModalLabel">Vehículo</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title" style="margin-right: 75%;" id="vehiculoModalLabel">Vehículo</h5>
             </div>
             <div class="modal-body">
               <div class="mb-3">
@@ -289,8 +298,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <img src="{% static 'images/IconoQuimico.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
-              <h5 class="modal-title" style="margin-right: 52%;" id="quimicoModalLabel">Químico</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title" style="margin-right: 75%;" id="quimicoModalLabel">Químico</h5>
             </div>
             <div class="modal-body">
               <div class="mb-3">
@@ -315,12 +323,12 @@
           <div class="modal-content">
             <div class="modal-header">
               <img src="{% static 'images/IconoHerramientas.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
-              <h5 class="modal-title" style="margin-right: 55%;" id="varioModalLabel">Vario</h5>
+              <h5 class="modal-title" style="margin-right: 75%;" id="varioModalLabel">Equipo</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="varioSelect" style="margin-left: 20px;" class="form-label">Seleccione Vario:</label>
+                <label for="varioSelect" style="margin-left: 20px;" class="form-label">Seleccione Equipo:</label>
                 <select name="varios_nominados" id="varioSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
                   {% for vario in varios %}
                     <option value="{{ vario.id }}">{{ vario.nombre }}</option>
@@ -339,7 +347,7 @@
         <button type="button" onclick="goBack()" style="border: none; background: none;">
           <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
         </button>
-        <div id="selectedElementsOutput" style="color: white; margin-right: 2vw;"></div>
+        <!--<div id="selectedElementsOutput" style="color: white; margin-right: 2vw;"></div>-->
         <button type="submit" class="guardar">GUARDAR</button>
       </div>
     </form>

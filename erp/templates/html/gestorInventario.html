@@ -31,7 +31,7 @@
             </li>
             <li>
               <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
-              <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Varios</span>
+              <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Equipos</span>
             </li>
           </ul>
         </div>
@@ -46,7 +46,7 @@
               <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Vario</a>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Equipo</a>
             </li>
           </ul>
         </div>
@@ -188,7 +188,7 @@
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="modalDetalleVarioLabel{{ vario.id }}">Detalles del Vario</h5>
+                        <h5 class="modal-title" id="modalDetalleVarioLabel{{ vario.id }}">Detalles del Equipo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body" id="modalBodyVario{{ vario.id }}">
@@ -440,7 +440,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalAgregarVarioLabel">Agregar Vario</h5>
+          <h5 class="modal-title" id="modalAgregarVarioLabel">Agregar Equipo</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="formAgregarVarios" method="post" action="{% url 'erp:agregar_vario' %}" onsubmit="return validarFormularioAgregarVarios()">

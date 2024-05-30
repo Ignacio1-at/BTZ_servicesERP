@@ -75,6 +75,33 @@ document.addEventListener('DOMContentLoaded', function () {
         this.submit();
     });
 
+    const personalSelect = document.getElementById('personalSelect');
+    const personalInfo = document.getElementById('personalInfo');
+
+    personalSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            const nombre = selectedOption.getAttribute('data-nombre');
+            const rut = selectedOption.getAttribute('data-rut');
+            const cargo = selectedOption.getAttribute('data-cargo');
+            const especialidades = selectedOption.getAttribute('data-especialidades');
+            const conductor = selectedOption.getAttribute('data-conductor');
+            const tipoLicencia = selectedOption.getAttribute('data-tipo-licencia');
+            const estado = selectedOption.getAttribute('data-estado');
+
+            personalInfo.innerHTML = `
+                <p><strong>Nombre:</strong> ${nombre}</p>
+                <p><strong>RUT:</strong> ${rut}</p>
+                <p><strong>Cargo:</strong> ${cargo}</p>
+                <p><strong>Especialidades:</strong> ${especialidades}</p>
+                <p><strong>Conductor:</strong> ${conductor}</p>
+                <p><strong>Tipo de Licencia:</strong> ${tipoLicencia}</p>
+                <p><strong>Estado:</strong> ${estado}</p>
+            `;
+        } else {
+            personalInfo.innerHTML = '';
+        }
+    });
 });
 
 function getSelectedElements() {

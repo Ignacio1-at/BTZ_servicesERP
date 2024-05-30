@@ -1067,8 +1067,9 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             tipo_servicio = request.POST.get('tipo_servicio')
             fecha_arribo_cuadrilla = request.POST.get('fecha_arribo_cuadrilla')
             bodegas_a_realizar = request.POST.get('bodegas_a_realizar')
-            hospedaje_desayuno = request.POST.get('hospedaje_desayuno')
-            lancha_grua = request.POST.get('lancha_grua')
+            hospedaje = request.POST.get('hospedaje')
+            lancha = request.POST.get('lancha')
+            grua = request.POST.get('grua')
             arriendo_bomba = request.POST.get('arriendo_bomba')
             navegacion = request.POST.get('navegacion')
 
@@ -1119,8 +1120,9 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             ficha_servicio.tipo_servicio = tipo_servicio
             ficha_servicio.fecha_arribo_cuadrilla = fecha_arribo_cuadrilla
             ficha_servicio.bodegas_a_realizar = bodegas_a_realizar
-            ficha_servicio.hospedaje_desayuno = hospedaje_desayuno
-            ficha_servicio.lancha_grua = lancha_grua
+            ficha_servicio.hospedaje = hospedaje
+            ficha_servicio.lancha = lancha
+            ficha_servicio.grua = grua
             ficha_servicio.arriendo_bomba = arriendo_bomba
             ficha_servicio.navegacion = navegacion
 

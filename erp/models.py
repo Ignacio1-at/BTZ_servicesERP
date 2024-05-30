@@ -208,8 +208,9 @@ class FichaServicio(models.Model):
     fecha_fin = models.DateField()
     fecha_arribo_cuadrilla = models.DateField(null=True, blank=True)
     bodegas_a_realizar = models.CharField(max_length=100, null=True, blank=True)
-    hospedaje_desayuno = models.CharField(max_length=100, null=True, blank=True)
-    lancha_grua = models.CharField(max_length=100, null=True, blank=True)
+    hospedaje = models.CharField(max_length=100, null=True, blank=True)
+    lancha = models.CharField(max_length=100, null=True, blank=True)
+    grua = models.CharField(max_length=100, null=True, blank=True)
     arriendo_bomba = models.CharField(max_length=100, null=True, blank=True)
     navegacion = models.CharField(max_length=100, null=True, blank=True)
     ESTADOS_delSERVICIO = (
