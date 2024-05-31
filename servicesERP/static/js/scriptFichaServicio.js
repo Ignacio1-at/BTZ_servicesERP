@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const modalTriggers = document.querySelectorAll('.modal-trigger');
-    const modalCloseButtons = document.querySelectorAll('.modal-close');
     const modalAddButtons = document.querySelectorAll('.modal-add');
 
     modalTriggers.forEach(function (trigger) {
@@ -11,16 +10,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    modalCloseButtons.forEach(function (closeButton) {
-        closeButton.addEventListener('click', function () {
-            const modal = this.closest('.modal');
-            modal.style.display = 'none';
-        });
-    });
-
     window.addEventListener('click', function (event) {
         if (event.target.classList.contains('modal')) {
             event.target.style.display = 'none';
+
+            // Restablecer el valor seleccionado y limpiar la información del personal
+            const personalSelect = event.target.querySelector('#personalSelect');
+            personalSelect.selectedIndex = 0;
+            const personalInfo = event.target.querySelector('#personalInfo');
+            personalInfo.innerHTML = '';
+
+            // Restablecer el valor seleccionado y limpiar la información del vehículo
+            const vehiculoSelect = event.target.querySelector('#vehiculoSelect');
+            vehiculoSelect.selectedIndex = 0;
+            const vehiculoInfo = event.target.querySelector('#vehiculoInfo');
+            vehiculoInfo.innerHTML = '';
+
+            // Restablecer el valor seleccionado y limpiar la información del químico
+            const quimicoSelect = event.target.querySelector('#quimicoSelect');
+            quimicoSelect.selectedIndex = 0;
+            const quimicoInfo = event.target.querySelector('#quimicoInfo');
+            quimicoInfo.innerHTML = '';
+
+            // Restablecer el valor seleccionado y limpiar la información del vario
+            const varioSelect = event.target.querySelector('#varioSelect');
+            varioSelect.selectedIndex = 0;
+            const varioInfo = event.target.querySelector('#varioInfo');
+            varioInfo.innerHTML = '';
         }
     });
 
@@ -123,25 +139,28 @@ document.addEventListener('DOMContentLoaded', function () {
             const estado = selectedOption.getAttribute('data-estado');
 
             vehiculoInfo.innerHTML = `
-                <p class="vehiculo-info"><strong>Marca:</strong> ${marca}</p>
-                <p class="vehiculo-info"><strong>Modelo:</strong> ${modelo}</p>
-                <p class="vehiculo-info"><strong>Color:</strong> ${color}</p>
-                <p class="vehiculo-info"><strong>Número Motor:</strong> ${numeroMotor}</p>
-                <p class="vehiculo-info"><strong>Número Chasis:</strong> ${numeroChasis}</p>
-                <p class="vehiculo-info"><strong>Cilindrada:</strong> ${cilindrada}</p>
-                <p class="vehiculo-info"><strong>Primer Ingreso:</strong> ${primerIngreso}</p>
-                <p class="vehiculo-info"><strong>Fecha Permiso Circulación:</strong> ${fechaPermisoCirculacion}</p>
-                <p class="vehiculo-info"><strong>Fecha SOAP:</strong> ${fechaSoap}</p>
-                <p class="vehiculo-info"><strong>Fecha Revisión Técnica:</strong> ${fechaRevisionTecnica}</p>
-                <p class="vehiculo-info"><strong>Seguro Nombre:</strong> ${seguroNombre}</p>
-                <p class="vehiculo-info"><strong>Seguro Poliza:</strong> ${seguroPoliza}</p>
-                <p class="vehiculo-info"><strong>Tipo Combustible:</strong> ${tipoCombustible}</p>
-                <p class="vehiculo-info"><strong>Estado:</strong> ${estado}</p>
-            `;
+            <p class="vehiculo-info"><strong>Marca:</strong> ${marca}</p>
+            <p class="vehiculo-info"><strong>Modelo:</strong> ${modelo}</p>
+            <p class="vehiculo-info"><strong>Color:</strong> ${color}</p>
+            <p class="vehiculo-info"><strong>Número Motor:</strong> ${numeroMotor}</p>
+            <p class="vehiculo-info"><strong>Número Chasis:</strong> ${numeroChasis}</p>
+            <p class="vehiculo-info"><strong>Cilindrada:</strong> ${cilindrada}</p>
+            <p class="vehiculo-info"><strong>Primer Ingreso:</strong> ${primerIngreso}</p>
+            <p class="vehiculo-info"><strong>Fecha Permiso Circulación:</strong> ${fechaPermisoCirculacion}</p>
+            <p class="vehiculo-info"><strong>Fecha SOAP:</strong> ${fechaSoap}</p>
+            <p class="vehiculo-info"><strong>Fecha Revisión Técnica:</strong> ${fechaRevisionTecnica}</p>
+            <p class="vehiculo-info"><strong>Seguro Nombre:</strong> ${seguroNombre}</p>
+            <p class="vehiculo-info"><strong>Seguro Poliza:</strong> ${seguroPoliza}</p>
+            <p class="vehiculo-info"><strong>Tipo Combustible:</strong> ${tipoCombustible}</p>
+            <p class="vehiculo-info"><strong>Estado:</strong> ${estado}</p>
+        `;
         } else {
             vehiculoInfo.innerHTML = '';
         }
     });
+
+    const quimicoSelect = document.getElementById('quimicoSelect');
+    const quimicoInfo = document.getElementById('quimicoInfo');
 
     quimicoSelect.addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
@@ -152,15 +171,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const estado = selectedOption.getAttribute('data-estado');
 
             quimicoInfo.innerHTML = `
-                <p class="personal-info"><strong>Fecha Ingreso:</strong> ${fechaIngreso}</p>
-                <p class="personal-info"><strong>Litros Ingreso:</strong> ${litrosIngreso}</p>
-                <p class="personal-info"><strong>Número Factura:</strong> ${numeroFactura}</p>
-                <p class="personal-info"><strong>Estado:</strong> ${estado}</p>
-            `;
+            <p class="quimico-info"><strong>Fecha Ingreso:</strong> ${fechaIngreso}</p>
+            <p class="quimico-info"><strong>Litros Ingreso:</strong> ${litrosIngreso}</p>
+            <p class="quimico-info"><strong>Número Factura:</strong> ${numeroFactura}</p>
+            <p class="quimico-info"><strong>Estado:</strong> ${estado}</p>
+        `;
         } else {
             quimicoInfo.innerHTML = '';
         }
     });
+
+    const varioSelect = document.getElementById('varioSelect');
+    const varioInfo = document.getElementById('varioInfo');
 
     varioSelect.addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
@@ -169,9 +191,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const estado = selectedOption.getAttribute('data-estado');
 
             varioInfo.innerHTML = `
-                <p class="personal-info"><strong>Fecha Ingreso:</strong> ${fechaIngreso}</p>
-                <p class="personal-info"><strong>Estado:</strong> ${estado}</p>
-            `;
+            <p class="vario-info"><strong>Fecha Ingreso:</strong> ${fechaIngreso}</p>
+            <p class="vario-info"><strong>Estado:</strong> ${estado}</p>
+        `;
         } else {
             varioInfo.innerHTML = '';
         }

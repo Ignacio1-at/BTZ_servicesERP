@@ -276,17 +276,17 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <select name="vehiculos_nominados" id="vehiculoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                <select name="vehiculo_nominado" id="vehiculoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
                   <option value="">Seleccione un vehículo</option>
                   {% for vehiculo in vehiculos %}
-                    <option value="{{ vehiculo.id }}" data-marca="{{ vehiculo.marca }}" data-modelo="{{ vehiculo.modelo }}" data-color="{{ vehiculo.color }}" data-numero-motor="{{ vehiculo.numero_motor }}" data-numero-chasis="{{ vehiculo.numero_chasis }}" data-cilindrada="{{ vehiculo.cilindrada }}" data-primer-ingreso="{{ vehiculo.primer_ingreso }}" data-fecha-permiso-circulacion="{{ vehiculo.fecha_permiso_circulacion }}" data-fecha-soap="{{ vehiculo.fecha_soap }}" data-fecha-revision-tecnica="{{ vehiculo.fecha_revision_tecnica }}" data-seguro-nombre="{{ vehiculo.seguro_nombre }}" data-seguro-poliza="{{ vehiculo.seguro_poliza }}" data-tipo-combustible="{{ vehiculo.tipo_combustible }}" data-estado="{{ vehiculo.estado }}" >{{vehiculo.tipo_vehiculo}} {{ vehiculo.patente }}</option>
+                    <option value="{{ vehiculo.id }}" data-marca="{{ vehiculo.marca }}" data-modelo="{{ vehiculo.modelo }}" data-color="{{ vehiculo.color }}" data-numero-motor="{{ vehiculo.numero_motor }}" data-numero-chasis="{{ vehiculo.numero_chasis }}" data-cilindrada="{{ vehiculo.cilindrada }}" data-primer-ingreso="{{ vehiculo.primer_ingreso|date:'Y-m-d' }}" data-fecha-permiso-circulacion="{{ vehiculo.fecha_permiso_circulacion|date:'Y-m-d' }}" data-fecha-soap="{{ vehiculo.fecha_soap|date:'Y-m-d' }}" data-fecha-revision-tecnica="{{ vehiculo.fecha_revision_tecnica|date:'Y-m-d' }}" data-seguro-nombre="{{ vehiculo.seguro_nombre }}" data-seguro-poliza="{{ vehiculo.seguro_poliza }}" data-tipo-combustible="{{ vehiculo.tipo_combustible }}" data-estado="{{ vehiculo.estado }}">{{ vehiculo.tipo_vehiculo }} {{ vehiculo.patente }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <div id="vehiculoInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
+              <div id="vehiculoInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="modal-add btn btn-custom-color" data-type="vehiculo"  style="width: 6.5vw; margin: 0 auto; color: white ; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
+              <button type="button" class="modal-add btn btn-custom-color" data-type="vehiculo" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
             </div>
           </div>
         </div>
@@ -324,22 +324,21 @@
           <div class="modal-content">
             <div class="modal-header">
               <img src="{% static 'images/IconoHerramientas.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
-              <h5 class="modal-title" style="margin-right: 75%;" id="varioModalLabel">Equipo</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title" style="margin-right: 75%;" id="varioModalLabel">Vario</h5>
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <select name="varios_nominados" id="varioSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
-                  <option value="">Seleccione un equipo</option>
+                <select name="vario_nominado" id="varioSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                  <option value="">Seleccione un vario</option>
                   {% for vario in varios %}
-                    <option value="{{ vario.id }}" data-fecha-ingreso="{{ vario.fecha_ingreso }}" data-estado="{{ vario.estado }}" >{{ vario.nombre }}</option>
+                    <option value="{{ vario.id }}" data-fecha-ingreso="{{ vario.fecha_ingreso|date:'Y-m-d' }}" data-estado="{{ vario.estado }}">{{ vario.nombre }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <div id="varioInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
+              <div id="varioInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;"></div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="modal-add btn btn-custom-color" data-type="vario" style="width: 6.5vw; margin: 0 auto; color: white ; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
+              <button type="button" class="modal-add btn btn-custom-color" data-type="vario" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
             </div>
           </div>
         </div>
