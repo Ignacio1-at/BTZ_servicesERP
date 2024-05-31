@@ -250,6 +250,19 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
+                <label style="width: 24vw; margin-left: 20px; margin-bottom: 5px; font-size: 20px;">FILTRO:</label>
+                <div id="cargoCheckboxes" style="width: 24vw; margin: 0 auto;">
+                  {% for cargo in cargos %}
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="{{ cargo }}" id="cargoCheckbox{{ forloop.counter }}">
+                      <label class="form-check-label" for="cargoCheckbox{{ forloop.counter }}">
+                        {{ cargo }}
+                      </label>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="mb-3">
                 <select name="personal_nominado" id="personalSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
                   <option value="">Seleccione un personal</option>
                   {% for persona in personal %}
@@ -257,7 +270,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div id="personalInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
+              <div id="personalInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;"></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="personal" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
@@ -348,7 +361,7 @@
         <button type="button" onclick="goBack()" style="border: none; background: none;">
           <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
         </button>
-        <!--<div id="selectedElementsOutput" style="color: white; margin-right: 2vw;"></div>-->
+        <div id="selectedElementsOutput" class="hidden"></div>
         <button type="submit" class="guardar">GUARDAR</button>
       </div>
     </form>

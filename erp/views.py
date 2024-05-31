@@ -1028,17 +1028,16 @@ def guardar_cambios_quimico(request):
 @login_required
 def ficha_servicio(request, servicio_id):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-
     try:
         ficha_servicio = FichaServicio.objects.get(id=servicio_id)
         motonave = ficha_servicio.motonave
-
         # Obtener los datos para mostrar en el formulario de nominación
         personal = Personal.objects.all()
         vehiculos = Vehiculo.objects.all()
         quimicos = Quimico.objects.all()
         varios = Vario.objects.all()
-
+        # Obtener los cargos únicos del personal
+        cargos = Personal.objects.values_list('cargo', flat=True).distinct()
         context = {
             'ficha_servicio': ficha_servicio,
             'motonave': motonave,
@@ -1046,11 +1045,10 @@ def ficha_servicio(request, servicio_id):
             'personal': personal,
             'vehiculos': vehiculos,
             'quimicos': quimicos,
-            'varios': varios
+            'varios': varios,
+            'cargos': cargos
         }
-
         return render(request, 'html/fichaServicio.html', context)
-
     except FichaServicio.DoesNotExist:
         # Manejar el caso en que no se encuentre la ficha de servicio
         context = {

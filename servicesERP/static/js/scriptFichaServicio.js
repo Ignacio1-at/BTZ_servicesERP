@@ -10,33 +10,66 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    function resetPersonalModal() {
+        const personalSelect = document.querySelector('#personalModal #personalSelect');
+        personalSelect.selectedIndex = 0;
+        const personalInfo = document.querySelector('#personalModal #personalInfo');
+        personalInfo.innerHTML = '';
+
+        // Reiniciar los checkbox de los cargos
+        const cargoCheckboxes = document.querySelectorAll('#cargoCheckboxes input[type="checkbox"]');
+        cargoCheckboxes.forEach(function (checkbox) {
+            checkbox.checked = false;
+        });
+
+        // Mostrar todas las opciones del select de personal
+        const personalOptions = personalSelect.options;
+        for (let i = 0; i < personalOptions.length; i++) {
+            const option = personalOptions[i];
+            option.style.display = "block";
+        }
+    }
+
+    function resetVehiculoModal() {
+        const vehiculoSelect = document.querySelector('#vehiculoModal #vehiculoSelect');
+        vehiculoSelect.selectedIndex = 0;
+        const vehiculoInfo = document.querySelector('#vehiculoModal #vehiculoInfo');
+        vehiculoInfo.innerHTML = '';
+    }
+
+    function resetQuimicoModal() {
+        const quimicoSelect = document.querySelector('#quimicoModal #quimicoSelect');
+        quimicoSelect.selectedIndex = 0;
+        const quimicoInfo = document.querySelector('#quimicoModal #quimicoInfo');
+        quimicoInfo.innerHTML = '';
+    }
+
+    function resetVarioModal() {
+        const varioSelect = document.querySelector('#varioModal #varioSelect');
+        varioSelect.selectedIndex = 0;
+        const varioInfo = document.querySelector('#varioModal #varioInfo');
+        varioInfo.innerHTML = '';
+    }
+
     window.addEventListener('click', function (event) {
         if (event.target.classList.contains('modal')) {
             event.target.style.display = 'none';
-
-            // Restablecer el valor seleccionado y limpiar la información del personal
-            const personalSelect = event.target.querySelector('#personalSelect');
-            personalSelect.selectedIndex = 0;
-            const personalInfo = event.target.querySelector('#personalInfo');
-            personalInfo.innerHTML = '';
-
-            // Restablecer el valor seleccionado y limpiar la información del vehículo
-            const vehiculoSelect = event.target.querySelector('#vehiculoSelect');
-            vehiculoSelect.selectedIndex = 0;
-            const vehiculoInfo = event.target.querySelector('#vehiculoInfo');
-            vehiculoInfo.innerHTML = '';
-
-            // Restablecer el valor seleccionado y limpiar la información del químico
-            const quimicoSelect = event.target.querySelector('#quimicoSelect');
-            quimicoSelect.selectedIndex = 0;
-            const quimicoInfo = event.target.querySelector('#quimicoInfo');
-            quimicoInfo.innerHTML = '';
-
-            // Restablecer el valor seleccionado y limpiar la información del vario
-            const varioSelect = event.target.querySelector('#varioSelect');
-            varioSelect.selectedIndex = 0;
-            const varioInfo = event.target.querySelector('#varioInfo');
-            varioInfo.innerHTML = '';
+            const modalId = event.target.id;
+    
+            switch (modalId) {
+                case 'personalModal':
+                    resetPersonalModal();
+                    break;
+                case 'vehiculoModal':
+                    resetVehiculoModal();
+                    break;
+                case 'quimicoModal':
+                    resetQuimicoModal();
+                    break;
+                case 'varioModal':
+                    resetVarioModal();
+                    break;
+            }
         }
     });
 
@@ -93,6 +126,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const personalSelect = document.getElementById('personalSelect');
     const personalInfo = document.getElementById('personalInfo');
+    const cargoCheckboxes = document.querySelectorAll('#cargoCheckboxes input[type="checkbox"]');
+
+    cargoCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const selectedCargos = Array.from(cargoCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+            const personalOptions = personalSelect.options;
+            for (let i = 0; i < personalOptions.length; i++) {
+                const option = personalOptions[i];
+                if (option.value === "") {
+                    option.style.display = "block";
+                } else {
+                    const cargo = option.getAttribute('data-cargo');
+                    if (selectedCargos.length === 0 || selectedCargos.includes(cargo)) {
+                        option.style.display = "block";
+                    } else {
+                        option.style.display = "none";
+                    }
+                }
+            }
+            personalSelect.selectedIndex = 0;
+            const personalInfo = document.getElementById('personalInfo');
+            personalInfo.innerHTML = '';
+        });
+    });
 
     personalSelect.addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];

@@ -420,3 +420,7 @@ span::after {
 .vario-info strong {
     font-weight: bold;
 }
+
+.hidden {
+    display: none;
+}
