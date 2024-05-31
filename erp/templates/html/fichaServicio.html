@@ -23,7 +23,7 @@
     </div>
 
     <div class="datos-navio">
-      <h3>DATOS NAVIO</h3>
+      <h3>DATOS NAVÍO</h3>
       <div class="direccion-navio">
         <div class="fila-unoNavio">
           <div>
@@ -250,15 +250,14 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="personalSelect" style="margin-left: 20px;" class="form-label">Seleccione Personal:</label>
                 <select name="personal_nominado" id="personalSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
                   <option value="">Seleccione un personal</option>
                   {% for persona in personal %}
-                    <option value="{{ persona.id }}" data-nombre="{{ persona.nombre }}" data-rut="{{ persona.rut }}" data-cargo="{{ persona.cargo }}" data-especialidades="{% for especialidad in persona.especialidades.all %}{{ especialidad.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" data-conductor="{{ persona.conductor }}" data-tipo-licencia="{{ persona.tipo_licencia }}" data-estado="{{ persona.estado }}">{{ persona.nombre }}</option>
+                    <option value="{{ persona.id }}" data-rut="{{ persona.rut }}" data-cargo="{{ persona.cargo }}" data-especialidades="{% for especialidad in persona.especialidades.all %}{{ especialidad.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" data-conductor="{{ persona.conductor }}" data-tipo-licencia="{{ persona.tipo_licencia }}" data-estado="{{ persona.estado }}">{{ persona.nombre }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <div id="personalInfo" style="margin-left: 20px;"></div>
+              <div id="personalInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="personal" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
@@ -277,13 +276,14 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="vehiculoSelect" style="margin-left: 20px;" class="form-label">Seleccione Vehículo:</label>
                 <select name="vehiculos_nominados" id="vehiculoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                  <option value="">Seleccione un vehículo</option>
                   {% for vehiculo in vehiculos %}
-                    <option value="{{ vehiculo.id }}">{{vehiculo.tipo_vehiculo}} {{ vehiculo.patente }}</option>
+                    <option value="{{ vehiculo.id }}" data-marca="{{ vehiculo.marca }}" data-modelo="{{ vehiculo.modelo }}" data-color="{{ vehiculo.color }}" data-numero-motor="{{ vehiculo.numero_motor }}" data-numero-chasis="{{ vehiculo.numero_chasis }}" data-cilindrada="{{ vehiculo.cilindrada }}" data-primer-ingreso="{{ vehiculo.primer_ingreso }}" data-fecha-permiso-circulacion="{{ vehiculo.fecha_permiso_circulacion }}" data-fecha-soap="{{ vehiculo.fecha_soap }}" data-fecha-revision-tecnica="{{ vehiculo.fecha_revision_tecnica }}" data-seguro-nombre="{{ vehiculo.seguro_nombre }}" data-seguro-poliza="{{ vehiculo.seguro_poliza }}" data-tipo-combustible="{{ vehiculo.tipo_combustible }}" data-estado="{{ vehiculo.estado }}" >{{vehiculo.tipo_vehiculo}} {{ vehiculo.patente }}</option>
                   {% endfor %}
                 </select>
               </div>
+              <div id="vehiculoInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="vehiculo"  style="width: 6.5vw; margin: 0 auto; color: white ; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
@@ -302,13 +302,14 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="quimicoSelect" style="margin-left: 20px;" class="form-label">Seleccione Químico:</label>
                 <select name="quimicos_nominados" id="quimicoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                  <option value="">Seleccione un químico</option>
                   {% for quimico in quimicos %}
-                    <option value="{{ quimico.id }}">{{ quimico.tipo_quimico }}</option>
+                    <option value="{{ quimico.id }}" data-fecha-ingreso="{{ quimico.fecha_ingreso }}" data-litros-ingreso="{{ quimico.litros_ingreso }}" data-numero-factura="{{ quimico.numero_factura }}" data-estado="{{ quimico.estado }}">{{ quimico.tipo_quimico }}</option>
                   {% endfor %}
                 </select>
               </div>
+              <div id="quimicoInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="quimico" style="width: 6.5vw; margin: 0 auto; color: white ; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
@@ -328,13 +329,14 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="varioSelect" style="margin-left: 20px;" class="form-label">Seleccione Equipo:</label>
                 <select name="varios_nominados" id="varioSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                  <option value="">Seleccione un equipo</option>
                   {% for vario in varios %}
-                    <option value="{{ vario.id }}">{{ vario.nombre }}</option>
+                    <option value="{{ vario.id }}" data-fecha-ingreso="{{ vario.fecha_ingreso }}" data-estado="{{ vario.estado }}" >{{ vario.nombre }}</option>
                   {% endfor %}
                 </select>
               </div>
+              <div id="varioInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;" ></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="vario" style="width: 6.5vw; margin: 0 auto; color: white ; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>

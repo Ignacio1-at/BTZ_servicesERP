@@ -372,3 +372,51 @@ span::after {
 .modal-footer {
     border-top: #001d43 !important;
 }
+
+.personal-info {
+    padding: 2px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #333;
+    margin-left: 15px;
+}
+
+.personal-info strong {
+    font-weight: bold;
+}
+
+.vehiculo-info {
+    padding: 2px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #333;
+    margin-left: 15px;
+}
+
+.vehiculo-info strong {
+    font-weight: bold;
+}
+
+.quimico-info {
+    padding: 2px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #333;
+    margin-left: 15px;
+}
+
+.quimico-info strong {
+    font-weight: bold;
+}
+
+.vario-info {
+    padding: 2px;
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #333;
+    margin-left: 15px;
+}
+
+.vario-info strong {
+    font-weight: bold;
+}

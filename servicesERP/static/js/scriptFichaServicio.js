@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function () {
     personalSelect.addEventListener('change', function () {
         const selectedOption = this.options[this.selectedIndex];
         if (selectedOption.value) {
-            const nombre = selectedOption.getAttribute('data-nombre');
             const rut = selectedOption.getAttribute('data-rut');
             const cargo = selectedOption.getAttribute('data-cargo');
             const especialidades = selectedOption.getAttribute('data-especialidades');
@@ -90,16 +89,91 @@ document.addEventListener('DOMContentLoaded', function () {
             const estado = selectedOption.getAttribute('data-estado');
 
             personalInfo.innerHTML = `
-                <p><strong>Nombre:</strong> ${nombre}</p>
-                <p><strong>RUT:</strong> ${rut}</p>
-                <p><strong>Cargo:</strong> ${cargo}</p>
-                <p><strong>Especialidades:</strong> ${especialidades}</p>
-                <p><strong>Conductor:</strong> ${conductor}</p>
-                <p><strong>Tipo de Licencia:</strong> ${tipoLicencia}</p>
-                <p><strong>Estado:</strong> ${estado}</p>
+                <p class="personal-info"><strong>RUT:</strong> ${rut}</p>
+                <p class="personal-info"><strong>Cargo:</strong> ${cargo}</p>
+                <p class="personal-info"><strong>Especialidades:</strong> ${especialidades}</p>
+                <p class="personal-info"><strong>Conductor:</strong> ${conductor}</p>
+                <p class="personal-info"><strong>Tipo de Licencia:</strong> ${tipoLicencia}</p>
+                <p class="personal-info"><strong>Estado:</strong> ${estado}</p>
             `;
         } else {
             personalInfo.innerHTML = '';
+        }
+    });
+
+    const vehiculoSelect = document.getElementById('vehiculoSelect');
+    const vehiculoInfo = document.getElementById('vehiculoInfo');
+
+    vehiculoSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            const marca = selectedOption.getAttribute('data-marca');
+            const modelo = selectedOption.getAttribute('data-modelo');
+            const color = selectedOption.getAttribute('data-color');
+            const numeroMotor = selectedOption.getAttribute('data-numero-motor');
+            const numeroChasis = selectedOption.getAttribute('data-numero-chasis');
+            const cilindrada = selectedOption.getAttribute('data-cilindrada');
+            const primerIngreso = selectedOption.getAttribute('data-primer-ingreso');
+            const fechaPermisoCirculacion = selectedOption.getAttribute('data-fecha-permiso-circulacion');
+            const fechaSoap = selectedOption.getAttribute('data-fecha-soap');
+            const fechaRevisionTecnica = selectedOption.getAttribute('data-fecha-revision-tecnica');
+            const seguroNombre = selectedOption.getAttribute('data-seguro-nombre');
+            const seguroPoliza = selectedOption.getAttribute('data-seguro-poliza');
+            const tipoCombustible = selectedOption.getAttribute('data-tipo-combustible');
+            const estado = selectedOption.getAttribute('data-estado');
+
+            vehiculoInfo.innerHTML = `
+                <p class="vehiculo-info"><strong>Marca:</strong> ${marca}</p>
+                <p class="vehiculo-info"><strong>Modelo:</strong> ${modelo}</p>
+                <p class="vehiculo-info"><strong>Color:</strong> ${color}</p>
+                <p class="vehiculo-info"><strong>Número Motor:</strong> ${numeroMotor}</p>
+                <p class="vehiculo-info"><strong>Número Chasis:</strong> ${numeroChasis}</p>
+                <p class="vehiculo-info"><strong>Cilindrada:</strong> ${cilindrada}</p>
+                <p class="vehiculo-info"><strong>Primer Ingreso:</strong> ${primerIngreso}</p>
+                <p class="vehiculo-info"><strong>Fecha Permiso Circulación:</strong> ${fechaPermisoCirculacion}</p>
+                <p class="vehiculo-info"><strong>Fecha SOAP:</strong> ${fechaSoap}</p>
+                <p class="vehiculo-info"><strong>Fecha Revisión Técnica:</strong> ${fechaRevisionTecnica}</p>
+                <p class="vehiculo-info"><strong>Seguro Nombre:</strong> ${seguroNombre}</p>
+                <p class="vehiculo-info"><strong>Seguro Poliza:</strong> ${seguroPoliza}</p>
+                <p class="vehiculo-info"><strong>Tipo Combustible:</strong> ${tipoCombustible}</p>
+                <p class="vehiculo-info"><strong>Estado:</strong> ${estado}</p>
+            `;
+        } else {
+            vehiculoInfo.innerHTML = '';
+        }
+    });
+
+    quimicoSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            const fechaIngreso = selectedOption.getAttribute('data-fecha-ingreso');
+            const litrosIngreso = selectedOption.getAttribute('data-litros-ingreso');
+            const numeroFactura = selectedOption.getAttribute('data-numero-factura');
+            const estado = selectedOption.getAttribute('data-estado');
+
+            quimicoInfo.innerHTML = `
+                <p class="personal-info"><strong>Fecha Ingreso:</strong> ${fechaIngreso}</p>
+                <p class="personal-info"><strong>Litros Ingreso:</strong> ${litrosIngreso}</p>
+                <p class="personal-info"><strong>Número Factura:</strong> ${numeroFactura}</p>
+                <p class="personal-info"><strong>Estado:</strong> ${estado}</p>
+            `;
+        } else {
+            quimicoInfo.innerHTML = '';
+        }
+    });
+
+    varioSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            const fechaIngreso = selectedOption.getAttribute('data-fecha-ingreso');
+            const estado = selectedOption.getAttribute('data-estado');
+
+            varioInfo.innerHTML = `
+                <p class="personal-info"><strong>Fecha Ingreso:</strong> ${fechaIngreso}</p>
+                <p class="personal-info"><strong>Estado:</strong> ${estado}</p>
+            `;
+        } else {
+            varioInfo.innerHTML = '';
         }
     });
 });
