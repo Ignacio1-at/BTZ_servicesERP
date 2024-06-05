@@ -18,42 +18,57 @@
 }
 
 .Operaciones {
-  background-color: #01152a; /* Cambia el color de fondo del botón según tus preferencias */
-  color: rgb(255, 255, 255); /* Cambia el color del texto del botón según tus preferencias */
+  background-color: #01152a;
+  /* Cambia el color de fondo del botón según tus preferencias */
+  color: rgb(255, 255, 255);
+  /* Cambia el color del texto del botón según tus preferencias */
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 10px;
   margin-top: 13vh;
 }
-.btn-operaciones{
-  width: 10vw; /* Ancho aumentado para hacerlos más cuadrados */
-  height: 43vh; /* Altura deseada */
-  display: flex; /* Esto ayuda a centrar la imagen dentro del botón */
-  margin: 0 auto; /* Esto también ayuda a centrar la imagen */
+
+.btn-operaciones {
+  width: 10vw;
+  /* Ancho aumentado para hacerlos más cuadrados */
+  height: 43vh;
+  /* Altura deseada */
+  display: flex;
+  /* Esto ayuda a centrar la imagen dentro del botón */
+  margin: 0 auto;
+  /* Esto también ayuda a centrar la imagen */
   color: rgb(255, 255, 255);
   justify-content: center;
   align-items: center;
   font-family: 'mifuente';
-  }
-  
+}
+
 
 .Botones button {
-  background-color: #01152a; /* Cambia el color de fondo del botón según tus preferencias */
-  color: white; /* Cambia el color del texto del botón según tus preferencias */
+  background-color: #01152a;
+  /* Cambia el color de fondo del botón según tus preferencias */
+  color: white;
+  /* Cambia el color del texto del botón según tus preferencias */
   border: none;
   cursor: pointer;
   border-radius: 10px;
   font-size: 2vh;
   font-family: 'mifuente';
 }
+
 .Botones button img {
-  height: 8vh; /* Altura deseada */
-  display: block; /* Esto ayuda a centrar la imagen dentro del botón */
-  margin: 0 auto; /* Esto también ayuda a centrar la imagen */
+  height: 8vh;
+  /* Altura deseada */
+  display: block;
+  /* Esto ayuda a centrar la imagen dentro del botón */
+  margin: 0 auto;
+  /* Esto también ayuda a centrar la imagen */
 }
+
 .Botones button br {
   content: " ";
   display: block;
-  margin: 5px 0; /* Ajusta el espacio entre la imagen y el texto según tus preferencias */
+  margin: 5px 0;
+  /* Ajusta el espacio entre la imagen y el texto según tus preferencias */
 }

@@ -1,0 +1,38 @@
+.contenido-principal {
+    height: 80vh;
+    width: 90vw;
+    font-family: 'mifuente';
+    padding: 25px;
+}
+
+.contenido-wrapper {
+    width: 100%;
+    margin-left: 5vw;
+}
+
+.btn-volver {
+    border: none;
+    background: none;
+    margin-right: 2vw;
+    cursor: pointer;
+}
+
+.documentos-img {
+    vertical-align: middle;
+    margin-right: 1vw;
+}
+
+.text-documento {
+    color: white;
+    vertical-align: middle;
+    font-size: 1.2em;
+    margin-right: 5%;
+}
+
+.buscador{
+    background-color: #001d43;
+    color: white;
+    border-color: #001d43;
+    width: 20vw;
+    padding: 0.3%;
+}

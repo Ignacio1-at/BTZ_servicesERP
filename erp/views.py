@@ -1180,3 +1180,11 @@ def detalle_ficha_servicio(request, servicio_id):
             'nombre_usuario': nombre_usuario
         }
         return render(request, 'html/detalleFichaServicio.html', context)
+
+
+#------------------Gestor de Documentos    
+@login_required
+def gestor_documentos(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    return render(request, 'html/gestorDocumentos.html', {'nombre_usuario': nombre_usuario})
+    

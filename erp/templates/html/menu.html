@@ -35,7 +35,7 @@
 
           <div class="container Mantenimiento-Informe px-4 d-flex justify-content-center align-items-center" style="margin-top: 13vh;">
             <div class="row gy-5">
-              <div class="col-md-6 col-lg-6">
+              <!--  <div class="col-md-6 col-lg-6">
                 <div class="p-3 Botones">
                   <button class="BotonPuerto" onclick="window.location.href=''">
                     <img src="{% static 'images/LogoPuerto.png' %}" alt="Texto alternativo de la imagen" />
@@ -43,10 +43,10 @@
                     Mantenimiento
                   </button>
                 </div>
-              </div>
+              </div>   -->
               <div class="col-md-6 col-lg-6">
                 <div class="p-3 Botones">
-                  <button class="BotonOtro" onclick="window.location.href=''">
+                  <button class="BotonOtro" style="margin-left: 3vw; width: 14vw;" onclick="window.location.href='{% url 'erp:gestor-documentos' %}'">
                     <img src="{% static 'images/LogoDoc.png' %}" alt="Texto alternativo de la imagen" />
                     <br />
                     Documentos

@@ -7,6 +7,7 @@ from .views import gestorPersonal, crear_personal, validar_rut, eliminar_persona
 from .views import gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, validar_campo_unico_vehiculoCambio, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
 from .views import obtener_detalle_vehiculo, guardar_cambios_vehiculo, obtener_detalles_vario, actualizar_vario, obtener_detalles_quimico, guardar_cambios_quimico
 from .views import ficha_servicio, actualizar_ficha_servicio_por_id, detalle_ficha_servicio
+from .views import gestor_documentos
 
 app_name = 'erp'  
 
@@ -55,5 +56,7 @@ urlpatterns = [
     path('gestor-inventario/actualizar_vario/', actualizar_vario, name='actualizar_vario'),
     path('gestor-inventario/obtener_detalles_quimico/', obtener_detalles_quimico, name='obtener_detalles_quimico'),
     path('gestor-inventario/guardar_cambios_quimico/', guardar_cambios_quimico, name='guardar_cambios_quimico'),
+    path('gestor-documentos/', gestor_documentos, name='gestor-documentos'),
+
     # Otras rutas aquí...
 ]

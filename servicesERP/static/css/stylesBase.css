@@ -8,13 +8,13 @@ nav {
   color: white;
   padding: 10px;
   position: fixed;
-  width: 100vw;
+  width: 100%;
   font-family: 'mifuente';
 }
 
 .fondo {
   background-image: url(../images/Fondonew.png);
-  width: 100vw;
+  width: 100%;
   min-height: calc(100vh - 12vh); /* Ajustar según la altura del footer */
   background-position: center;
   background-repeat: no-repeat;
@@ -39,7 +39,15 @@ footer {
   padding: 10px;
   position: fixed;
   bottom: 0;
-  width: 100vw;
+  width: 100%;
   height: 8vh;
   font-family: 'mifuente';
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer p {
+  margin: 0 auto;
 }
