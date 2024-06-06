@@ -168,7 +168,6 @@ function eliminarServicio(nombreMotonave, servicioId) {
     });
 }
 
-
 function visualizarServicio(nombreMotonave, servicioId) {
     console.log('Visualizar servicio con ID:', servicioId);
 

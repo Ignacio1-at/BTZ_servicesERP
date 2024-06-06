@@ -3,21 +3,51 @@
     src: url('../font/IronFist-KqrD.ttf') format('opentype');
 }
 
-.fondo {
-    background-image: none !important;
+body {
     background-color: #0b1f42;
-    height: 100vh !important;
+    font-family: 'mifuente' !important;
 }
 
-footer {
-    display: none;
-    visibility: hidden;
-    height: 0vh;
+.contenido-principal {
+    /* Ajusta los valores según la altura del nav y el footer */
+    padding: 10px;
+    width: 100%;
+    /* Ancho de página carta en puntos */
+    height: 100%;
+    /* Altura de página carta en puntos */
+    box-sizing: border-box;
+    font-size: 22px;
+    font-family: 'mifuente';
+    color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #0b1f42;
+    /* Agrega scroll vertical cuando el contenido excede la altura */
+}
+
+/* Estilos para el contenido principal */
+#contenidoPrincipal {
+    flex-grow: 1;
+    /* Hace que el contenido principal ocupe todo el espacio disponible */
+}
+
+.imprimirContenido {
+    background-color: #0b1f42;
+    background-image: url(../images/LogoOpacity.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 1vh;
+    padding: 40pt;
+    /* Agrega un relleno de 40 puntos en todos los lados */
+    box-sizing: border-box;
+    width: 70%;
+    margin: 0 auto;
+    border: 1px solid #061124;
 }
 
 span {
     position: relative;
-
+    display: inline-block;
     padding-bottom: 7px;
 }
 
@@ -30,7 +60,7 @@ span::after {
     height: 0;
     border-left: 37px solid transparent;
     /* La mitad de 1136px */
-    border-right: 600px solid transparent;
+    border-right: 780px solid transparent;
     /* La mitad de 1136px */
     border-top: 15px solid rgb(169, 0, 28);
     /* El color y la altura proporcionados */
@@ -40,28 +70,12 @@ span::after {
     /* Asegura que no haya color de fondo */
 }
 
-
-.contenido-principal {
-    height: calc(100vh - 12vh - 8vh);
-    /* Ajusta los valores según la altura del nav y el footer */
-    margin-left: 5vw;
-    font-family: 'mifuente';
-    color: white;
-    overflow-y: auto;
-    overflow-x: hidden;
-    /* Agrega scroll vertical cuando el contenido excede la altura */
-}
-
-/* Estilos para el contenido principal */
-#contenidoPrincipal {
-    flex-grow: 1;
-    /* Hace que el contenido principal ocupe todo el espacio disponible */
-}
-
 .datos-navio,
-.datos-servicio, .nominaciones {
+.datos-servicio,
+.nominaciones {
     margin-bottom: 10px;
     margin-left: 3vw;
+
 }
 
 /* DATOS NAVIO*/
@@ -69,10 +83,9 @@ span::after {
     margin-top: 3vh;
     margin-bottom: 2vh;
     position: relative;
-
+    display: inline-block;
     padding-bottom: 10px;
 }
-
 
 .datos-navio h3::after {
     content: '';
@@ -93,10 +106,8 @@ span::after {
     /* Asegura que no haya color de fondo */
 }
 
-
 .direccion-navio label {
     width: 100%;
-    margin-left: 7px;
 }
 
 .direccion-navio input {
@@ -106,6 +117,8 @@ span::after {
     border: none;
     border-radius: 10px;
     color: white;
+    font-family: 'mifuente';
+    font-size: 25px;
 }
 
 .direccion-navio select {
@@ -115,24 +128,8 @@ span::after {
     border: none;
     border-radius: 10px;
     color: white;
-}
-
-.fila-unoNavio {
-    margin-bottom: 10px;
-    display: grid;
-    grid-template-columns: 3fr 1fr 1.5fr 3fr 3fr;
-    gap: 2vw;
-    /* Espacio entre las celdas del grid */
-    margin-right: 5vw;
-}
-
-.fila-dosNavio {
-    display: grid;
-    grid-template-columns: 3fr 3fr 3fr;
-    margin-top: 25px;
-    margin-right: 20vw;
-    gap: 2vw;
-    /* Espacio entre las celdas del grid */
+    font-family: 'mifuente';
+    font-size: 20px;
 }
 
 /* DATOS SERVICIO*/
@@ -163,7 +160,6 @@ span::after {
     /* Asegura que no haya color de fondo */
 }
 
-
 .direccion-servicio select {
     width: 100%;
     padding: 10px;
@@ -171,6 +167,8 @@ span::after {
     border: none;
     border-radius: 10px;
     color: white;
+    font-family: 'mifuente';
+    font-size: 20px;
 }
 
 .direccion-servicio label {
@@ -185,6 +183,8 @@ span::after {
     border: none;
     border-radius: 10px;
     color: white;
+    font-family: 'mifuente';
+    font-size: 20px;
 }
 
 .fila-unoServicio {
@@ -224,75 +224,65 @@ span::after {
     margin-right: 5vw;
 }
 
-/* Estilos para la flecha */
-.arrow-down {
-    margin: 10px auto;
-    margin-top: 6vh;
-    margin-bottom: 6vh;
-    /* Centra la flecha horizontalmente */
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    /* Ajusta el tamaño de la flecha */
-    border-right: 20px solid transparent;
-    /* Ajusta el tamaño de la flecha */
-    border-top: 30px solid #fff;
-    /* Color y tamaño de la flecha */
-    position: relative;
-    animation: arrowBounce 2s infinite;
-    /* Agrega animación a la flecha */
-    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 1));
-}
-
-/* Animación de rebote de la flecha */
-@keyframes arrowBounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(-10px);
-        /* Ajusta la altura del rebote */
-    }
-
-    60% {
-        transform: translateY(-5px);
-        /* Ajusta la altura del rebote */
-    }
-}
-
 .fila {
     display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
 }
+
+/* NAVIO*/
 
 .datonavioColumna {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex: 0 0 48%;
+    flex: 0 0 50%;
+    margin: 3px;
 }
 
 .datonavioColumna label {
     color: white;
-    min-width: 150px; /* Ajustar según sea necesario */
+    margin-right: 1vw;
+    width: 9vw;
 }
 
 .datonavioColumna input {
-    min-width: 150px; /* Ajustar según sea necesario */
-    width: 40vw; 
-    margin-right: 40%;
-    max-width: 300px; /* Ajustar según sea necesario para limitar el ancho máximo */
+    width: 13vw;
+    font-family: 'mifuente';
+    padding: 8px;
+    font-size: 0.85vw; /* Ajusta este valor según tus necesidades */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+/* FIN NAVIO*/
+
+
+/* SERVICIO*/
+.datoservicioColumna {
+    display: flex;
+    align-items: center;
+    flex: 0 0 50%;
+    margin: 3px;
+}
+
+.datoservicioColumna label {
+    color: white;
+    margin-right: 1vw;
+    width: 9vw;
+}
+
+.datoservicioColumna input {
+    width: 13vw;
+    font-family: 'mifuente';
+    padding: 8px;
+    font-size: 0.85vw; /* Ajusta este valor según tus necesidades */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* FIN SERVICIO*/
+
 .nominaciones h3 {
-    margin-top: 8vh;
     margin-bottom: 2vh;
     position: relative;
     display: inline-block;
@@ -318,18 +308,24 @@ span::after {
     /* Asegura que no haya color de fondo */
 }
 
-/* Estilos para los rectángulos */
+/* Estilos para los rectángulos*/
 .rectangulo {
     background-color: #000D27;
     border-radius: 10px;
-    padding: 2px;
-    margin-top: 10px;
-    max-width: 300px;
+    padding: 10px;
+    margin: 10px;
     text-align: center;
+    display: inline-block;
 }
 
 /* Estilos para el texto dentro de los rectángulos */
 .rectangulo p {
     color: white;
     margin: 5px;
+}
+
+/* Contenedor para los rectángulos que los alinea horizontalmente */
+.contenedor {
+    display: flex;
+    flex-wrap: wrap;
 }

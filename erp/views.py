@@ -1169,7 +1169,8 @@ def detalle_ficha_servicio(request, servicio_id):
             'personal': personal,
             'vehiculos': vehiculos,
             'quimicos': quimicos,
-            'varios': varios
+            'varios': varios,
+            'servicio_id': servicio_id,
         }
 
         return render(request, 'html/detalleFichaServicio.html', context)
