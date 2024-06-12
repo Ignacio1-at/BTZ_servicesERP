@@ -64,10 +64,18 @@ function validarCargo(cargo) {
 }
 
 // Función para validar el campo conductor y tipo de licencia
-function validarConductorYLicencia(conductor, tipoLicencia) {
-    // Si el conductor no está seleccionado, el tipo de licencia debe ser '--'
+function validarConductorYLicencia() {
+    var conductor = document.getElementById('conductor').value;
+    var tipoLicencia = document.getElementById('tipoLicencia').value.trim();
+
+    // Si el conductor no está seleccionado, el tipo de licencia debe estar vacío
     if (conductor === 'No') {
-        return '--';
+        if (tipoLicencia !== '') {
+            alert('El Tipo de Licencia debe estar vacío si el conductor no está seleccionado.');
+            return false;
+        } else {
+            return true; // Permitir enviar el formulario si no hay conductor y el tipo de licencia está vacío
+        }
     }
 
     // Si el conductor está seleccionado, validar el tipo de licencia
@@ -76,7 +84,7 @@ function validarConductorYLicencia(conductor, tipoLicencia) {
         return false;
     }
 
-    return tipoLicencia; // La validación pasó
+    return true; // La validación pasó
 }
 
 // Función para validar la nueva especialidad

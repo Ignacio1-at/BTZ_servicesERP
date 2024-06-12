@@ -198,13 +198,14 @@ class Vario(models.Model):
     def __str__(self):
         return self.nombre
     
+    
 #----------------------FichaServicio----------------------------------------------------------------------------------------  
 
 class FichaServicio(models.Model):
     motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='fichas_servicio')
     numero_servicio = models.IntegerField()
     tipo_servicio = models.CharField(max_length=100, null=True, blank=True)
-    fecha_inicioFaena = models.DateField()
+    fecha_inicioFaena = models.DateField(null=True, blank=True)
     fecha_fin = models.DateField()
     fecha_arribo_cuadrilla = models.DateField(null=True, blank=True)
     bodegas_a_realizar = models.CharField(max_length=100, null=True, blank=True)
@@ -229,3 +230,40 @@ class FichaServicio(models.Model):
     
     def __str__(self):
         return f"Ficha de Servicio {self.numero_servicio} - Motonave: {self.motonave.nombre}" 
+    
+#----------------------DOCUMENTO----------------------------------------------------------------------------------------
+class Documento(models.Model):
+    SECCION_CHOICES = [
+        ('Personal', 'Personal'),
+        ('Inventario', 'Inventario'),
+        ('Servicio', 'Servicio'),
+        ('Otros', 'Otros'),
+    ]
+
+    SUB_SECCION_CHOICES = [
+        ('Contrato', 'Contrato'),
+        ('Ficha de Ingreso', 'Ficha de Ingreso'),
+        ('Boletas', 'Boletas'),
+        ('Facturas', 'Facturas'),
+        ('Reportes', 'Reportes'),
+        ('Fichas', 'Fichas'),
+    ]
+
+    archivo = models.FileField(upload_to='documentos/', default='sin_archivo.txt')
+    nombre = models.CharField(max_length=255)
+    fecha_subida = models.DateField(auto_now_add=True)
+    seccion = models.CharField(max_length=20, choices=SECCION_CHOICES)
+    sub_seccion = models.CharField(max_length=20, choices=SUB_SECCION_CHOICES, null=True, blank=True)
+    personal = models.ForeignKey(Personal, on_delete=models.CASCADE, null=True, blank=True)
+    ficha_servicio = models.ForeignKey(FichaServicio, on_delete=models.CASCADE, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.seccion == 'Personal' and self.sub_seccion not in ['Contrato', 'Ficha de Ingreso']:
+            raise ValueError("Sub Sección inválida para la Sección Personal")
+        if self.seccion == 'Inventario' and self.sub_seccion not in ['Boletas', 'Facturas']:
+            raise ValueError("Sub Sección inválida para la Sección Inventario")
+        if self.seccion == 'Servicio' and self.sub_seccion not in ['Reportes', 'Fichas']:
+            raise ValueError("Sub Sección inválida para la Sección Servicio")
+        if self.seccion == 'Otros' and self.sub_seccion is not None:
+            raise ValueError("Sub Sección debe ser nula para la Sección Otros")
+        super().save(*args, **kwargs)

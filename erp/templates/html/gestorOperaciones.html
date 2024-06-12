@@ -17,15 +17,17 @@
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <!-- Logo y texto "Operaciones" -->
           <div style="display: flex; align-items: center;">
-            <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
+            <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
             <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 5vh;" />
             <span style="color: white; margin-left: 1vw; font-size: 2vh;">Operaciones</span>
           </div>
-          <div style="display: flex; margin-left: 50vw; align-items: center; margin-right: 1vh;">
-            <button type="button" class="btn btn-primary" style="height: 6vh; overflow: hidden;" href="#" data-bs-toggle="modal" data-bs-target="#listaMotonaveModal" title="Lista de Motonaves">Lista de Motonaves</button>
-          </div>
-          <div style="display: flex; align-items: center; margin-right: 6vw;">
-            <button type="button" class="btn btn-custom-color" style="height: 6vh; overflow: hidden;" title="Historial de Motonaves">Historial de Servicios</button>
+          <div style="display: flex; margin-right: 5vw;">
+            <div style="align-items: center; margin-right: 1vw;">
+              <button type="button" class="btn btn-primary" style="width: 100%;" href="#" data-bs-toggle="modal" data-bs-target="#listaMotonaveModal" title="Lista de Motonaves"><img src="{% static 'images/ListaServicios.png' %}" class="btn-image" style="width: 4vh; height: 4vh;" /> <span class="btn-text" style="font-size: 0.9em">Lista de Motonave</span></button>
+            </div>
+            <div style="align-items: center;">
+              <button type="button" class="btn btn-custom-color" style="width: 100%;" title="Historial de Motonaves"><img src="{% static 'images/HistorialServicios.png' %}" class="btn-image" style="width: 4vh; height: 4vh" /> <span class="btn-text" style="font-size: 0.9em">Historial de Servicios</span></button>
+            </div>
           </div>
         </div>
       </div>
@@ -110,7 +112,7 @@
             <h5 class="modal-title" id="listaMotonaveModalLabel">Tabla de Motonaves</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-size: 20px; padding: 2%;">
+          <div class="modal-body" style="font-size: 20px; padding: 2%; margin-left: 2vw;">
             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
               <table class="table table-striped" style="color: white;  margin-bottom: 0;">
                 <thead style="position: sticky; top: 0; background-color: #01152a;">
@@ -310,7 +312,7 @@
           </div>
           <div class="modal-body" style="width: 50vw;">
             <table id="tablaServicios" class="table text-white">
-              <thead style="text-align: center;">
+              <thead style="text-align: center; background-color: #01152a;">
                 <tr>
                   <th onclick="sortTable(0)">N Servicio</th>
                   <th>Tipo Servicio</th>

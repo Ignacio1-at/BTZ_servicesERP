@@ -106,21 +106,21 @@
             <div class="modal-body">
               <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre Completo:</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre Completo" required />
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre Completo" required style="border-radius : 15px;" />
               </div>
 
               <div class="mb-3">
                 <label for="rut" class="form-label">Rut:</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="rutSinDigito" name="rut_SinDigito" style="width: 100px;" maxlength="8" placeholder="12345678" required />
-                  <span class="input-group-text">-</span>
-                  <input type="text" class="form-control" id="digitoVerificador" name="digito_Verificador" style="width: 30px;" maxlength="1" pattern="[0-9Kk]" placeholder="9" required />
+                  <input type="text" class="form-control" id="rutSinDigito" name="rut_SinDigito" style="width: 276px; border-radius:15px;" maxlength="8" placeholder="12345678" required />
+                  <span class="input-group-text" style="opacity: 0%">-</span>
+                  <input type="text" class="form-control" id="digitoVerificador" name="digito_Verificador" style="width: 30px; border-radius:15px;" maxlength="1" pattern="[0-9Kk]" placeholder="9" required />
                 </div>
               </div>
 
               <div class="mb-3">
                 <label for="cargo" class="form-label">Cargo:</label>
-                <select id="cargo" name="cargo" class="form-select" required>
+                <select id="cargo" name="cargo" class="form-select" required style="border-radius : 15px;">
                   <option value="Operario">Operario</option>
                   <option value="Jefe de Cuadrilla">Jefe de Cuadrilla</option>
                   <option value="Supervisor">Supervisor</option>
@@ -165,7 +165,7 @@
 
               <div class="mb-3">
                 <label for="conductor" class="form-label">Conductor:</label>
-                <select id="conductor" name="conductor" class="form-select" onchange="mostrarTipoLicencia()">
+                <select id="conductor" name="conductor" class="form-select" onchange="mostrarTipoLicencia()" style="border-radius : 15px;">
                   <option value="Si">Si</option>
                   <option value="No">No</option>
                 </select>
@@ -173,8 +173,9 @@
 
               <div class="mb-3" id="campoTipoLicencia" style="display: none;">
                 <label for="tipo_licencia" class="form-label">Tipo de Licencia:</label>
-                <select id="tipo_licencia" name="tipo_licencia" class="form-select" required>
+                <select id="tipo_licencia" name="tipo_licencia" class="form-select" required style="border-radius : 15px;">
                   <option value="--" hidden>--</option>
+                  <option value="--">--</option>
                   <option value="A1">A1</option>
                   <option value="A2">A2</option>
                   <option value="A3">A3</option>
@@ -211,7 +212,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="btnCambiarModo" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-            <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button> <!-- Botón para guardar en modo edición -->
+            <button id="btnGuardar" type="button" class="btn btn-primary" style="border: none; background: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button> <!-- Botón para guardar en modo edición -->
           </div>
         </div>
       </div>

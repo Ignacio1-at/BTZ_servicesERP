@@ -2,11 +2,11 @@
 function eliminarQuimico(quimicoId) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: '¿Quieres eliminar este químico?',
-        icon: 'warning',
+        text: '¿Quieres eliminar este vehículo?',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#8d000e',
+        cancelButtonColor: '#01152a',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -42,11 +42,11 @@ function abrirModalQuimico(quimicoId) {
 function mostrarDetallesQuimicoVisualizacion(quimico) {
     var contenidoModal = `
         <div class="datosGenerales" id="datosGenerales">
-            <div class="inputHeaderDatosGeneralesQuimico" id="inputHeaderDatosGeneralesQuimico">
+            <div class="inputHeaderDatosGeneralesQuimico Titulo-subRayado" id="inputHeaderDatosGeneralesQuimico">
                 <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales" id="bodyDatosGenerales">
-                <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
+                <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 2vw;">
                     <p><strong>Tipo de Químico:</strong> ${quimico.tipo_quimico}</p>
                     <p><strong>Fecha de Ingreso:</strong> ${quimico.fecha_ingreso}</p>
                     <p><strong>Número de Factura:</strong> ${quimico.numero_factura}</p>
@@ -55,11 +55,11 @@ function mostrarDetallesQuimicoVisualizacion(quimico) {
             </div>
         </div>
         <div class="Estado" id="Estado">
-            <div class="headerEstado" id="headerEstado">
+            <div class="headerEstado Titulo-subRayado" id="headerEstado">
                 <p style="font-size: 2.5vh; margin-left: 2vw;">Estado</p>
             </div>
             <div class="bodyEstado" id="bodyEstado">
-                <div class="textoEstado" id="textoEstado" style="margin-left: 3vw;">
+                <div class="textoEstado" id="textoEstado" style="margin-left: 2vw;">
                     <p><strong>Estado:</strong> ${quimico.estado}</p>
                 </div>
             </div>
@@ -88,13 +88,13 @@ function cambiarModoQuimico(quimico) {
 function mostrarDetallesQuimicoEdicion(quimico) {
     var contenidoModal = `
         <div class="datosGenerales" id="datosGenerales">
-            <div class="inputHeaderDatosGeneralesQuimico" id="inputHeaderDatosGeneralesQuimico">
+            <div class="inputHeaderDatosGeneralesQuimico Titulo-subRayado" id="inputHeaderDatosGeneralesQuimico">
                 <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales" id="bodyDatosGenerales">
                 <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
                     <p><strong>Tipo de Químico:</strong> 
-                        <select id="tipoQuimicoInput${quimico.id}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 3px;">
+                        <select id="tipoQuimicoInput${quimico.id}" class="selectQuimico" style=" border-radius: 15px; font-family: 'mifuente'; padding-left: 5px;  height: 30px;">
                             <option value="Bidones OCN 01" ${quimico.tipo_quimico === 'Bidones OCN 01' ? 'selected' : ''}>Bidones OCN 01</option>
                             <option value="Bidones OCN 08" ${quimico.tipo_quimico === 'Bidones OCN 08' ? 'selected' : ''}>Bidones OCN 08</option>
                             <option value="Bidones Acido Clorhídrico" ${quimico.tipo_quimico === 'Bidones Acido Clorhídrico' ? 'selected' : ''}>Bidones Acido Clorhídrico</option>
@@ -102,9 +102,9 @@ function mostrarDetallesQuimicoEdicion(quimico) {
                             <option value="Bidones Hold Coat" ${quimico.tipo_quimico === 'Bidones Hold Coat' ? 'selected' : ''}>Bidones Hold Coat</option>
                         </select>
                     </p>
-                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput${quimico.id}" value="${quimico.fecha_ingreso}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;"></p>
-                    <p><strong>Número de Factura:</strong> <input type="number" id="numeroFacturaInput${quimico.id}" value="${quimico.numero_factura}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;"></p>
-                    <p><strong>Litros Ingresados:</strong> <input type="number" id="litrosIngresoInput${quimico.id}" value="${quimico.litros_ingreso}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;"></p>
+                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput${quimico.id}" value="${quimico.fecha_ingreso}" style=" border-radius: 15px; font-family: 'mifuente'; height: 30px;width: 200px;" ></p>
+                    <p><strong>Número de Factura:</strong> <input type="number" id="numeroFacturaInput${quimico.id}" value="${quimico.numero_factura}" style=" border-radius: 15px; font-family: 'mifuente'; height: 30px;width: 200px; text-indent: 7px;"></p>
+                    <p><strong>Litros Ingresados:</strong> <input type="number" id="litrosIngresoInput${quimico.id}" value="${quimico.litros_ingreso}" style=" border-radius: 15px; font-family: 'mifuente'; height: 30px;width: 200px; text-indent: 7px;"></p>
                 </div>
             </div>
         </div>

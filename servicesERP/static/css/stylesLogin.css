@@ -11,8 +11,11 @@
 }
 
 body{
-    background-size: cover;
     font-family: 'mifuente';
+    background-image: url(../images/Fondonew.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .login-wrapper{

@@ -3,10 +3,10 @@ function eliminarVehiculo(vehiculoId) {
     Swal.fire({
         title: '¿Estás seguro?',
         text: '¿Quieres eliminar este vehículo?',
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#8d000e',
+        cancelButtonColor: '#01152a',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -23,6 +23,7 @@ function abrirDetalleVehiculo(vehiculoId) {
     obtenerDetallesVehiculo(vehiculoId);
     console.log('El id es: ', vehiculoId)
 }
+
 
 // Declarar la variable vehiculo en un ámbito global
 var vehiculo;
@@ -56,72 +57,43 @@ function mostrarDetallesModalVisualizacion(vehiculo) {
     // Construir el contenido del modal en modo visualización
     var modalContent = `
     <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
-        <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales">
+        <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales" style="height: 550px;>
             <div class="modal-body">
                 <div class="container" style="padding: 1px !important;">
-                    <div class="row">
-                        <div class="col"><strong>Marca:</strong></div>
-                        <div class="col">${vehiculo.marca}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Modelo:</strong></div>
-                        <div class="col">${vehiculo.modelo}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Color:</strong></div>
-                        <div class="col">${vehiculo.color}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Número de Motor:</strong></div>
-                        <div class="col">${vehiculo.numero_motor}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Número de Chasis:</strong></div>
-                        <div class="col">${vehiculo.numero_chasis}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Cilindrada:</strong></div>
-                        <div class="col">${vehiculo.cilindrada}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Tipo de Vehículo:</strong></div>
-                        <div class="col">${vehiculo.tipo_vehiculo}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Primer Ingreso:</strong></div>
-                        <div class="col">${vehiculo.primer_ingreso}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Patente:</strong></div>
-                        <div class="col">${vehiculo.patente}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Fecha de Permiso de Circulación:</strong></div>
-                        <div class="col">${vehiculo.fecha_permiso_circulacion}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Fecha SOAP:</strong></div>
-                        <div class="col">${vehiculo.fecha_soap}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Fecha de Revisión Técnica:</strong></div>
-                        <div class="col">${vehiculo.fecha_revision_tecnica}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Nombre del Seguro:</strong></div>
-                        <div class="col">${vehiculo.seguro_nombre}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Número de Póliza:</strong></div>
-                        <div class="col">${vehiculo.seguro_poliza}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Tipo de Combustible:</strong></div>
-                        <div class="col">${vehiculo.tipo_combustible}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col"><strong>Estado:</strong></div>
-                        <div class="col">${vehiculo.estado}</div>
+                    <div class="grid-container">
+                        <div class="grid-item grid-item-titulo"><strong>Marca:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.marca}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Modelo:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.modelo}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Color:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.color}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Número de Chasis:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.numero_chasis}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Número de Motor:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.numero_motor}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Tipo de Vehículo:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.tipo_vehiculo}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Cilindrada:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.cilindrada}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Patente:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.patente}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Primer Ingreso:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.primer_ingreso}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Fecha SOAP:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.fecha_soap}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Fecha de Permiso de Circulación:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.fecha_permiso_circulacion}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Nombre del Seguro:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.seguro_nombre}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Fecha de Revisión Técnica:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.fecha_revision_tecnica}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Número de Póliza:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.seguro_poliza}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Tipo de Combustible:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.tipo_combustible}</div>
+                        <div class="grid-item grid-item-titulo"><strong>Estado:</strong></div>
+                        <div class="grid-item grid-item-informacion">${vehiculo.estado}</div>
+                        <!-- Añadir los demás elementos según sea necesario -->
                     </div>
                 </div>
             </div>
@@ -139,7 +111,7 @@ function mostrarDetallesModalVisualizacion(vehiculo) {
 function mostrarDetallesModalEdicion(vehiculo) {
     // Construir el contenido del modal en modo edición
     var modalContent = `
-        <div class="modal-body">
+        <div class="modal-body"style="height: 632px;>
             <div class="container">
                 <div class="row">
                     <div class="col"><strong>Marca:</strong></div>

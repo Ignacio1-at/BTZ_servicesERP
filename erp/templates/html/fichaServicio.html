@@ -117,7 +117,7 @@
                 <option value="NO APLICA" {% if prox_puerto_selected == 'NO APLICA' %}selected{% endif %}>NO APLICA</option>
               </select>
             {% endwith %}
-            <label>PROXIMO PUERTO</label>
+            <label>PRÓXIMO PUERTO</label>
           </div>
         </div>
       </div>
@@ -126,10 +126,10 @@
     <form id="fichaServicioForm" method="POST" action="{% url 'erp:actualizar_ficha_servicio_por_id' servicio_id=ficha_servicio.id %}">
       {% csrf_token %}
 
-      <input type="hidden" name="personal_nominado" id="personal_nominado" value="" required autocomplete="off">
-      <input type="hidden" name="vehiculos_nominados" id="vehiculos_nominados" value="" required autocomplete="off">
-      <input type="hidden" name="quimicos_nominados" id="quimicos_nominados" value="" required autocomplete="off">
-      <input type="hidden" name="varios_nominados" id="varios_nominados" value="" required autocomplete="off">
+      <input type="hidden" name="personal_nominado" id="personal_nominado" value="" autocomplete="off">
+      <input type="hidden" name="vehiculos_nominados" id="vehiculos_nominados" value="" autocomplete="off">
+      <input type="hidden" name="quimicos_nominados" id="quimicos_nominados" value="" autocomplete="off">
+      <input type="hidden" name="varios_nominados" id="varios_nominados" value="" autocomplete="off">
 
       <input type="hidden" name="nombre_motonave" value="{{ motonave.nombre }}"/>
       <div class="datos-servicio">
@@ -206,7 +206,7 @@
           <h3>Personal</h3>
           <div class="lineaGris">
             <div class="columna-contenido">
-              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border-color: #052242;" class="modal-trigger" data-target="personalModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
+              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border: none;" class="modal-trigger" data-target="personalModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
             </div>
           </div>
         </div>
@@ -215,7 +215,7 @@
           <h3>Vehículos</h3>
           <div class="lineaGris">
             <div class="columna-contenido">
-              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border-color: #052242;" class="modal-trigger" data-target="vehiculoModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
+              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border: none;" class="modal-trigger" data-target="vehiculoModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
             </div>
           </div>
         </div>
@@ -224,7 +224,7 @@
           <h3>Químicos</h3>
           <div class="lineaGris">
             <div class="columna-contenido">
-              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border-color: #052242;" class="modal-trigger" data-target="quimicoModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
+              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border: none;" class="modal-trigger" data-target="quimicoModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
             </div>
           </div>
         </div>
@@ -233,7 +233,7 @@
           <h3>Equipos</h3>
           <div class="sinLineaGris">
             <div class="columna-contenido">
-              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border-color: #052242;" class="modal-trigger" data-target="varioModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
+              <button type="button" style="width: 7.5vw; border-radius: 20px; background-color: #052242; margin-top: 10px; border: none;" class="modal-trigger" data-target="varioModal"><img src="{% static 'images/mas.png' %}" alt="Agregar" width="30" height="30" style="cursor: pointer; padding: 5px;" /></button>
             </div>
           </div>
         </div>
@@ -242,7 +242,7 @@
       <!-- Modales -->
       <!-- Modal Personal -->
       <div class="modal" id="personalModal" tabindex="-1" aria-labelledby="personalModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-        <div class="modal-dialog modal-dialog-centered" style="width: 30vw;">
+        <div class="modal-dialog modal-dialog-centered" style="width: 30vw; max-width: 50vw; max-height: 50vh; overflow: auto;">
           <div class="modal-content">
             <div class="modal-header">
               <img src="{% static 'images/Logo_Anadir_Personal.png' %}" alt="Logo" width="30" height="30" style="margin-right: 10px;" />
@@ -263,14 +263,18 @@
                 </div>
               </div>
               <div class="mb-3">
-                <select name="personal_nominado" id="personalSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                <select name="personal_nominado" id="personalSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;">
                   <option value="">Seleccione un personal</option>
                   {% for persona in personal %}
-                    <option value="{{ persona.id }}" data-rut="{{ persona.rut }}" data-cargo="{{ persona.cargo }}" data-especialidades="{% for especialidad in persona.especialidades.all %}{{ especialidad.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" data-conductor="{{ persona.conductor }}" data-tipo-licencia="{{ persona.tipo_licencia }}" data-estado="{{ persona.estado }}">{{ persona.nombre }}</option>
+                    <option value="{{ persona.id }}" data-nombre="{{persona.nombre}}" data-rut="{{ persona.rut }}" data-cargo="{{ persona.cargo }}" data-especialidades="{% for especialidad in persona.especialidades.all %}{{ especialidad.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}" data-conductor="{{ persona.conductor }}" data-tipo-licencia="{{ persona.tipo_licencia }}" data-estado="{{ persona.estado }}">{{ persona.nombre }}</option>
                   {% endfor %}
                 </select>
               </div>
               <div id="personalInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;"></div>
+              <div id="conductorCheckboxContainer" style="margin-left: 20px; width: 24vw; margin: 0 auto; margin-top: 1vh;">
+                <input type="checkbox" id="conductorCheckbox" style="margin-right: 5px;">
+                <label for="conductorCheckbox">Asignar como conductor nominado</label>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="personal" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
@@ -281,22 +285,28 @@
 
       <!-- Modal Vehículo -->
       <div class="modal" id="vehiculoModal" tabindex="-1" aria-labelledby="vehiculoModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-        <div class="modal-dialog modal-dialog-centered" style="width: 30vw;">
-          <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered" style="width: 30vw; max-width: 50vw; max-height: 50vh;">
+          <div class="modal-content" >
             <div class="modal-header">
               <img src="{% static 'images/IconoAuto.png' %}" alt="Logo" width="45" height="25" style="margin-right: 10px;" />
               <h5 class="modal-title" style="margin-right: 75%;" id="vehiculoModalLabel">Vehículo</h5>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto;">
               <div class="mb-3">
-                <select name="vehiculo_nominado" id="vehiculoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                <select name="vehiculo_nominado" id="vehiculoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;">
                   <option value="">Seleccione un vehículo</option>
                   {% for vehiculo in vehiculos %}
-                    <option value="{{ vehiculo.id }}" data-marca="{{ vehiculo.marca }}" data-modelo="{{ vehiculo.modelo }}" data-color="{{ vehiculo.color }}" data-numero-motor="{{ vehiculo.numero_motor }}" data-numero-chasis="{{ vehiculo.numero_chasis }}" data-cilindrada="{{ vehiculo.cilindrada }}" data-primer-ingreso="{{ vehiculo.primer_ingreso|date:'Y-m-d' }}" data-fecha-permiso-circulacion="{{ vehiculo.fecha_permiso_circulacion|date:'Y-m-d' }}" data-fecha-soap="{{ vehiculo.fecha_soap|date:'Y-m-d' }}" data-fecha-revision-tecnica="{{ vehiculo.fecha_revision_tecnica|date:'Y-m-d' }}" data-seguro-nombre="{{ vehiculo.seguro_nombre }}" data-seguro-poliza="{{ vehiculo.seguro_poliza }}" data-tipo-combustible="{{ vehiculo.tipo_combustible }}" data-estado="{{ vehiculo.estado }}">{{ vehiculo.tipo_vehiculo }} {{ vehiculo.patente }}</option>
+                    <option value="{{ vehiculo.id }}" data-tipo-vehiculo="{{ vehiculo.tipo_vehiculo }}" data-patente="{{ vehiculo.patente }}" data-marca="{{ vehiculo.marca }}" data-modelo="{{ vehiculo.modelo }}" data-color="{{ vehiculo.color }}" data-numero-motor="{{ vehiculo.numero_motor }}" data-numero-chasis="{{ vehiculo.numero_chasis }}" data-cilindrada="{{ vehiculo.cilindrada }}" data-primer-ingreso="{{ vehiculo.primer_ingreso|date:'Y-m-d' }}" data-fecha-permiso-circulacion="{{ vehiculo.fecha_permiso_circulacion|date:'Y-m-d' }}" data-fecha-soap="{{ vehiculo.fecha_soap|date:'Y-m-d' }}" data-fecha-revision-tecnica="{{ vehiculo.fecha_revision_tecnica|date:'Y-m-d' }}" data-seguro-nombre="{{ vehiculo.seguro_nombre }}" data-seguro-poliza="{{ vehiculo.seguro_poliza }}" data-tipo-combustible="{{ vehiculo.tipo_combustible }}" data-estado="{{ vehiculo.estado }}">{{ vehiculo.tipo_vehiculo }} {{ vehiculo.patente }}</option>
                   {% endfor %}
                 </select>
               </div>
               <div id="vehiculoInfo" style="margin-left: 20px; background-color: white; border-radius: 15px; overflow-y: auto; width: 24vw; margin: 0 auto;"></div>
+              <div id="conductoresNominadosContainer" class="hidden" style="margin-left: 20px; width: 24vw; margin: 0 auto; margin-top: 1vh;">
+                <label for="conductoresNominados">Conductores nominados:</label>
+                <select id="conductoresNominados" style="width: 100%; background-color: #01152a; color: white;"></select>
+                <button type="button" id="agregarConductor" style="margin-top: 5px;">Agregar</button>
+                <div id="conductoresVinculadosContainer"></div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="modal-add btn btn-custom-color" data-type="vehiculo" style="width: 6.5vw; margin: 0 auto; color: white; background-color: #860909c9; border-radius: 25px; padding: 5px;">Agregar</button>
@@ -315,7 +325,7 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <select name="quimicos_nominados" id="quimicoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                <select name="quimicos_nominados" id="quimicoSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" >
                   <option value="">Seleccione un químico</option>
                   {% for quimico in quimicos %}
                     <option value="{{ quimico.id }}" data-fecha-ingreso="{{ quimico.fecha_ingreso }}" data-litros-ingreso="{{ quimico.litros_ingreso }}" data-numero-factura="{{ quimico.numero_factura }}" data-estado="{{ quimico.estado }}">{{ quimico.tipo_quimico }}</option>
@@ -341,7 +351,7 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <select name="vario_nominado" id="varioSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;" required>
+                <select name="vario_nominado" id="varioSelect" class="form-select" style="width: 24vw; margin: 0 auto; border-radius: 15px;">
                   <option value="">Seleccione un vario</option>
                   {% for vario in varios %}
                     <option value="{{ vario.id }}" data-fecha-ingreso="{{ vario.fecha_ingreso|date:'Y-m-d' }}" data-estado="{{ vario.estado }}">{{ vario.nombre }}</option>
@@ -366,6 +376,7 @@
       </div>
     </form>
   </div>
+
 {% endblock %}
 
 {% block module_scripts %}
@@ -375,5 +386,16 @@
     }
   </script>
   <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-  <script src="{% static 'js/scriptFichaServicio.js' %}"></script>
+
+  <script src="{% static "js/FichaServicio/modal.js" %}"></script>
+  <script src="{% static "js/FichaServicio/ficha.js" %}"></script>
+  <script src="{% static "js/FichaServicio/conductores.js" %}"></script>
+  <script src="{% static "js/FichaServicio/main.js" %}"></script>
+
+  <script>
+    var staticUrls = {
+      eliminarIcono: "{% static 'images/EliminarNomina.png' %}",
+      choferNominado: "{% static 'images/ChoferEncendido.png' %}"
+    }
+  </script>
 {% endblock %}

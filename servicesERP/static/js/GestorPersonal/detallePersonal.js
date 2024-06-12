@@ -36,50 +36,34 @@ function mostrarDetallesModalVisualizacion(personal) {
 
 // Función para mostrar los detalles del personal en modo edición
 function mostrarDetallesModalEdicion(personal) {
-    // Inicializar especialidadesHTML como cadena vacía
-    var especialidadesHTML = '';
-
-    if (personal.especialidades && personal.especialidades.length > 0) {
-        // Obtener el contenido HTML de las especialidades con ID y nombre
-        especialidadesHTML = personal.especialidades.map(function (nombre) {
-            return `<li data-id="undefined">${nombre}</li>`;
-        }).join('');
-    }
-
     $.ajax({
         url: obtenerListaEspecialidadesURL,
         type: 'GET',
         success: function (response) {
-            // Crear la lista de selección de especialidades con ID y nombre
             var especialidades = response.especialidades;
             var opcionesEspecialidades = '<option value="">Seleccione una especialidad</option>';
             especialidades.forEach(function (especialidad) {
                 opcionesEspecialidades += `<option value="${especialidad.id}">${especialidad.nombre}</option>`;
             });
 
-            // Obtener las IDs de las especialidades existentes comparando los nombres
-            var especialidadesExistentes = [];
-            personal.especialidades.forEach(function (nombreEspecialidad) {
+            var especialidadesExistentes = personal.especialidades.map(function (nombreEspecialidad) {
                 var especialidadEncontrada = especialidades.find(function (especialidad) {
                     return especialidad.nombre === nombreEspecialidad;
                 });
-                if (especialidadEncontrada) {
-                    especialidadesExistentes.push(especialidadEncontrada.id);
-                }
-            });
+                return especialidadEncontrada ? especialidadEncontrada.id : null;
+            }).filter(id => id !== null);
 
-            console.log("Especialidades existentes ID al finalizar carga del modal:", especialidadesExistentes);
-
-            // Generar el HTML de las especialidades existentes con la ID correcta
-            especialidadesHTML = personal.especialidades.map(function (nombreEspecialidad) {
+            var especialidadesHTML = personal.especialidades.map(function (nombreEspecialidad) {
                 var especialidadEncontrada = especialidades.find(function (especialidad) {
                     return especialidad.nombre === nombreEspecialidad;
                 });
                 var idEspecialidad = especialidadEncontrada ? especialidadEncontrada.id : '';
-                return `<li data-id="${idEspecialidad}">${nombreEspecialidad}</li>`;
+                return `<li class="especialidad" data-id="${idEspecialidad}">
+                            ${nombreEspecialidad} 
+                            <button class="eliminar-especialidad">X</button>
+                        </li>`;
             }).join('');
 
-            // Actualizar el contenido del modal con los detalles obtenidos y la lista de selección de especialidades
             var modalContent = `
                 <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${personal.nombre}" data-original-value="${personal.nombre}"></p>
                 <p><strong>Rut:</strong> <input type="text" id="rutInput" value="${personal.rut}" data-original-value="${personal.rut}"></p>
@@ -116,27 +100,30 @@ function mostrarDetallesModalEdicion(personal) {
                 <ul id="especialidadesList">${especialidadesHTML}</ul>
                 <label for="nuevaEspecialidadSelect">Agregar nueva especialidad:</label>
                 <select id="nuevaEspecialidadSelect">${opcionesEspecialidades}</select>
-                <button onclick="agregarEspecialidadSeleccionada(${JSON.stringify(especialidadesExistentes)})">Agregar</button>
+                <button id="botonAgregar" onclick="agregarEspecialidadSeleccionada(${JSON.stringify(especialidadesExistentes)})"></button>
+
             `;
 
-            // Actualizar el contenido del modal y mostrar el botón de guardar
             $('#modalDetallePersonal .modal-body').html(modalContent);
             $('#btnGuardar').show();
 
-            // Manejar la visibilidad del campo de selección de licencia
             if (personal.conductor === 'No') {
                 $('#tipoLicenciaSelect').hide();
             }
 
-            // Manejar la visibilidad del campo de selección de licencia al cambiar la selección del campo "Conductor"
             $('#conductorSelect').change(function () {
                 var seleccion = $(this).val();
                 if (seleccion === 'No') {
-                    $('#tipoLicenciaSelect').val('--'); // Establecer el valor del tipo de licencia como '--'
+                    $('#tipoLicenciaSelect').val('--');
                     $('#tipoLicenciaSelect').hide();
                 } else {
                     $('#tipoLicenciaSelect').show();
                 }
+            });
+
+            // Manejar la eliminación de especialidades
+            $('#modalDetallePersonal .modal-body').on('click', '.eliminar-especialidad', function () {
+                $(this).closest('li').remove();
             });
         },
         error: function (xhr, status, error) {
@@ -144,6 +131,9 @@ function mostrarDetallesModalEdicion(personal) {
         }
     });
 }
+
+
+
 
 // Función para agregar una especialidad seleccionada a la lista
 function agregarEspecialidadSeleccionada(especialidadesExistentes) {
@@ -164,10 +154,11 @@ function agregarEspecialidadSeleccionada(especialidadesExistentes) {
         return;
     }
 
-    // Agregar la nueva especialidad a la lista de especialidades del personal
-    var nuevaEspecialidadItem = `<li data-id="${nuevaEspecialidadId}">${nuevaEspecialidadNombre}</li>`;
+    // Agregar la nueva especialidad a la lista de especialidades del personal con el mismo estilo que las demás
+    var nuevaEspecialidadItem = `<li class="especialidad" data-id="${nuevaEspecialidadId}">${nuevaEspecialidadNombre} <button class="eliminar-especialidad">X</button></li>`;
     $("#especialidadesList").append(nuevaEspecialidadItem);
 }
+
 
 
 // Función para cambiar entre el modo visualización y edición

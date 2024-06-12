@@ -1,7 +1,10 @@
+.allmenu{
+    width: 25vw;
+}
 menu{
     position: absolute;
     left:0;
-    width: 200px;
+    width: 10vh;
     height:calc(100vh - 50px);
     background:#2D6653;
     transform:translateX(-100%);
@@ -10,12 +13,10 @@ menu{
 
 .menuVert li{
     list-style:none;
-    width: 100%;
     border-bottom: 1px solid rgba(255,255,255,.5);
-    color:white;
-    display: block;
+    color:rgb(255, 255, 255);
     line-height:3.5;
-    padding: 0 10px;
+    padding: 0 1px;
     text-decoration:none;
     transition:.4s ease;
     font-family: 'mifuente';
@@ -27,8 +28,9 @@ menu{
 }
 
 .tablaContenido{
-    width: 65vw;
-    height: 75vh;
+    width: 100vw;
+    height: 65vh;
+    margin-left: 30px;
     background-color: #01152a; 
     border-radius: 10px; 
     overflow-y: auto;
@@ -36,7 +38,7 @@ menu{
 }
 
 .table{
-    color: white !important;
+    color: rgb(255, 255, 255) !important;
     border-color: #263749;
     margin-top: 1vh;
     text-align: left;
@@ -216,33 +218,14 @@ menu{
 }
 
 .bodyDatosGenerales{
-    background: #01172f;
+    background: #b94a0900;
     border-radius: 10px;
     padding: 5px;
     margin-bottom: 2vh;
-}
-
-.headerhistorialDocumentacion{
-    background: #01172f;
-    border-radius: 10px;
-    width: 25vw;
-}
-
-.bodyhistorialDocumentacion{
-    background: #01172f;
-    border-radius: 10px;
-    padding: 5px;
-    margin-bottom: 2vh;
-}
-
-.headerEstado{
-    background: #01172f;
-    border-radius: 10px;
-    width: 10vw;
 }
 
 .bodyEstado{
-    background: #01172f;
+    background: #01172f00;
     border-radius: 10px;
     padding: 5px;
     margin-bottom: 2vh;
@@ -256,34 +239,118 @@ menu{
     border-radius: 10px !important;
 }
 
-.inputHeaderDatosGenerales{
-    background: #01172f;
-    border-radius: 10px;
-    width: 17vw;
-}
-
-.inputHeaderDatosGeneralesQuimico{
-    background: #01172f;
-    border-radius: 10px;
-    width: 8vw;
-}
-
-.inputHeaderDatosGeneralesVario{
-    background: #01172f;
-    border-radius: 10px;
-    width: 8vw;
-}
-
 .inputBodyDatosGenerales{
-    background: #01172f;
+    
     border-radius: 10px;
-    padding: 5px;
+    padding: 10px;
     background-size: 100vw !important;
     margin-bottom: 2vh;
+    margin-left: 30px;
 }
-
 
 .inputTextoDatosGenerales .form-label {
     margin-bottom: .5rem;
     width: 100vw;
+}
+
+.search-container{
+    border-radius: 50%;
+}
+
+.with-icon {
+    padding-left: 30px; /* Ajusta este valor según el ancho de tu imagen */
+    background: url('../images/IconoQuimico.png') no-repeat left center; /* Ruta a tu imagen */
+    background-size: auto 25px; /* Ajusta el tamaño de la imagen */
+}
+
+/* Estilo para el campo de búsqueda */
+.buscador {
+    color: #ffffff;
+    background-color: #01152a;
+    border: none;
+    padding: 15px 20px; /* Aumentar el espacio interno */
+    font-size: 16px; /* Tamaño de fuente */
+    width: 40vh; /* Ancho del buscador */
+    height: 4vh;
+    margin-top: 20px; /* Cambiar la ubicación vertical */
+    margin-left: 8vh; /* Cambiar la ubicación horizontal */
+
+    background-image: url('../images/Buscar.png'); /* Ruta de la imagen de la lupa */
+    background-repeat: no-repeat; /* Evitar repetir la imagen */
+    background-position: 3% center; /* Ajustar la posición de la imagen */
+    background-size: 20px; /* Tamaño de la imagen */
+    text-indent: 3vh;
+}
+
+.textoDatosGenerales p {
+    padding-left: 30px; /* Ajusta este valor según el ancho de tu imagen */
+    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
+    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
+    margin-bottom: 10px; /* Espacio entre los párrafos */
+}
+
+.bodyEstado p{
+    padding-left: 30px; /* Ajusta este valor según el ancho de tu imagen */
+    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
+    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
+    margin-bottom: 10px; /* Espacio entre los párrafos */
+}
+
+.grid-item-titulo {
+    padding-left: 30px; /* Ajusta este valor según sea necesario */
+    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
+    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
+    margin-bottom: 10px; /* Espacio entre los párrafos */
+}
+
+
+/* Estilo para los párrafos dentro del contenido del modal */
+.inputTextoDatosGenerales p {
+    padding-left: 30px; /* Ajusta este valor según sea necesario */
+    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
+    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
+    margin-bottom: 10px; /* Espacio entre los párrafos */
+}
+
+/* Estilo para los contenedores de grilla dentro del contenido del modal */
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto; 
+    grid-gap: 1px; /* Espacio entre los elementos de la grilla */
+    max-width: 1000px; /* Anchura máxima del contenedor */
+}
+
+/* Estilos para los inputs en modo edición */
+.modal-body input[type="number"],
+.modal-body input[type="text"],
+.modal-body input[type="date"],
+.modal-body select {
+    padding: 8px; /* Espaciado interno */
+    border: 1px solid #fff; /* Borde blanco */
+    border-radius: 15px; /* Borde redondeado */
+    margin-bottom: 10px; /* Espaciado inferior */
+    box-sizing: border-box;height: 35px; /* Incluir borde y relleno en el ancho total */
+    background-color: #fff; /* Fondo blanco */
+}
+
+/*Estilo de Sub Rayado Rojo*/
+.Titulo-subRayado {
+    position: relative; /* Necesario para que el pseudo-elemento ::after se posicione correctamente */
+    display: inline-block; /* Asegura que el ancho se ajuste al contenido */
+}
+
+/* Estilos para el subrayado */
+.Titulo-subRayado::after {
+    content: '';
+    position: absolute;
+    left: 15vh; /* Centra el subrayado horizontalmente */
+    bottom: 1vh; /* Ajusta el subrayado a la parte inferior del contenedor */
+    transform: translateX(-50%); /* Ajusta la posición central */
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 230px solid transparent;
+    border-top: 10px solid rgb(169, 0, 28); /* Color y altura del borde superior */
+    z-index: 6; /* Mantiene el z-index de Photoshop */
+    background-color: transparent; /* Asegura que no haya color de fondo */
 }

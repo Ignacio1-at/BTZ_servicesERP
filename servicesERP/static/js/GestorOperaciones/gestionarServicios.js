@@ -1,5 +1,4 @@
 function obtenerServiciosMotonave(nombreMotonave) {
-
     $.ajax({
         url: obtenerServicioMotonaveURL,
         type: 'GET',
@@ -9,37 +8,35 @@ function obtenerServiciosMotonave(nombreMotonave) {
         success: function (response) {
             // Limpiar la tabla de servicios
             $('#tablaServicios tbody').empty();
-
             // Recorrer los servicios y agregarlos a la tabla
             response.forEach(function (servicio) {
                 var fila = '<tr>' +
                     '<td>' + servicio.numero_servicio + '</td>' +
-                    '<td>' + servicio.tipo_servicio + '</td>' +
-                    '<td>' + servicio.fecha_inicioFaena + '</td>' +
-                    '<td>' + servicio.estado_delServicio + '</td>' +
+                    '<td>' + (servicio.tipo_servicio || '') + '</td>' +
+                    '<td>' + (servicio.fecha_inicioFaena || '') + '</td>' +
+                    '<td>' + (servicio.estado_delServicio || '') + '</td>' +
                     '<td>' +
-                    '<button type="button" style="border: none; background: none;" title="Nominacion" onclick="nominacion(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
-                    '<img src="' + staticUrls.nominacion + '" alt="Nominacion" width="40" height="40" style="cursor: pointer;" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' ? '0.5' : '1') + ';" title="Nominacion" onclick="nominacion(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' ? 'disabled' : '') + '>' +
+                    '<img src="' + staticUrls.nominacion + '" alt="Nominacion" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' ? 'not-allowed' : 'pointer') + ';" />' +
                     '</button> ' +
                     '</td>' +
                     '<td>' +
                     '<button type="button" style="border: none; background: none;" title="Agregar" onclick="agregarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
                     '<img src="' + staticUrls.agregar + '" alt="Agregar" width="40" height="40" style="cursor: pointer;" />' +
                     '</button> ' +
-                    '<button type="button" style="border: none; background: none;" title="Editar" onclick="editarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
-                    '<img src="' + staticUrls.editar + '" alt="Editar" width="40" height="40" style="cursor: pointer;" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' ? '0.5' : '1') + ';" title="Editar" onclick="editarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' ? 'disabled' : '') + '>' +
+                    '<img src="' + staticUrls.editar + '" alt="Editar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' ? 'not-allowed' : 'pointer') + ';" />' +
                     '</button> ' +
                     '<button type="button" style="border: none; background: none;" title="Eliminar" onclick="eliminarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
                     '<img src="' + staticUrls.eliminar + '" alt="Eliminar" width="40" height="40" style="cursor: pointer;" />' +
                     '</button> ' +
-                    '<button type="button" style="border: none; background: none;" title="Visualizar" onclick="visualizarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')">' +
-                    '<img src="' + staticUrls.visualizar + '" alt="Visualizar" width="40" height="40" style="cursor: pointer;" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' ? '0.5' : '1') + ';" title="Visualizar" onclick="visualizarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' ? 'disabled' : '') + '>' +
+                    '<img src="' + staticUrls.visualizar + '" alt="Visualizar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' ? 'not-allowed' : 'pointer') + ';" />' +
                     '</button>' +
                     '</td>' +
                     '</tr>';
                 $('#tablaServicios tbody').append(fila);
             });
-
             // Llamar a la función para ordenar la tabla automáticamente
             sortTable(0);
             // Agregar el atributo data-nombre-motonave al botón "Crear Servicio"

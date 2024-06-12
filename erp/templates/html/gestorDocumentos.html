@@ -12,14 +12,166 @@
 
 {% block content %}
   <div id="contenidoPrincipal" class="contenido-principal">
-    <div class="contenido-wrapper">
-      <div>
+    <div class="row">
+      <div class="col-md-12 d-flex align-items-center">
+        <!-- Botón Volver -->
+        <button type="button" onclick="goBack()" class="btn-volver"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" /></button>
         <!-- Logo y texto "Documentos" -->
+        <img src="{% static 'images/LogoDoc.png' %}" alt="Documentos" class="documentos-img" width="50" height="40" />
+        <span class="text-documento">Documentos</span>
+        <!-- Buscador -->
+        <input class="buscador rounded-pill" type="text" id="Buscar" placeholder="Buscar" oninput="buscarDocumento()" />
+      </div>
+
+      <div class="col-md-12 d-flex" style="margin-left: 5vw; margin-top: 3vh;">
         <div>
-          <button type="button" onclick="goBack()" class="btn-volver"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" /></button>
-          <img src="{% static 'images/LogoDoc.png' %}" alt="Texto alternativo de la imagen" width="65" height="55" class="documentos-img" />
-          <span class="text-documento">Documentos</span>
-          <input class="buscador rounded-pill" type="text" id="Buscar" />
+          <!-- Menú lateral derecho -->
+          <div class="sidebar">
+            <ul>
+              <li>
+                <a href="#" class="menu-item" data-seccion="Todos">
+                  <img src="{% static 'images/Vineta.png' %}" alt="Todos" class="mb-2" />
+                  Todos
+                </a>
+              </li>
+              <li>
+                <a href="#" class="menu-item" data-target="contenido-personal">
+                  <img src="{% static 'images/Vineta.png' %}" alt="Personal" class="mb-2" />
+                  Personal
+                </a>
+                <ul class="submenu">
+                  <li>
+                    <a href="#" class="sub-menu-item" data-subseccion="Contrato">Contrato</a>
+                  </li>
+                  <li>
+                    <a href="#" class="sub-menu-item" data-subseccion="Ficha de Ingreso">Ficha de Ingreso</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="#" class="menu-item" data-target="contenido-inventario">
+                  <img src="{% static 'images/Vineta.png' %}" alt="Inventario" class="mb-2" />
+                  Inventario
+                </a>
+                <ul class="submenu">
+                  <li>
+                    <a href="#" class="sub-menu-item" data-subseccion="Boletas">Boletas</a>
+                  </li>
+                  <li>
+                    <a href="#" class="sub-menu-item" data-subseccion="Facturas">Facturas</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="#" class="menu-item" data-target="contenido-servicio">
+                  <img src="{% static 'images/Vineta.png' %}" alt="Servicio" class="mb-2" />
+                  Servicio
+                </a>
+                <ul class="submenu">
+                  <li>
+                    <a href="#" class="sub-menu-item" data-subseccion="Reportes">Reportes</a>
+                  </li>
+                  <li>
+                    <a href="#" class="sub-menu-item" data-subseccion="Fichas">Fichas</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="#" class="menu-item" data-seccion="Otros">
+                  <img src="{% static 'images/Vineta.png' %}" alt="Otros" class="mb-2" />
+                  Otros
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Botón para abrir el modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalSubirDocumento">Subir archivo</button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="modalSubirDocumento" tabindex="-1" role="dialog" aria-labelledby="modalSubirDocumentoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalSubirDocumentoLabel">Subir Documento</h5>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <!-- Formulario para subir documentos -->
+                  <div class="subir-documento">
+                    <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div>{{ form.archivo.label_tag }}
+                        {{ form.archivo }}</div>
+                      <div>
+                        {{ form.seccion.label_tag }}
+                        <select class="form-control" id="id_seccion" name="seccion">
+                          <option value="">Seleccionar sección</option>
+                          {% for seccion in seccion_choices %}
+                            <option value="{{ seccion.0 }}">{{ seccion.1 }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div id="subseccion-container">{{ form.sub_seccion.label_tag }}
+                        {{ form.sub_seccion }}</div>
+                      <div id="personal-container">{{ form.personal.label_tag }}
+                        {{ form.personal }}</div>
+                      <div id="ficha-servicio-container">{{ form.ficha_servicio.label_tag }}
+                        {{ form.ficha_servicio }}</div>
+                      <button type="submit" class="btn btn-primary">Subir Archivo</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Área de contenido principal -->
+        <div class="contenedor-principal">
+          <div class="tablaContenido" id="contenidoTablas">
+            <table class="table" id="tabla-documentos">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Fecha de Subida</th>
+                  <th>Sección</th>
+                  <th>Sub Sección</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-documentos-body">
+                {% for documento in documentos %}
+                  <tr>
+                    <td>{{ documento.nombre }}</td>
+                    <td>{{ documento.fecha_subida }}</td>
+                    <td>{{ documento.seccion }}</td>
+                    <td>{{ documento.sub_seccion }}</td>
+                    <td>
+                      <!-- <button type="button" onclick="verDocumento({{ documento.id }})" class="btn btn-info btn-sm"><img src="{% static 'images/Ojo.png' %}" alt="Ver" width="40" height="40" /></button> -->
+                      <button type="button" onclick="eliminarDocumento({{ documento.id }})" class="btn btn-danger btn-sm"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" width="40" height="40" /></button>
+                      <button type="button" onclick="descargarDocumento({{ documento.id }})" class="btn btn-success btn-sm"><img src="{% static 'images/Descargar.png' %}" alt="Descargar" width="40" height="40" /></button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalVerDocumento" tabindex="-1" role="dialog" aria-labelledby="modalVerDocumentoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalVerDocumentoLabel">Ver Documento</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div id="visorArchivos"></div>
         </div>
       </div>
     </div>
@@ -32,9 +184,13 @@
     function goBack() {
       window.location.href = "{% url 'erp:menu' %}"
     }
+    
+    const ojoImageUrl = "{% static 'images/Ojo.png' %}"
+    const basureroImageUrl = "{% static 'images/Basurero.png' %}"
   </script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Scripts específicos de la página de Inventario -->

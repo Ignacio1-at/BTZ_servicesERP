@@ -13,47 +13,51 @@
 {% block content %}
   <div id="contenidoPrincipal" class="contenido-principal">
     <div class="row">
-      <div class="col-md-3" style="margin-left: 1vw; margin-top: 3vh;">
-        <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
-        <img src="{% static 'images/LogoInventario.png' %}" alt="Inventario" class="mb-2" width="10%" />
+      <div class="col-md-12 d-flex" style="margin-left: 1vw; margin-top: 3vh;">
+        <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
+        <img src="{% static 'images/LogoInventario.png' %}" alt="Inventario" class="mb-2" width="4%" />
         <span style="color: white; font-size: 3vh;">Inventario</span>
-
-        <!-- Menu Inventario -->
-        <div class="menu">
-          <ul class="menuVert">
-            <li>
-              <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="8%" />
-              <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
-            </li>
-            <li>
-              <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="15%" style="margin-left: -5px;" />
-              <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
-            </li>
-            <li>
-              <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
-              <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Equipos</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="dropdown">
-          <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Agregar</button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li>
-              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarQuimico">Químico</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Equipo</a>
-            </li>
-          </ul>
-        </div>
+        <input class="buscador rounded-pill" type="text" id="Buscar" placeholder="Buscar" oninput="filtrarInventario()"></div>
       </div>
 
-      <!-- Tablas -->
-      <div class="col" style="margin-left: 1vw; margin-top: 3vh;" id="contenedorTablas">
+      <div class="col-md-12 d-flex" style="margin-left: 1vw; margin-top: 3vh;" id="contenedorTablas">
+        <div class="allmenu">
+          <!-- Menu Inventario -->
+          <div class="menu">
+            <ul class="menuVert">
+              <li>
+                <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="8%" />
+                <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
+              </li>
+              <li>
+                <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="15%" style="margin-left: -5px;" />
+                <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
+              </li>
+              <li>
+                <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
+                <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Equipos</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Boton Agregar -->
+          <div class="dropdown">
+            <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Agregar</button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarQuimico">Químico</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Equipo</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tablas -->
         <div class="tablaContenido" id="contenidoTablas">
           <!-- Tabla de Químicos -->
           <table class="table" id="tablaQuimico">
@@ -88,7 +92,7 @@
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
+                        <h5 class="modal-title with-icon" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body" id="modalBodyQuimico{{ quimico.id }}">
@@ -96,7 +100,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" id="btnCambiarModoQuimico{{ quimico.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button type="button" id="btnGuardarQuimico{{ quimico.id }}" class="btn btn-primary" style="display: none;">Guardar</button>
+                        <button type="button" id="btnGuardarQuimico{{ quimico.id }}" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
                       </div>
                     </div>
                   </div>
@@ -148,7 +152,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" id="btnCambiarModoAuto" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button id="btnGuardarAuto" type="button" class="btn btn-custom-color">Guardar</button>
+                        <button id="btnGuardarAuto" type="button" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
                       </div>
                     </div>
                   </div>
@@ -196,7 +200,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" id="btnCambiarModoVario{{ vario.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button type="button" id="btnGuardarVario{{ vario.id }}" class="btn btn-primary" style="display: none;">Guardar</button>
+                        <button type="button" id="btnGuardarVario{{ vario.id }}" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
                       </div>
                     </div>
                   </div>
@@ -223,7 +227,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="inputdatosGenerales" id="inputdatosGenerales">
-                  <div class="inputHeaderDatosGeneralesQuimico" id="inputHeaderDatosGenerales">
+                  <div class="inputHeaderDatosGeneralesQuimico Titulo-subRayado" id="inputHeaderDatosGenerales">
                     <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
                   </div>
                   <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
@@ -293,11 +297,11 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="inputdatosGenerales" id="inputdatosGenerales">
-                  <div class="inputHeaderDatosGenerales" id="inputHeaderDatosGenerales">
+                  <div class="inputHeaderDatosGenerales Titulo-subRayado" id="inputHeaderDatosGenerales">
                     <p style="font-size: 2.5vh; margin-left: 2vw;">Datos Generales</p>
                   </div>
                   <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
-                    <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales" style="margin-left: 3vw;">
+                    <div class="inputTextoDatosGenerales" id="inputTextoDatosGenerales" style="margin-left: 1vw;">
                       <div class="row">
                         <div class="col-md-4">
                           <div class="mb-3">
@@ -364,7 +368,7 @@
                 </div>
 
                 <div class="inputHistorialDocumentacion" id="inputHistorialDocumentacion">
-                  <div class="headerhistorialDocumentacion" id="headerhistorialDocumentacion">
+                  <div class="headerhistorialDocumentacion Titulo-subRayado" id="headerhistorialDocumentacion">
                     <p style="font-size: 2.5vh; margin-left: 2vw;">Historial Y Documentacion</p>
                   </div>
                   <div class="bodyhistorialDocumentacion" id="bodyhistorialDocumentacion">
@@ -449,7 +453,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="inputdatosGenerales" id="inputdatosGenerales">
-                  <div class="inputHeaderDatosGeneralesVario" id="inputHeaderDatosGenerales">
+                  <div class="inputHeaderDatosGeneralesVario Titulo-subRayado" id="inputHeaderDatosGenerales">
                     <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
                   </div>
                   <div class="inputBodyDatosGenerales" id="inputBodyDatosGenerales">
@@ -511,4 +515,5 @@
   <script src="{% static 'js/GestorInventario/modales.js' %}"></script>
   <script src="{% static 'js/GestorInventario/utils.js' %}"></script>
   <script src="{% static 'js/GestorInventario/main.js' %}"></script>
+  <script src="{% static 'js/GestorInventario/buscadores.js' %}"></script>
 {% endblock %}

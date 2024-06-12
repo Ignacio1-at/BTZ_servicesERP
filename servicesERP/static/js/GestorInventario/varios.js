@@ -2,11 +2,11 @@
 function eliminarVario(variosId) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: '¿Quieres eliminar este elemento?',
-        icon: 'warning',
+        text: '¿Quieres eliminar este vehículo?',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#8d000e',
+        cancelButtonColor: '#01152a',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
@@ -40,7 +40,7 @@ function abrirModalVario(varioId) {
 function mostrarDetallesVarioVisualizacion(vario) {
     var contenidoModal = `
         <div class="datosGenerales">
-            <div class="inputHeaderDatosGeneralesQuimico">
+            <div class="inputHeaderDatosGeneralesQuimico Titulo-subRayado">
                 <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales">
@@ -50,7 +50,7 @@ function mostrarDetallesVarioVisualizacion(vario) {
                 </div>
             </div>
             <div class="Estado">
-                <div class="headerEstado">
+                <div class="headerEstado Titulo-subRayado">
                     <p style="font-size: 2.5vh; margin-left: 2vw;"">Estado</p>
                 </div>
                 <div class="bodyEstado">
@@ -84,13 +84,13 @@ function cambiarModoVario(vario) {
 function mostrarDetallesVarioEdicion(vario) {
     var contenidoModal = `
         <div class="datosGenerales">
-            <div class="inputHeaderDatosGeneralesQuimico">
+            <div class="inputHeaderDatosGeneralesQuimico Titulo-subRayado">
                 <p style="font-size: 2.5vh; margin-left: 2vw;">Datos</p>
             </div>
             <div class="bodyDatosGenerales" id="bodyDatosGenerales">
                 <div class="textoDatosGenerales" id="textoDatosGenerales" style="margin-left: 3vw;">
-                    <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${vario.nombre}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;" required></p>
-                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput" value="${vario.fecha_ingreso}" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;" required></p>
+                    <p><strong>Nombre:</strong> <input type="text" id="nombreInput" value="${vario.nombre}" style=" border-radius: 15px; font-family: 'mifuente'; padding-left: 5px;" required></p>
+                    <p><strong>Fecha de Ingreso:</strong> <input type="date" id="fechaIngresoInput" value="${vario.fecha_ingreso}" style=" border-radius: 15px; font-family: 'mifuente'; padding-left: 5px;" required></p>
                 </div>
             </div>
         </div>

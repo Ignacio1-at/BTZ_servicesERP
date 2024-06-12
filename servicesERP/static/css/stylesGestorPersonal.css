@@ -169,7 +169,7 @@
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 15px;
     box-sizing: border-box;
 }
 
@@ -180,7 +180,7 @@
 }
 
 /* Estilos para los botones */
-#modalDetallePersonal button {
+.modalDetallePersonal button {
     background-color: #860909c9;
     /* Color de fondo verde */
     color: white;
@@ -190,15 +190,11 @@
     cursor: pointer;
 }
 
-#modalDetallePersonal button:hover {
+.modalDetallePersonal button:hover {
     background-color: #860909c9;
     /* Cambio de color de fondo al pasar el cursor */
 }
 
-.bodyDatosGenerales {
-    background: #01172f;
-    border-radius: 10px;
-}
 
 .textoDatosGenerales {
     margin-top: 13px;
@@ -214,3 +210,74 @@
 .datos-par p {
     flex-basis: 80%;
 }
+
+/*Aqui empeze a wear yo*/
+
+.textoDatosGenerales p{
+    padding-left: 30px; /* Ajusta este valor según sea necesario */
+    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
+    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
+    margin-bottom: 10px; /* Espacio entre los párrafos */
+}
+
+.textoDatosGenerales ul li{
+    display: inline-block;
+    background-color: #01152a;
+    border-radius: 10px;
+    margin: 4px;
+    padding: 2px 15px;
+}
+.especialidad {
+    display: inline-block;
+    background-color: #01152a;
+    border-radius: 10px;
+    margin: 4px;
+    padding: 2px 15px;
+}
+
+.eliminar-especialidad {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0; /* Eliminar el relleno interno*/
+}
+
+
+
+
+.eliminar-especialidad:hover {
+    color: red; /* Cambiar el color al pasar el mouse */
+}
+
+#botonAgregar {
+    background-image: url('../images/AgregarRed.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 45px;
+    height: 45px;
+    border: none;
+    cursor: pointer;
+    border-radius: 60%; /* Ajusta el borde redondeado según el tamaño de la imagen */
+}
+
+.buscador {
+    color: #ffffff;
+    background-color: #01152a;
+    border: none;
+    padding: 15px 20px; /* Aumentar el espacio interno */
+    font-size: 16px; /* Tamaño de fuente */
+    width: 40vh; /* Ancho del buscador */
+    height: 4vh;
+    margin-top: 20px; /* Cambiar la ubicación vertical */
+    margin-left: 1vh; /* Cambiar la ubicación horizontal */
+
+    background-image: url('../images/Buscar.png'); /* Ruta de la imagen de la lupa */
+    background-repeat: no-repeat; /* Evitar repetir la imagen */
+    background-position: 3% center; /* Ajustar la posición de la imagen */
+    background-size: 20px; /* Tamaño de la imagen */
+    text-indent: 3vh;
+}
+
+

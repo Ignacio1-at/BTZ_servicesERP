@@ -33,7 +33,10 @@
 
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-item" href="{% url 'erp:logout' %}">Cerrar sesión</a>
+            <form method="post" action="{% url 'erp:logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="dropdown-item">Cerrar sesión</button>
+            </form>
           </li>
         </ul>
       </div>

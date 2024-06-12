@@ -4,14 +4,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import F
-from .models import Motonave, Personal, Especialidad, FichaServicio, Quimico, Vehiculo, Vario
-from .forms import CustomLoginForm
-from django.http import JsonResponse
+from .models import Motonave, Personal, Especialidad, FichaServicio, Quimico, Vehiculo, Vario, Documento
+from .forms import CustomLoginForm, DocumentoForm
+from django.http import JsonResponse, FileResponse
 from django.utils import timezone
 from django.core import serializers
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
+import mimetypes
 
 def home(request):
     return render(request, 'html/home.html')
@@ -293,7 +294,6 @@ def crear_servicio(request):
                 motonave=motonave,
                 numero_servicio=numero_servicio_inicio + i,
                 tipo_servicio='',
-                fecha_inicioFaena=fecha_nominacion.date(),
                 fecha_fin=fecha_nominacion.date(),
                 estado_delServicio='Nominado'
             )
@@ -305,7 +305,6 @@ def crear_servicio(request):
                 'id': ficha.id,
                 'numero_servicio': ficha.numero_servicio,
                 'tipo_servicio': ficha.tipo_servicio,
-                'fecha_inicioFaena': ficha.fecha_inicioFaena.strftime('%Y-%m-%d'),
                 'estado_delServicio': ficha.estado_delServicio
             }
             for ficha in FichaServicio.objects.filter(motonave=motonave).order_by('-id')[:cantidad_servicios]
@@ -321,37 +320,56 @@ def eliminar_servicio(request):
     if request.method == 'POST':
         # Obtener el nombre de la motonave del cuerpo de la solicitud
         nombre_motonave = request.POST.get('nombreMotonave')
-
+        
         # Obtener la motonave
         try:
             motonave = Motonave.objects.get(nombre=nombre_motonave)
         except Motonave.DoesNotExist:
             return JsonResponse({'error': 'La motonave especificada no existe.'}, status=404)
-
+        
+        # Obtener todas las fichas de servicio relacionadas con la motonave
+        fichas_servicio = FichaServicio.objects.filter(motonave=motonave)
+        
+        # Restablecer el estado de los elementos vinculados a "Disponible" en todas las fichas de servicio
+        for ficha_servicio in fichas_servicio:
+            ficha_servicio.personal_nominado.update(estado='Disponible')
+            ficha_servicio.vehiculos_nominados.update(estado='Disponible')
+            ficha_servicio.quimicos_nominados.update(estado='Disponible')
+            ficha_servicio.varios_nominados.update(estado='Disponible')
+        
         # Eliminar todas las fichas de servicio relacionadas con la motonave
-        FichaServicio.objects.filter(motonave=motonave).delete()
-
+        fichas_servicio.delete()
+        
         # Actualizar el estado de la motonave a "Disponible"
         motonave.estado_servicio = 'Disponible'
+        
         # Restar la cantidad de servicios actual del historial
         motonave.cantidad_serviciosHistorial = F('cantidad_serviciosHistorial') - motonave.cantidad_serviciosActual
+        
         # Restablecer la cantidad de servicios
         motonave.cantidad_serviciosActual = 0
+        
         # Restablecer el comentario
         motonave.comentarioActual = ""
+        
         # Restablecer el puerto
         motonave.puerto = ""
+        
         # Restablecer el prox puerto
         motonave.prox_puerto = ""
-        # Restablecer la procedencia 
+        
+        # Restablecer la procedencia
         motonave.procedenciaCarga = ""
+        
         # Restablecer el armador
         motonave.armador = ""
+        
         # Restablecer la agencia
         motonave.agencia = ""
+        
         # Guardar los cambios en la motonave
         motonave.save()
-
+        
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
@@ -392,7 +410,6 @@ def crear_servicio_individual(request):
             motonave=motonave,
             numero_servicio=numero_servicio,
             tipo_servicio='',
-            fecha_inicioFaena=fecha_nominacion.date(),
             fecha_fin=fecha_nominacion.date(),
             estado_delServicio='Nominado'
         )
@@ -403,7 +420,6 @@ def crear_servicio_individual(request):
             'id': ficha_servicio.id,
             'numero_servicio': ficha_servicio.numero_servicio,
             'tipo_servicio': ficha_servicio.tipo_servicio,
-            'fecha_inicioFaena': ficha_servicio.fecha_inicioFaena.strftime('%Y-%m-%d'),
             'estado_delServicio': ficha_servicio.estado_delServicio
         }
 
@@ -421,6 +437,12 @@ def eliminar_servicio_individual(request):
             ficha_servicio = FichaServicio.objects.get(id=servicio_id)
             motonave = ficha_servicio.motonave
 
+            # Restablecer el estado de los elementos vinculados a "Disponible"
+            ficha_servicio.personal_nominado.update(estado='Disponible')
+            ficha_servicio.vehiculos_nominados.update(estado='Disponible')
+            ficha_servicio.quimicos_nominados.update(estado='Disponible')
+            ficha_servicio.varios_nominados.update(estado='Disponible')
+            
             # Eliminar la ficha de servicio
             ficha_servicio.delete()
 
@@ -443,7 +465,6 @@ def eliminar_servicio_individual(request):
 
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
-
 
 #-------------------OBTENER SERVICIOS
 @login_required
@@ -1031,11 +1052,12 @@ def ficha_servicio(request, servicio_id):
     try:
         ficha_servicio = FichaServicio.objects.get(id=servicio_id)
         motonave = ficha_servicio.motonave
-        # Obtener los datos para mostrar en el formulario de nominación
-        personal = Personal.objects.all()
-        vehiculos = Vehiculo.objects.all()
-        quimicos = Quimico.objects.all()
-        varios = Vario.objects.all()
+        # Obtener los datos para mostrar en el formulario de nominación, filtrando por estado "Disponible"
+        personal = Personal.objects.filter(estado='Disponible')
+        vehiculos = Vehiculo.objects.filter(estado='Disponible')
+        quimicos = Quimico.objects.filter(estado='Disponible')
+        varios = Vario.objects.filter(estado='Disponible')
+        
         # Obtener los cargos únicos del personal
         cargos = Personal.objects.values_list('cargo', flat=True).distinct()
         context = {
@@ -1135,6 +1157,12 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             # Guardar los cambios en la ficha de servicio
             ficha_servicio.save()
 
+            # Cambiar el estado de los elementos vinculados a la ficha de servicio a "En Operación"
+            ficha_servicio.personal_nominado.update(estado='En Operación')
+            ficha_servicio.vehiculos_nominados.update(estado='En Operación')
+            ficha_servicio.quimicos_nominados.update(estado='En Operación')
+            ficha_servicio.varios_nominados.update(estado='En Operación')
+
             messages.success(request, 'La ficha de servicio se ha actualizado correctamente.')
 
             # Obtener el nombre de la motonave
@@ -1187,5 +1215,92 @@ def detalle_ficha_servicio(request, servicio_id):
 @login_required
 def gestor_documentos(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    return render(request, 'html/gestorDocumentos.html', {'nombre_usuario': nombre_usuario})
+    documentos = Documento.objects.all()
+    seccion_choices = Documento.SECCION_CHOICES
+
+    if request.method == 'POST':
+        form = DocumentoForm(request.POST, request.FILES)
+        if form.is_valid():
+            archivo = form.cleaned_data['archivo']
+            seccion = form.cleaned_data['seccion']
+            sub_seccion = form.cleaned_data['sub_seccion']
+            personal = form.cleaned_data['personal']
+            ficha_servicio = form.cleaned_data['ficha_servicio']
+
+            if seccion == 'Otros':
+                sub_seccion = None
+                personal = None
+                ficha_servicio = None
+
+            documento = Documento(
+                archivo=archivo,
+                nombre=archivo.name,
+                seccion=seccion,
+                sub_seccion=sub_seccion,
+                personal=personal,
+                ficha_servicio=ficha_servicio
+            )
+            documento.save()
+
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    else:
+        form = DocumentoForm()
+
+    context = {
+        'documentos': documentos,
+        'nombre_usuario': nombre_usuario,
+        'form': form,
+        'seccion_choices': seccion_choices,
+    }
+    return render(request, 'html/gestorDocumentos.html', context)
+
+@login_required
+def obtener_documentos(request):
+    if 'documento_id' in request.GET:
+        documento_id = request.GET.get('documento_id')
+        documento = get_object_or_404(Documento, id=documento_id)
+
+        # Obtener el tipo de contenido del archivo
+        content_type, encoding = mimetypes.guess_type(documento.archivo.name)
+
+        # Obtener la URL completa del archivo
+        documento_url = request.build_absolute_uri(reverse('erp:obtener-documentos') + '?documento_id=' + str(documento_id))
+
+        # Crear la respuesta FileResponse con el tipo de contenido correcto
+        response = FileResponse(documento.archivo.open('rb'), content_type=content_type)
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(documento.nombre)
+
+        return response
+    else:
+        seccion = request.GET.get('seccion')
+        subseccion = request.GET.get('sub_seccion')
+
+        if seccion is None and subseccion is None:
+            # Obtener todos los documentos sin filtrar
+            documentos = Documento.objects.all().values('id', 'nombre', 'fecha_subida', 'seccion', 'sub_seccion')
+        else:
+            filtros = {}
+            if seccion:
+                if seccion == 'Otros':
+                    filtros['sub_seccion__isnull'] = True
+                else:
+                    filtros['seccion'] = seccion
+
+            if subseccion:
+                filtros['sub_seccion'] = subseccion
+
+            documentos = Documento.objects.filter(**filtros).values('id', 'nombre', 'fecha_subida', 'seccion', 'sub_seccion')
+
+        return JsonResponse({'documentos': list(documentos)}, safe=False)
+
+@login_required
+def eliminar_documento(request, documento_id):
+    if request.method == 'POST':
+        documento = get_object_or_404(Documento, id=documento_id)
+        documento.delete()
+        messages.success(request, 'Documento eliminado exitosamente.')
+    return redirect('erp:gestor-documentos')
+
     

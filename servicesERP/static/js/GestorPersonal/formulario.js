@@ -49,7 +49,7 @@ function validarFormulario() {
     var rutSinDigito = document.getElementById('rutSinDigito').value;
     var digitoVerificador = document.getElementById('digitoVerificador').value;
     var conductorNew = document.getElementById('conductor').value;
-    var tipoLicenciaNew = document.getElementById('tipo_licencia').value;
+    var tipoLicenciaNew = document.getElementById('tipoLicencia').value;
     var especialidades = $('input[name="especialidad[]"]:checked');
 
     // Validar el RUT
@@ -77,7 +77,7 @@ function validarFormulario() {
         }
     } else {
         // Si el conductor no está seleccionado, el tipo de licencia debe ser '--'
-        if (tipoLicenciaNew.trim() !== '--') {
+        if (tipoLicenciaNew !== '--') {
             alert('El Tipo de Licencia debe ser "--" si el conductor no está seleccionado.');
             return false;
         }
