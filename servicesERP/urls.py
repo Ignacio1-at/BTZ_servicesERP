@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.contrib import admin
-from erp.views import home, login_view, menu_view
+from erp.views.general_views import home, menu_view
+from erp.views.auth_views import login_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
