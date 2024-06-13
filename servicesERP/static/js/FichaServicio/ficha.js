@@ -473,6 +473,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // Obtener los elementos seleccionados
         getSelectedElements();
 
+        // Convertir el objeto conductoresVinculados a una cadena JSON
+        const conductoresVinculadosJSON = JSON.stringify(conductoresVinculados);
+
+        // Asignar la cadena JSON al valor del campo oculto
+        document.getElementById('conductores_vinculados').value = conductoresVinculadosJSON;
+
         // Obtener los valores de los campos ocultos
         const personalNominado = document.getElementById('personal_nominado').value;
         const vehiculosNominados = document.getElementById('vehiculos_nominados').value;
@@ -485,6 +491,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Vehículos nominados:", vehiculosNominados);
         console.log("Químicos nominados:", quimicosNominados);
         console.log("Varios nominados:", variosNominados);
+        console.log("Conductores vinculados: ", conductoresVinculadosJSON)
 
         // Enviar el formulario manualmente
         this.submit();

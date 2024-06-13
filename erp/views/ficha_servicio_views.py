@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from ..models import Personal, FichaServicio, Quimico, Vehiculo, Vario
 from django.urls import reverse
+import json
 
 #-------------------Ficha Servicio especifica x id
 @login_required
@@ -51,6 +52,10 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             grua = request.POST.get('grua')
             arriendo_bomba = request.POST.get('arriendo_bomba')
             navegacion = request.POST.get('navegacion')
+            
+            # Obtener el objeto conductoresVinculados enviado desde el formulario
+            conductores_vinculados_json = request.POST.get('conductores_vinculados')
+            conductores_vinculados = json.loads(conductores_vinculados_json)
 
             # Obtener los IDs de los elementos nominados desde el formulario
             personal_ids_str = request.POST.getlist('personal_nominado')
@@ -110,6 +115,9 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             ficha_servicio.vehiculos_nominados.set(vehiculo_ids)
             ficha_servicio.quimicos_nominados.set(quimico_ids)
             ficha_servicio.varios_nominados.set(vario_ids)
+            
+            # Guardar el objeto conductoresVinculados en el campo JSON de la ficha de servicio
+            ficha_servicio.conductores_vinculados = conductores_vinculados
 
             ficha_servicio.estado_delServicio = 'En Proceso'
 

@@ -222,6 +222,8 @@ class FichaServicio(models.Model):
     )
     estado_delServicio = models.CharField(max_length=20, choices=ESTADOS_delSERVICIO, default='Disponible')
     
+    conductores_vinculados = models.JSONField(null=True, blank=True)
+    
     # Relaciones de muchos a muchos con Personal, Vehiculo, Quimico y Vario
     personal_nominado = models.ManyToManyField(Personal, blank=True, related_name='fichas_servicio')
     vehiculos_nominados = models.ManyToManyField(Vehiculo, blank=True, related_name='fichas_servicio')
