@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-md-12 d-flex align-items-center">
         <!-- Botón Volver -->
-        <button type="button" onclick="goBack()" class="btn-volver"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" /></button>
+        <button type="button" onclick="goBack()" class="btn-volver"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-left: 2.5vh;" /></button>
         <!-- Logo y texto "Documentos" -->
         <img src="{% static 'images/LogoDoc.png' %}" alt="Documentos" class="documentos-img" width="50" height="40" />
         <span class="text-documento">Documentos</span>
@@ -86,7 +86,10 @@
           </div>
 
           <!-- Botón para abrir el modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalSubirDocumento">Subir archivo</button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalSubirDocumento" style="margin-left: 55px;">
+            <img src="{% static 'images/Upload.png' %}" alt="Icono Subir" style="width: 15px; height: auto; margin-right: 8px;" />
+            Subir archivo
+          </button>
 
           <!-- Modal -->
           <div class="modal fade" id="modalSubirDocumento" tabindex="-1" role="dialog" aria-labelledby="modalSubirDocumentoLabel" aria-hidden="true">
@@ -105,7 +108,7 @@
                         {{ form.archivo }}</div>
                       <div>
                         {{ form.seccion.label_tag }}
-                        <select class="form-control" id="id_seccion" name="seccion">
+                        <select class="form-control" id="id_seccion" name="seccion" style="width: 250px;">
                           <option value="">Seleccionar sección</option>
                           {% for seccion in seccion_choices %}
                             <option value="{{ seccion.0 }}">{{ seccion.1 }}</option>
@@ -118,7 +121,10 @@
                         {{ form.personal }}</div>
                       <div id="ficha-servicio-container">{{ form.ficha_servicio.label_tag }}
                         {{ form.ficha_servicio }}</div>
-                      <button type="submit" class="btn btn-primary">Subir Archivo</button>
+                      <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalSubirDocumento">
+                        <img src="{% static 'images/Upload.png' %}" alt="Icono Subir" style="width: 15px; height: auto; margin-right: 8px;" />
+                        Subir archivo
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -149,8 +155,8 @@
                     <td>{{ documento.sub_seccion }}</td>
                     <td>
                       <!-- <button type="button" onclick="verDocumento({{ documento.id }})" class="btn btn-info btn-sm"><img src="{% static 'images/Ojo.png' %}" alt="Ver" width="40" height="40" /></button> -->
-                      <button type="button" onclick="eliminarDocumento({{ documento.id }})" class="btn btn-danger btn-sm"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" width="40" height="40" /></button>
-                      <button type="button" onclick="descargarDocumento({{ documento.id }})" class="btn btn-success btn-sm"><img src="{% static 'images/Descargar.png' %}" alt="Descargar" width="40" height="40" /></button>
+                      <button type="button" onclick="eliminarDocumento({{ documento.id }})" class="btn btn btn-sm"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" width="40" height="40" /></button>
+                      <button type="button" onclick="descargarDocumento({{ documento.id }})" class="btn btn btn-sm"><img src="{% static 'images/IconoDescargar.png' %}" alt="Descargar" width="40" height="40" /></button>
                     </td>
                   </tr>
                 {% endfor %}

@@ -1,13 +1,14 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import home, login_view, menu_view
-from .views import gestorOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_nuevo_estado, guardar_comentarios, obtener_tabla_motonaves 
+from .views import gestorOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_comentarios, obtener_tabla_motonaves 
 from .views import crear_servicio, crear_servicio_individual, eliminar_servicio, eliminar_servicio_individual,obtener_servicios_motonave, renderizar_formulario 
 from .views import gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal 
 from .views import gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, validar_campo_unico_vehiculoCambio, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario
 from .views import obtener_detalle_vehiculo, guardar_cambios_vehiculo, obtener_detalles_vario, actualizar_vario, obtener_detalles_quimico, guardar_cambios_quimico
-from .views import ficha_servicio, actualizar_ficha_servicio_por_id, detalle_ficha_servicio
+from .views import ficha_servicio, actualizar_ficha_servicio_por_id, detalle_ficha_servicio, finalizar_servicio
 from .views import gestor_documentos, obtener_documentos, eliminar_documento
+from .views import password_reset_request, password_reset_confirm
 
 app_name = 'erp'  
 
@@ -15,13 +16,14 @@ urlpatterns = [
     path('', home, name='home'),
     path('menu/', menu_view, name='menu'),
     path('login/', login_view, name='login'),
+    path('password_reset/', password_reset_request, name='password_reset_request'),
+    path('password_reset/confirm/<uidb64>/<token>/', password_reset_confirm, name='password_reset_confirm'),
     path('logout/', auth_views.LogoutView.as_view(next_page='erp:home'), name='logout'),
     path('gestor-operaciones/', gestorOperaciones, name='gestor-operaciones'),
     path('gestor-operaciones/crear_motonave/', crear_motonave, name='crear_motonave'),
     path('gestor-operaciones/modificar-motonave/', modificar_motonave, name='modificar_motonave'),
     path('gestor-operaciones/eliminar-motonave/', eliminar_motonave, name='eliminar_motonave'),
     path('gestor-operaciones/obtener-detalles-motonave/', obtener_detalles_motonave, name='obtener_detalles_motonave'),
-    path('gestor-operaciones/guardar-nuevo-estado/', guardar_nuevo_estado, name='guardar_nuevo_estado'),
     path('gestor-operaciones/guardar-nuevo-comentario/', guardar_comentarios, name='guardar_comentarios'),
     path('gestor-operaciones/obtener_tabla_motonaves/', obtener_tabla_motonaves, name='obtener_tabla_motonaves'),
     path('gestor-operaciones/crear_servicio/', crear_servicio, name='crear_servicio'),
@@ -33,6 +35,7 @@ urlpatterns = [
     path('gestor-operaciones/ficha-servicio/<int:servicio_id>/', ficha_servicio, name='ficha_servicio'),
     path('gestor-operaciones/ficha-servicio/actualizar-ficha-servicio/<int:servicio_id>/', actualizar_ficha_servicio_por_id, name='actualizar_ficha_servicio_por_id'),
     path('gestor-operaciones/detalle_ficha_servicio/<int:servicio_id>/', detalle_ficha_servicio, name='detalle_ficha_servicio'),
+    path('gestor-operaciones/finalizar-servicio/', finalizar_servicio, name='finalizar_servicio'),
     path('gestor-personal/', gestorPersonal, name='gestor-personal'),
     path('gestor-personal/agregar_personal', crear_personal, name='crear_personal'),
     path('gestor-personal/agregar_personal/validar_rut/', validar_rut, name='validar_rut'),

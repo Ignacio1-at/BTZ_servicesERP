@@ -143,10 +143,7 @@
     border: none;
 }
 
-.btn-danger:hover {
-    background: none;
-    border: none;
-}
+
 
 
 /* Boton Subir Archivo */
@@ -154,6 +151,7 @@
     background-color: #860909 !important;
     border-color: #860909 !important;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 12px
 }
 
 .btn.btn-primary:hover {
@@ -201,4 +199,26 @@
 #visorArchivos {
     width: 100%;
     height: 500px;
+}
+
+.table td{
+    border-color: #1a2b3f;
+} 
+
+.table>:not(:last-child)>:last-child>*{
+    border-color: #1a2b3f;
+}
+
+.form-control{
+    border-radius: 15px;
+}
+
+.labelUpload{
+    border-color: #8d000e;
+}
+
+/* Estilo para el campo de entrada de tipo file */
+
+.subseccion-container{
+    padding: 10px 10px;
 }

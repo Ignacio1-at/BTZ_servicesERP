@@ -21,6 +21,7 @@ menu{
     transition:.4s ease;
     font-family: 'mifuente';
     margin-top: 2vh;
+    
 }
 
 .menuVert li:hover{
@@ -31,7 +32,7 @@ menu{
     width: 100vw;
     height: 65vh;
     margin-left: 30px;
-    background-color: #01152a; 
+    background-color: #000e23; 
     border-radius: 10px; 
     overflow-y: auto;
     overflow-x: hidden;
@@ -52,7 +53,6 @@ menu{
 .contenido-principal {
     height: 80vh;
     width: 90vw;
-    margin-left: 7vw;
     font-family: 'mifuente';
 }
 
@@ -263,10 +263,12 @@ menu{
     background-size: auto 25px; /* Ajusta el tamaño de la imagen */
 }
 
+/*Aqi empeze a waer Yo */
+
 /* Estilo para el campo de búsqueda */
 .buscador {
     color: #ffffff;
-    background-color: #01152a;
+    background-color: #000e23;
     border: none;
     padding: 15px 20px; /* Aumentar el espacio interno */
     font-size: 16px; /* Tamaño de fuente */
@@ -320,6 +322,8 @@ menu{
     max-width: 1000px; /* Anchura máxima del contenedor */
 }
 
+
+/* Estilos para los inputs en modo edición */
 /* Estilos para los inputs en modo edición */
 .modal-body input[type="number"],
 .modal-body input[type="text"],
@@ -338,7 +342,7 @@ menu{
     position: relative; /* Necesario para que el pseudo-elemento ::after se posicione correctamente */
     display: inline-block; /* Asegura que el ancho se ajuste al contenido */
 }
-
+/* Estilos Pancho */
 /* Estilos para el subrayado */
 .Titulo-subRayado::after {
     content: '';

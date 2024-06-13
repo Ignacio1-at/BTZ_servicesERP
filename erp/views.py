@@ -1,10 +1,10 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.db.models import F
-from .models import Motonave, Personal, Especialidad, FichaServicio, Quimico, Vehiculo, Vario, Documento
+from .models import Motonave, Personal, Especialidad, FichaServicio, Quimico, Vehiculo, Vario, Documento, CustomUser
 from .forms import CustomLoginForm, DocumentoForm
 from django.http import JsonResponse, FileResponse
 from django.utils import timezone
@@ -12,12 +12,19 @@ from django.core import serializers
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
 import mimetypes
 
 def home(request):
     return render(request, 'html/home.html')
 
 #--------------Login
+@csrf_exempt
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('erp:menu')
@@ -36,6 +43,55 @@ def login_view(request):
 
     form = CustomLoginForm()
     return render(request, 'html/login.html', {'form': form})
+
+def password_reset_request(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = CustomUser.objects.filter(email=email).first()
+        if user:
+            # Generar token de recuperación de contraseña
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+
+            # Enviar correo electrónico de recuperación de contraseña
+            subject = 'Recuperación de contraseña'
+            message = render_to_string('html/password_reset_email.html', {
+                'user': user,
+                'domain': request.META['HTTP_HOST'],
+                'uid': uid,
+                'token': token,
+            })
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [email]
+            send_mail(subject, message, from_email, recipient_list)
+
+            messages.success(request, 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.')
+            return redirect('erp:login')
+        else:
+            messages.error(request, 'No se encontró ningún usuario con ese correo electrónico.')
+
+    return render(request, 'html/password_reset_request.html')
+
+def password_reset_confirm(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            new_password = request.POST.get('new_password')
+            user.set_password(new_password)
+            user.save()
+            messages.success(request, 'Tu contraseña ha sido restablecida exitosamente.')
+            return redirect('erp:login')
+        else:
+            return render(request, 'html/password_reset_confirm.html')
+    else:
+        messages.error(request, 'El enlace de restablecimiento de contraseña no es válido.')
+        return redirect('erp:login')
 
 @login_required
 def logout_view(request):
@@ -173,27 +229,6 @@ def obtener_detalles_motonave(request):
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
 
-#-------------------GUARDAR ESTADO DE MOTONAVES
-@login_required
-def guardar_nuevo_estado(request):
-    if request.method == 'POST':
-        nombre_motonave = request.POST.get('nombre_motonave')
-        nuevo_estado = request.POST.get('nuevo_estado')
-        
-        # Obtener la motonave
-        try:
-            motonave = Motonave.objects.get(nombre=nombre_motonave)
-        except Motonave.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'La motonave no existe.'}, status=404)
-        
-        # Actualizar el estado de la motonave
-        motonave.estado_servicio = nuevo_estado
-        motonave.save()
-        
-        return JsonResponse({'success': True, 'message': 'Estado actualizado correctamente.'})
-    else:
-        return JsonResponse({'success': False, 'message': 'Método no permitido.'}, status=405)
-   
 #-------------------GUARDAR COMENTARIOS
 @login_required  
 def guardar_comentarios(request):
@@ -391,9 +426,6 @@ def crear_servicio_individual(request):
         # Obtener la fecha de nominación actual
         fecha_nominacion = timezone.now()
 
-        # Cambiar el estado de la motonave a "Nominado"
-        motonave.estado_servicio = 'Nominado'
-
         # Actualizar la cantidad de servicios historial y actual de la motonave
         motonave.cantidad_serviciosHistorial += 1
         motonave.cantidad_serviciosActual += 1
@@ -432,11 +464,17 @@ def crear_servicio_individual(request):
 def eliminar_servicio_individual(request):
     if request.method == 'POST':
         servicio_id = request.POST.get('servicio_id')
-
         try:
             ficha_servicio = FichaServicio.objects.get(id=servicio_id)
             motonave = ficha_servicio.motonave
-
+            
+            # Verificar si la motonave tiene un solo servicio actual
+            if motonave.cantidad_serviciosActual == 1:
+                return JsonResponse({'error': 'No se puede eliminar el último servicio de la motonave.'}, status=400)
+            
+            # Verificar el estado de la ficha de servicio antes de eliminarla
+            ficha_en_proceso = ficha_servicio.estado_delServicio == 'En Proceso'
+            
             # Restablecer el estado de los elementos vinculados a "Disponible"
             ficha_servicio.personal_nominado.update(estado='Disponible')
             ficha_servicio.vehiculos_nominados.update(estado='Disponible')
@@ -445,24 +483,51 @@ def eliminar_servicio_individual(request):
             
             # Eliminar la ficha de servicio
             ficha_servicio.delete()
-
+            
+            # Obtener los servicios restantes de la motonave y ordenarlos por número de servicio
+            servicios_restantes = FichaServicio.objects.filter(motonave=motonave).order_by('numero_servicio')
+            
             # Actualizar la cantidad de servicios actual de la motonave
             motonave.cantidad_serviciosActual -= 1
             motonave.cantidad_serviciosHistorial -= 1
-
-            # Verificar si la cantidad de servicios actual es cero
-            if motonave.cantidad_serviciosActual == 0:
-                # Si no hay más servicios, actualizar el estado de la motonave a "Disponible"
+            
+            # Verificar el estado de los servicios restantes de la motonave
+            fichas_servicio_motonave = motonave.fichas_servicio.all()
+            
+            # Actualizar los números de servicio de manera consecutiva
+            for i, servicio in enumerate(servicios_restantes, start=1):
+                servicio.numero_servicio = i
+                servicio.save()
+            
+            if fichas_servicio_motonave.exists():
+                # Si aún hay servicios asociados a la motonave
+                if all(ficha.estado_delServicio == 'Terminado' for ficha in fichas_servicio_motonave):
+                    # Si todos los servicios restantes están terminados, cambiar el estado de la motonave a "Terminado"
+                    motonave.estado_servicio = 'Terminado'
+                else:
+                    # Si aún hay servicios en proceso o nominados, mantener el estado de la motonave como "En Proceso" o "Nominado"
+                    if any(ficha.estado_delServicio == 'En Proceso' for ficha in fichas_servicio_motonave):
+                        motonave.estado_servicio = 'En Proceso'
+                    else:
+                        motonave.estado_servicio = 'Nominado'
+            else:
+                # Si no hay más servicios asociados a la motonave, cambiar el estado de la motonave a "Disponible"
                 motonave.estado_servicio = 'Disponible'
-
+                
+                # Restablecer los demás campos de la motonave
+                motonave.comentarioActual = ""
+                motonave.puerto = ""
+                motonave.prox_puerto = ""
+                motonave.procedenciaCarga = ""
+                motonave.armador = ""
+                motonave.agencia = ""
+            
             # Guardar los cambios en la motonave
             motonave.save()
-
+            
             return JsonResponse({'success': True})
-
         except FichaServicio.DoesNotExist:
             return JsonResponse({'error': 'El servicio especificado no existe.'}, status=404)
-
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
 
@@ -483,6 +548,54 @@ def obtener_servicios_motonave(request):
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo GET.'}, status=405)
 
+#-----------------FINALIZAR SERVICIO INDIVIDUAL
+@csrf_exempt
+@login_required
+def finalizar_servicio(request):
+    if request.method == 'POST':
+        servicio_id = request.POST.get('servicio_id')
+        
+        try:
+            ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+            
+            # Verificar si el servicio ya está finalizado
+            if ficha_servicio.estado_delServicio == 'Terminado':
+                return JsonResponse({'success': False, 'message': 'El servicio ya está finalizado.'})
+            
+            # Actualizar el estado del servicio a "Terminado"
+            ficha_servicio.estado_delServicio = 'Terminado'
+            ficha_servicio.save()
+            
+            # Restablecer el estado de los elementos vinculados a "Disponible"
+            ficha_servicio.personal_nominado.update(estado='Disponible')
+            ficha_servicio.vehiculos_nominados.update(estado='Disponible')
+            ficha_servicio.quimicos_nominados.update(estado='Disponible')
+            ficha_servicio.varios_nominados.update(estado='Disponible')
+            
+            # Obtener la motonave asociada a la ficha de servicio
+            motonave = ficha_servicio.motonave
+            
+            # Verificar si todas las fichas de servicio de la motonave están finalizadas
+            fichas_servicio_motonave = motonave.fichas_servicio.all()
+            todas_finalizadas = all(ficha.estado_delServicio == 'Terminado' for ficha in fichas_servicio_motonave)
+            
+            if todas_finalizadas:
+                # Si todas las fichas están finalizadas, cambiar el estado de la motonave a "Terminado"
+                motonave.estado_servicio = 'Terminado'
+            else:
+                # Si aún hay fichas en proceso o nominadas, mantener el estado de la motonave como "En Proceso"
+                motonave.estado_servicio = 'En Proceso'
+            
+            # Guardar los cambios en la motonave
+            motonave.save()
+            
+            return JsonResponse({'success': True})
+        
+        except FichaServicio.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'El servicio especificado no existe.'})
+    
+    return JsonResponse({'success': False, 'message': 'Método no permitido.'})
+
 #-------------------FILTRAR MOTONAVE POR ESTADO
 @login_required
 def renderizar_formulario(request):
@@ -492,12 +605,6 @@ def renderizar_formulario(request):
     # Devolver los nombres de las motonaves disponibles como una respuesta JSON
     return JsonResponse({'nombres_motonaves_disponibles': nombres_motonaves_disponibles})
 
- #-----------------Ficha de Servicios
-
-@login_required
-def fichaOperaciones(request):
-    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
-    return render(request, 'html/fichaOperaciones.html', {'nombre_usuario': nombre_usuario})
 
  #-----------------Gestor Personal
 
@@ -1156,12 +1263,41 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
 
             # Guardar los cambios en la ficha de servicio
             ficha_servicio.save()
+            
+            # Obtener los datos adicionales de la motonave o navío
+            puerto = request.POST.get('puerto')
+            procedencia_carga = request.POST.get('procedencia_carga')
+            armador = request.POST.get('armador')
+            agencia = request.POST.get('agencia')
+            prox_puerto = request.POST.get('prox puerto')
+
+            # Actualizar los campos de la motonave
+            motonave = ficha_servicio.motonave
+            motonave.puerto = puerto
+            motonave.procedenciaCarga = procedencia_carga
+            motonave.armador = armador
+            motonave.agencia = agencia
+            motonave.prox_puerto = prox_puerto
+            motonave.save()
 
             # Cambiar el estado de los elementos vinculados a la ficha de servicio a "En Operación"
             ficha_servicio.personal_nominado.update(estado='En Operación')
             ficha_servicio.vehiculos_nominados.update(estado='En Operación')
             ficha_servicio.quimicos_nominados.update(estado='En Operación')
             ficha_servicio.varios_nominados.update(estado='En Operación')
+            
+            # Verificar si alguna ficha de servicio asociada a la motonave está en estado "En Proceso"
+            motonave = ficha_servicio.motonave
+            fichas_servicio_en_proceso = motonave.fichas_servicio.filter(estado_delServicio='En Proceso')
+
+            if fichas_servicio_en_proceso.exists():
+                # Si hay al menos una ficha en estado "En Proceso", cambiar el estado de la motonave a "En Proceso"
+                motonave.estado_servicio = 'En Proceso'
+                motonave.save()
+            else:
+                # Si no hay fichas en estado "En Proceso", cambiar el estado de la motonave a "Disponible"
+                motonave.estado_servicio = 'Disponible'
+                motonave.save()
 
             messages.success(request, 'La ficha de servicio se ha actualizado correctamente.')
 

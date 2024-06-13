@@ -212,15 +212,59 @@ document.addEventListener('DOMContentLoaded', function () {
     function actualizarListaConductoresVinculados(vehiculoId) {
         const conductoresVinculadosContainer = document.getElementById('conductoresVinculadosContainer');
         conductoresVinculadosContainer.innerHTML = '';
-
+    
         if (conductoresVinculados[vehiculoId]) {
             const conductoresVinculadosList = document.createElement('ul');
+            conductoresVinculadosList.id = 'conductoresVinculadosList';
             conductoresVinculados[vehiculoId].forEach(function (conductor) {
                 const conductorItem = document.createElement('li');
+                conductorItem.classList.add('especialidad');
+                conductorItem.setAttribute('data-id', conductor.id);
                 conductorItem.textContent = conductor.nombre;
+    
+                const eliminarBtn = document.createElement('button');
+                eliminarBtn.textContent = 'X';
+                eliminarBtn.classList.add('eliminar-especialidad');
+                eliminarBtn.addEventListener('click', function () {
+                    eliminarConductorVinculado(vehiculoId, conductor.id);
+                });
+    
+                conductorItem.appendChild(eliminarBtn);
                 conductoresVinculadosList.appendChild(conductorItem);
             });
             conductoresVinculadosContainer.appendChild(conductoresVinculadosList);
+        }
+    }
+
+    function eliminarConductorVinculado(vehiculoId, conductorId) {
+        const conductoresVinculadosVehiculo = conductoresVinculados[vehiculoId];
+        const index = conductoresVinculadosVehiculo.findIndex(conductor => conductor.id === conductorId);
+    
+        if (index > -1) {
+            conductoresVinculadosVehiculo.splice(index, 1);
+            console.log('Conductores vinculados:', conductoresVinculados);
+    
+            // Agregar el conductor al arreglo conductoresNominados y al select
+            conductoresNominados.push(conductorId);
+            console.log('Conductores nominados:', conductoresNominados);
+    
+            const conductorSelect = document.getElementById('conductoresNominados');
+            const conductorElement = document.querySelector(`#columnPersonal .ficha-elemento[data-id="${conductorId}"]`);
+            const conductorNombre = conductorElement ? conductorElement.getAttribute('data-nombre') : 'Desconocido';
+            const conductorOption = document.createElement('option');
+            conductorOption.value = conductorId;
+            conductorOption.textContent = conductorNombre;
+            conductorSelect.appendChild(conductorOption);
+    
+            // Eliminar el conductor del arreglo conductoresOcupados
+            const ocupadosIndex = conductoresOcupados.indexOf(conductorId);
+            if (ocupadosIndex > -1) {
+                conductoresOcupados.splice(ocupadosIndex, 1);
+                console.log('Conductores ocupados:', conductoresOcupados);
+            }
+    
+            // Actualizar la lista de conductores vinculados
+            actualizarListaConductoresVinculados(vehiculoId);
         }
     }
 });

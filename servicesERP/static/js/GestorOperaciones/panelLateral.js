@@ -8,16 +8,8 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, canti
     $('#cargaMotonave').text(procedencia_carga); // Establecer el valor de la procedencia
     $('#puertoMotonave').text(puerto); // Establecer el valor del puerto
     $('#armadorMotonave').text(armador); // Establecer el valor del armador
-    $('#agenciaMotonave').text(agencia); // Establecer el valor del armador
-
-    console.log('Estado:', estado); // Agregar console.log para verificar el valor del estado
-
-    $('#nuevoEstadoMotonave').val(estado); // Establecer el estado seleccionado
-
-    // Asignar evento onchange al select
-    $('#nuevoEstadoMotonave').off('change').on('change', function () {
-        guardarNuevoEstado(nombreMotonave);
-    });
+    $('#agenciaMotonave').text(agencia); // Establecer el valor de la agencia
+    $('#estadoMotonave').text(estado); // Establecer el valor del estado de la motonave
 
     $('#comentarioActual').val(comentarioActual);
 
@@ -63,30 +55,6 @@ function doDrag(e) {
 function stopDrag(e) {
     document.documentElement.removeEventListener('mousemove', doDrag, false);
     document.documentElement.removeEventListener('mouseup', stopDrag, false);
-}
-
-// Función para guardar el nuevo estado seleccionado en la base de datos
-function guardarNuevoEstado(nombreMotonave) {
-    var nuevoEstado = $('#nuevoEstadoMotonave').val();
-    var csrftoken = getCookie('csrftoken');
-    $.ajax({
-        type: 'POST',
-        url: nuevoEstadoMotonaveURL,
-        headers: { 'X-CSRFToken': csrftoken },
-        data: {
-            'nombre_motonave': nombreMotonave,
-            'nuevo_estado': nuevoEstado
-        },
-        success: function (response) {
-            console.log('Nuevo estado guardado correctamente:', response);
-            // Realizar un refresh de la página después de guardar el estado
-            actualizarTableroMotonaves(); // Llamar a la función para actualizar el tablero de motonaves
-            actualizarTablaMotonavesModal()
-        },
-        error: function (xhr, status, error) {
-            console.error('Error al guardar el nuevo estado:', error);
-        }
-    });
 }
 
 function guardarNuevoComentario(nombreMotonave) {

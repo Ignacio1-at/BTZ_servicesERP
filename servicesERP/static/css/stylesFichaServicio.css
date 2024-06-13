@@ -441,3 +441,25 @@ span::after {
     justify-content: center;
     align-items: center;
 }
+
+#conductoresVinculadosList .especialidad {
+    display: inline-block;
+    background-color: #01152a;
+    border-radius: 10px;
+    margin: 4px;
+    padding: 2px 15px;
+}
+
+#conductoresVinculadosList .eliminar-especialidad {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    margin-left: 1vw;
+}
+
+#conductoresVinculadosList .eliminar-especialidad:hover {
+    color: red;
+}

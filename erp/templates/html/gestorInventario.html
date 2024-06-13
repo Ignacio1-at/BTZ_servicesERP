@@ -13,202 +13,202 @@
 {% block content %}
   <div id="contenidoPrincipal" class="contenido-principal">
     <div class="row">
-      <div class="col-md-12 d-flex" style="margin-left: 1vw; margin-top: 3vh;">
-        <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
-        <img src="{% static 'images/LogoInventario.png' %}" alt="Inventario" class="mb-2" width="4%" />
-        <span style="color: white; font-size: 3vh;">Inventario</span>
-        <input class="buscador rounded-pill" type="text" id="Buscar" placeholder="Buscar" oninput="filtrarInventario()"></div>
+      <div class="col-md-12 d-flex align-items-center" style="margin-left: 1vw;margin-top: 0px;padding-top: 25px;">
+        <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-right: 2vw; cursor: pointer;margin-left: 2.5vh;" /></button>
+        <img src="{% static 'images/LogoInventario.png' %}" alt="Inventario" class="mb-2" width="4%" style="margin-right: 1vw;" />
+        <span style="color: white; font-size: 1.2em;">Inventario</span>
+        <input class="buscador rounded-pill" type="text" id="Buscar" placeholder="Buscar" oninput="filtrarInventario()" style="margin-top: 0px;" />
+      </div>
+    </div>
+
+    <div class="col-md-12 d-flex" style="margin-left: 1vw;" id="contenedorTablas">
+      <div class="allmenu">
+        <!-- Menu Inventario -->
+        <div class="menu">
+          <ul class="menuVert" style="padding-left: 100px;">
+            <li>
+              <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="8%" />
+              <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
+            </li>
+            <li>
+              <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="15%" style="margin-left: -5px;" />
+              <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
+            </li>
+            <li>
+              <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
+              <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Equipos</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Boton Agregar -->
+        <div class="dropdown" style="margin-left: 140px; top: 40px;">
+          <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Agregar</button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarQuimico">Químico</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Equipo</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div class="col-md-12 d-flex" style="margin-left: 1vw; margin-top: 3vh;" id="contenedorTablas">
-        <div class="allmenu">
-          <!-- Menu Inventario -->
-          <div class="menu">
-            <ul class="menuVert">
-              <li>
-                <img src="{% static 'images/IconoQuimico.png' %}" alt="Químico" class="mb-2" width="8%" />
-                <span class="btn btn-primary btn-menu" data-tab="tablaQuimico">Químicos</span>
-              </li>
-              <li>
-                <img src="{% static 'images/IconoAuto.png' %}" alt="Vehículos" class="mb-2" width="15%" style="margin-left: -5px;" />
-                <span class="btn btn-primary btn-menu" data-tab="tablaVehiculo">Vehículos</span>
-              </li>
-              <li>
-                <img src="{% static 'images/IconoHerramientas.png' %}" alt="Varios" class="mb-2" width="10%" />
-                <span class="btn btn-primary btn-menu" data-tab="tablaVarios">Equipos</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Boton Agregar -->
-          <div class="dropdown">
-            <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Agregar</button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarQuimico">Químico</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVehiculo">Vehículo</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarVario">Equipo</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Tablas -->
-        <div class="tablaContenido" id="contenidoTablas">
-          <!-- Tabla de Químicos -->
-          <table class="table" id="tablaQuimico">
-            <thead>
+      <!-- Tablas -->
+      <div class="tablaContenido" id="contenidoTablas" style="margin-top: 25px;">
+        <!-- Tabla de Químicos -->
+        <table class="table" id="tablaQuimico">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th style="text-align: center;">Tipo de Químico</th>
+              <th>Fecha de Ingreso</th>
+              <th>Número de Factura</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for quimico in quimico_list %}
               <tr>
-                <th>ID</th>
-                <th style="text-align: center;">Tipo de Químico</th>
-                <th>Fecha de Ingreso</th>
-                <th>Número de Factura</th>
-                <th>Acción</th>
+                <td>{{ quimico.id }}</td>
+                <td>{{ quimico.tipo_quimico }}</td>
+                <td>{{ quimico.fecha_ingreso }}</td>
+                <td>{{ quimico.numero_factura }}</td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="Acciones">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}" onclick="abrirModalQuimico({{ quimico.id }})"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                    <form id="formEliminarQuimico{{ quimico.id }}" method="POST" action="{% url 'erp:eliminar_quimico' quimico.id %}">
+                      {% csrf_token %}
+                      <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                    </form>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {% for quimico in quimico_list %}
-                <tr>
-                  <td>{{ quimico.id }}</td>
-                  <td>{{ quimico.tipo_quimico }}</td>
-                  <td>{{ quimico.fecha_ingreso }}</td>
-                  <td>{{ quimico.numero_factura }}</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Acciones">
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleQuimico{{ quimico.id }}" onclick="abrirModalQuimico({{ quimico.id }})"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
-                      <form id="formEliminarQuimico{{ quimico.id }}" method="POST" action="{% url 'erp:eliminar_quimico' quimico.id %}">
-                        {% csrf_token %}
-                        <button type="button" class="btn btn-danger" onclick="eliminarQuimico('{{ quimico.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
-                      </form>
+              <!-- Modal para ver detalles del Quimico -->
+              <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title with-icon" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                  </td>
-                </tr>
-                <!-- Modal para ver detalles del Quimico -->
-                <div class="modal fade" id="modalDetalleQuimico{{ quimico.id }}" tabindex="-1" aria-labelledby="modalDetalleQuimicoLabel{{ quimico.id }}" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title with-icon" id="modalDetalleQuimicoLabel{{ quimico.id }}">Detalles del Químico</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body" id="modalBodyQuimico{{ quimico.id }}">
-                        <!-- Contenido dinámico cargado por JavaScript -->
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" id="btnCambiarModoQuimico{{ quimico.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button type="button" id="btnGuardarQuimico{{ quimico.id }}" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
-                      </div>
+                    <div class="modal-body" id="modalBodyQuimico{{ quimico.id }}">
+                      <!-- Contenido dinámico cargado por JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" id="btnCambiarModoQuimico{{ quimico.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                      <button type="button" id="btnGuardarQuimico{{ quimico.id }}" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
                     </div>
                   </div>
                 </div>
-              {% endfor %}
-            </tbody>
-          </table>
+              </div>
+            {% endfor %}
+          </tbody>
+        </table>
 
-          <!-- Tabla de Vehículos -->
-          <table class="table" id="tablaVehiculo">
-            <thead>
+        <!-- Tabla de Vehículos -->
+        <table class="table" id="tablaVehiculo">
+          <thead>
+            <tr>
+              <th>Tipo de Vehículo</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Patente</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for vehiculo in vehiculo_list %}
               <tr>
-                <th>Tipo de Vehículo</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Patente</th>
-                <th>Acción</th>
+                <td>{{ vehiculo.tipo_vehiculo }}</td>
+                <td>{{ vehiculo.marca }}</td>
+                <td>{{ vehiculo.modelo }}</td>
+                <td>{{ vehiculo.patente }}</td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="Acciones">
+                    <button type="button" style="border: none; background: none;" class="btn btn-personalizado" onclick="abrirDetalleVehiculo('{{ vehiculo.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
+                    <form id="formEliminarVehiculo{{ vehiculo.id }}" method="POST" action="{% url 'erp:eliminar_vehiculo' vehiculo.id %}">
+                      {% csrf_token %}
+                      <!-- Otros campos del formulario si los tienes -->
+                      <button type="button" class="btn btn-danger" onclick="eliminarVehiculo('{{ vehiculo.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                    </form>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {% for vehiculo in vehiculo_list %}
-                <tr>
-                  <td>{{ vehiculo.tipo_vehiculo }}</td>
-                  <td>{{ vehiculo.marca }}</td>
-                  <td>{{ vehiculo.modelo }}</td>
-                  <td>{{ vehiculo.patente }}</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Acciones">
-                      <button type="button" style="border: none; background: none;" class="btn btn-personalizado" onclick="abrirDetalleVehiculo('{{ vehiculo.id }}')" title="Ver detalles"><img src="{% static 'images/Ojo.png' %}" alt="Detalles" width="40" height="40" style="cursor: pointer;" /></button>
-                      <form id="formEliminarVehiculo{{ vehiculo.id }}" method="POST" action="{% url 'erp:eliminar_vehiculo' vehiculo.id %}">
-                        {% csrf_token %}
-                        <!-- Otros campos del formulario si los tienes -->
-                        <button type="button" class="btn btn-danger" onclick="eliminarVehiculo('{{ vehiculo.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
-                      </form>
+              <!-- Modal Detalle Vehículo -->
+              <div class="modal fade" id="modalDetalleVehiculo" tabindex="-1" aria-labelledby="modalDetalleVehiculoLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <img src="{% static 'images/IconoAuto.png' %}" alt="Logo" width="45" height="25" style="margin-right: 10px;" />
+                      <h5 class="modal-title" id="modalDetalleVehiculoLabel">Detalles del Vehículo</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                  </td>
-                </tr>
-                <!-- Modal Detalle Vehículo -->
-                <div class="modal fade" id="modalDetalleVehiculo" tabindex="-1" aria-labelledby="modalDetalleVehiculoLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <img src="{% static 'images/IconoAuto.png' %}" alt="Logo" width="45" height="25" style="margin-right: 10px;" />
-                        <h5 class="modal-title" id="modalDetalleVehiculoLabel">Detalles del Vehículo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <!-- Aquí se cargarán los detalles del vehículo con JavaScript -->
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" id="btnCambiarModoAuto" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button id="btnGuardarAuto" type="button" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
-                      </div>
+                    <div class="modal-body">
+                      <!-- Aquí se cargarán los detalles del vehículo con JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" id="btnCambiarModoAuto" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                      <button id="btnGuardarAuto" type="button" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
                     </div>
                   </div>
                 </div>
-              {% endfor %}
-            </tbody>
-          </table>
+              </div>
+            {% endfor %}
+          </tbody>
+        </table>
 
-          <!-- Tabla de Varios -->
-          <table class="table" id="tablaVarios">
-            <thead>
+        <!-- Tabla de Varios -->
+        <table class="table" id="tablaVarios">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Fecha de Ingreso</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for vario in vario_list %}
               <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Fecha de Ingreso</th>
-                <th>Acción</th>
+                <td>{{ vario.id }}</td>
+                <td>{{ vario.nombre }}</td>
+                <td>{{ vario.fecha_ingreso }}</td>
+                <td>
+                  <div class="btn-group" role="group" aria-label="Acciones">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVario{{ vario.id }}" onclick="abrirModalVario({{ vario.id }})"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
+                    <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
+                      {% csrf_token %}
+                      <button type="button" class="btn btn-danger" onclick="eliminarVario('{{ vario.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
+                    </form>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {% for vario in vario_list %}
-                <tr>
-                  <td>{{ vario.id }}</td>
-                  <td>{{ vario.nombre }}</td>
-                  <td>{{ vario.fecha_ingreso }}</td>
-                  <td>
-                    <div class="btn-group" role="group" aria-label="Acciones">
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDetalleVario{{ vario.id }}" onclick="abrirModalVario({{ vario.id }})"><img src="{% static 'images/Ojo.png' %}" alt="Ver Detalle" style="width: 40px; height: 40px;" /></button>
-                      <form id="formEliminarVario{{ vario.id }}" method="POST" action="{% url 'erp:eliminar_vario' vario.id %}">
-                        {% csrf_token %}
-                        <button type="button" class="btn btn-danger" onclick="eliminarVario('{{ vario.id }}')"><img src="{% static 'images/Basurero.png' %}" alt="Eliminar" style="width: 40px; height: 40px;" /></button>
-                      </form>
+              <!-- Modal para ver detalles del vario -->
+              <div class="modal fade" id="modalDetalleVario{{ vario.id }}" tabindex="-1" aria-labelledby="modalDetalleVarioLabel{{ vario.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalDetalleVarioLabel{{ vario.id }}">Detalles del Equipo</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                  </td>
-                </tr>
-                <!-- Modal para ver detalles del vario -->
-                <div class="modal fade" id="modalDetalleVario{{ vario.id }}" tabindex="-1" aria-labelledby="modalDetalleVarioLabel{{ vario.id }}" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0); backdrop-filter: blur(5px);">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="modalDetalleVarioLabel{{ vario.id }}">Detalles del Equipo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body" id="modalBodyVario{{ vario.id }}">
-                        <!-- Contenido dinámico cargado por JavaScript -->
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" id="btnCambiarModoVario{{ vario.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
-                        <button type="button" id="btnGuardarVario{{ vario.id }}" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
-                      </div>
+                    <div class="modal-body" id="modalBodyVario{{ vario.id }}">
+                      <!-- Contenido dinámico cargado por JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" id="btnCambiarModoVario{{ vario.id }}" class="modo-visualizacion" style="border: none; background: none;" title="Cambiar Modo"><img src="{% static 'images/Cambiar.png' %}" alt="Cambiar Modo" width="40" height="40" style="cursor: pointer;" /></button>
+                      <button type="button" id="btnGuardarVario{{ vario.id }}" class="btn btn-primary btn-img" style="display: none;"><img src="{% static 'images/IconoGuardar.png' %}" alt="Guardar" width="40" height="40" style="cursor: pointer;" /></button>
                     </div>
                   </div>
                 </div>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+              </div>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

@@ -6,7 +6,6 @@
 .contenido-principal {
   height: 80vh;
   width: 90vw;
-  margin-left: 7vw;
   margin-right: 7vw;
   font-family: 'mifuente';
 }
@@ -21,11 +20,11 @@
 }
 
 .btn.btn-custom-color {
-  background-color: #860909c9;
-  border-color: #860909c9;
+  background-color: #860909c9;;
   /* Color del borde */
   color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
 }
 
 .btn.btn-custom-color:hover {
@@ -37,11 +36,15 @@
   background-color: #01152a;
   border-color: #01152a;
 }
+.btn.btn-primary:hover{
+  color: #860909c9;
+
+}
 
 /* Seccion tabla */
 .btn-agregar {
   background-color: #860909c9 !important;
-  border-color: #860909c9 !important;
+  border: none;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   margin-bottom: 60vh;
   margin-right: 6vw;
@@ -54,7 +57,7 @@
 
 /* Estilos base del cuadro azul */
 .cuadro-azul {
-  background-color: #01152a;
+  background-color: #000e23;
   width: 70vw;
   height: 65vh;
   border-radius: 10px;
@@ -66,7 +69,7 @@
 .columna {
   font-family: 'mifuente';
   border-right: 3px solid #cccccc1f;
-  background-color: #01152a;
+  background-color: #000e23;
   width: 100vw;
   height: 64vh;
   margin-bottom: 20px;
@@ -108,7 +111,7 @@
 }
 
 .ficha-motonave:hover {
-  background-color: #003b88;
+  background-color: #062349;
 }
 
 .modal-dialog {
@@ -340,4 +343,9 @@
 
 .form-control, .form-select{
   border-radius: 10px;
+}
+
+.btn-disabled { 
+  opacity: 0.5;     
+  pointer-events: none;       
 }

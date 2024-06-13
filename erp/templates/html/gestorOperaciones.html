@@ -17,11 +17,11 @@
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <!-- Logo y texto "Operaciones" -->
           <div style="display: flex; align-items: center;">
-            <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-right: 2vw; cursor: pointer;" /></button>
-            <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 5vh;" />
-            <span style="color: white; margin-left: 1vw; font-size: 2vh;">Operaciones</span>
+            <button type="button" onclick="goBack()" style="border: none; background: none;"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-right: 2vw; cursor: pointer; margin-left: 5vh;" /></button>
+            <img src="{% static 'images/Operaciones.png' %}" alt="Texto alternativo de la imagen" class="mb-2" style="height: 6.5vh;" />
+            <span style="color: white; margin-left: 1vw; font-size: 1.2em;">Operaciones</span>
           </div>
-          <div style="display: flex; margin-right: 5vw;">
+          <div style="display: flex; margin-left: 40vw; align-items: center">
             <div style="align-items: center; margin-right: 1vw;">
               <button type="button" class="btn btn-primary" style="width: 100%;" href="#" data-bs-toggle="modal" data-bs-target="#listaMotonaveModal" title="Lista de Motonaves"><img src="{% static 'images/ListaServicios.png' %}" class="btn-image" style="width: 4vh; height: 4vh;" /> <span class="btn-text" style="font-size: 0.9em">Lista de Motonave</span></button>
             </div>
@@ -38,7 +38,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 15px;">
           <!-- Botón "Crear Motonave" -->
           <div class="dropdown">
-            <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Crear Ficha De</button>
+            <button class="btn btn-primary btn-agregar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 100px;">Crear Ficha De</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
                 <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalAgregarMotonave">Motonave</a>
@@ -186,6 +186,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <img src="{% static 'images/LogoServicio.png' %}" alt="Logo" width="50" height="50" style="margin-right: 10px;" />
+            <h5 class="modal-title">Nuevo Servicio</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" style="margin-left: 30px;">
@@ -318,7 +319,6 @@
                   <th>Tipo Servicio</th>
                   <th>Fecha Inicio Faena</th>
                   <th>Estado</th>
-                  <th>Nominación</th>
                   <th>Acción</th>
                 </tr>
               </thead>
@@ -357,11 +357,7 @@
             </div>
             <div class="info-item estado-item">
               <p>Estado:</p>
-              <select id="nuevoEstadoMotonave" style=" border-radius: 10px; font-family: 'mifuente'; padding-left: 5px;">
-                <option value="Nominado">Nominado</option>
-                <option value="En Proceso">En Proceso</option>
-                <option value="Terminado">Terminado</option>
-              </select>
+              <p id="estadoMotonave"></p>
             </div>
             <div class="info-item agencia-item">
               <p>Agencia:</p>
@@ -442,7 +438,6 @@
   <script src="{% static 'js/GestorOperaciones/gestionarServicios.js' %}"></script>
   <script>
     var obtenerDetallesMotonaveURL = "{% url 'erp:obtener_detalles_motonave' %}"
-    var nuevoEstadoMotonaveURL = "{% url 'erp:guardar_nuevo_estado' %}"
     var nuevoComentarioMotonaveURL = "{% url 'erp:guardar_comentarios' %}"
     var obtenerTablaMotonavesURL = "{% url 'erp:obtener_tabla_motonaves' %}"
     var crearServicioURL = "{% url 'erp:crear_servicio' %}"
@@ -454,6 +449,7 @@
     var modificarMotonaveURL = "{% url 'erp:modificar_motonave' %}"
     var obtenerServicioMotonaveURL = "{% url 'erp:obtener_servicios_motonave' %}"
     var fichaServicioURL = "{% url 'erp:ficha_servicio' servicio_id=0 %}".slice(0, -2)
+    var finalizarServicioURL = "{% url 'erp:finalizar_servicio' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado
@@ -466,7 +462,8 @@
       agregar: "{% static 'images/Agregar.png' %}",
       editar: "{% static 'images/Editar.png' %}",
       eliminar: "{% static 'images/Basurero.png' %}",
-      visualizar: "{% static 'images/Ojo.png' %}"
+      visualizar: "{% static 'images/Ojo.png' %}",
+      check: "{% static 'images/BotonCheck.png' %}"
     }
   </script>
 {% endblock %}

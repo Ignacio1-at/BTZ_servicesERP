@@ -110,6 +110,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_SECURE = False  # Para desarrollo; cámbialo a True en producción si es necesario
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"  # O "Strict" si es necesario
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Autenticacion de usuario personalizado
 AUTH_USER_MODEL = 'erp.CustomUser'
@@ -144,3 +145,18 @@ LOGIN_URL = 'erp:login'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Configuración de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'servicios.btz1@gmail.com'
+EMAIL_HOST_PASSWORD = 'njuw xqbs bhmt kkll'
+DEFAULT_FROM_EMAIL = 'servicios.btz1@gmail.com'
+EMAIL_SUBJECT_PREFIX = '[Django] '
+EMAIL_USE_LOCALTIME = True
+EMAIL_CHARSET = 'utf-8'
+
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False

@@ -18,7 +18,7 @@ function sortTable(n) {
     const table = document.getElementById("tablaServicios");
     let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     switching = true;
-    dir = "asc"; // Dirección de ordenación por defecto
+    dir = "dsc"; // Dirección de ordenación por defecto
 
     while (switching) {
         switching = false;

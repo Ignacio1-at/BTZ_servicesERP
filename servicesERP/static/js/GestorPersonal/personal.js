@@ -5,8 +5,8 @@ function eliminarPersonal(personalId) {
         text: '¿Quieres eliminar este registro de personal?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#8d000e',
+        cancelButtonColor: '#01152a',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
