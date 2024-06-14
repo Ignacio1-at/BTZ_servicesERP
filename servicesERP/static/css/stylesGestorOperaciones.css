@@ -287,15 +287,29 @@
   border: none;
   color: white;
   text-align: center;
-  font-size: 0.9vw; 
+  font-size: 1vw; 
   margin-top: 2vh;
-  margin-left: 9vw;
+  margin-right: 2vw;
+  margin-left: 3vw;
   width: 10vw;
   height: 8vh;
   cursor: pointer;
   border-radius: 1vw;
 }
 
+#BotonFinalizarMotonave{
+  background-color: #000e23;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 1vw; 
+  margin-top: 2vh;
+  width: 10vw;
+  height: 8vh;
+  cursor: pointer;
+  border-radius: 1vw;
+  padding: 5px;
+}
 
 #dragbar {
   cursor: ew-resize;

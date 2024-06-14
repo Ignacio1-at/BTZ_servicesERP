@@ -11,76 +11,27 @@
 {% endblock %}
 
 {% block content %}
-  <div id="contenidoPrincipal" class="contenido-principal">
-    <div class="container Set_Botones px-4 d-flex justify-content-center align-items-center">
-      <div class="row gx-5">
-        <div class="col-md-6 col-lg-6">
-          <div class="p-3 Operaciones">
-            <!-- Configura el botón para redireccionar a gestorOperaciones -->
-            <a href="{% url 'erp:gestor-operaciones' %}" class="btn btn-operaciones d-flex flex-column align-items-center w-100">
-              <img src="{% static 'images/Operaciones.png' %}" style="height: 30vh;" alt="Texto alternativo de la imagen" class="mb-2" />
-              <span class="texto-blanco" style="color: white; font-size: 3vh;">Operaciones</span>
-            </a>
-          </div>
-        </div>
-        <div class="col">
-          <style>
-            /* Estilo para los botones con ancho y altura fijos */
-            .Botones button {
-              width: 10vw; /* Ancho aumentado para hacerlos más cuadrados */
-              height: 20vh; /* Altura deseada */
-              margin-right: 1vw; /* Margen derecho para separar los botones */
-            }
-          </style>
-
-          <div class="container Mantenimiento-Informe px-4 d-flex justify-content-center align-items-center" style="margin-top: 13vh; width: 100%;">
-            <div class="row gy-5">
-              <!--              <div class="col-md-6 col-lg-6">
-                <div class="p-3 Botones">
-                  <button class="BotonPuerto" onclick="window.location.href=''">
-                    <img src="{% static 'images/LogoPuerto.png' %}" alt="Texto alternativo de la imagen" />
-                    <br />
-                    Mantenimiento
-                  </button>
-                </div>
-              </div>               -->
-              <div class="col-md-6 col-lg-6">
-                <div class="p-3 Botones">
-                  <button class="BotonOtro" style="margin-left: 3vw;" onclick="window.location.href='{% url 'erp:gestor-documentos' %}'">
-                    <img src="{% static 'images/LogoDoc.png' %}" alt="Texto alternativo de la imagen" />
-                    <br />
-                    Documentos
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="container RRHH_INVENTARIO px-4 d-flex justify-content-center align-items-center">
-            <div class="row gy-5">
-              <div class="col-md-6 col-lg-6">
-                <div class="p-3 Botones">
-                  <button class="BotonOtro" onclick="window.location.href='{% url 'erp:gestor-inventario' %}'">
-                    <img src="{% static 'images/LogoInventario.png' %}" alt="Texto alternativo de la imagen" />
-                    <br />
-                    Inventario
-                  </button>
-                </div>
-              </div>
-              <div class="col-md-6 col-lg-6">
-                <div class="p-3 Botones">
-                  <button class="BotonOtro" onclick="window.location.href='{% url 'erp:gestor-personal' %}'">
-                    <img src="{% static 'images/LogoRRHH.png' %}" alt="Texto alternativo de la imagen" />
-                    <br />
-                    Personal
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="container">
+    <a href="{% url 'erp:gestor-operaciones' %}" class="cuadrado Operaciones">
+      <img src="{% static 'images/Operaciones.png' %}" alt="Descripción de la imagen original" />
+      <img class="hover-img" src="{% static 'images/OperacionesBlue.png' %}" alt="Descripción de la imagen al hacer hover" />
+      <span>Operaciones</span>
+    </a>
+    <a href="{% url 'erp:gestor-personal' %}" class="cuadro Personal">
+      <img src="{% static 'images/LogoRRHH.png' %}" alt="Descripción de la imagen original" />
+      <img class="hover-img" src="{% static 'images/LogoRRHHBlue.png' %}" alt="Descripción de la imagen al hacer hover" />
+      <span>Personal</span>
+    </a>
+    <a href="{% url 'erp:gestor-inventario' %}" class="cuadro Inventario">
+      <img src="{% static 'images/LogoInventario.png' %}" alt="Descripción de la imagen original" />
+      <img class="hover-img" src="{% static 'images/LogoInventarioBlue.png' %}" alt="Descripción de la imagen al hacer hover" />
+      <span>Inventario</span>
+    </a>
+    <a href="{% url 'erp:gestor-documentos' %}" class="cuadro Documentos">
+      <img src="{% static 'images/LogoDoc.png' %}" alt="Descripción de la imagen original" />
+      <img class="hover-img" src="{% static 'images/LogoDocBlue.png' %}" alt="Descripción de la imagen al hacer hover" />
+      <span>Documentos</span>
+    </a>
   </div>
 {% endblock %}
 
