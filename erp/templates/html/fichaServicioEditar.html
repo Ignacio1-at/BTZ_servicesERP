@@ -22,7 +22,7 @@
       </div>
     </div>
     
-    <form id="fichaServicioForm" method="POST" action="{% url 'erp:editar_ficha_servicio' servicio_id=ficha_servicio.id %}">
+    <form id="fichaServicioEditarForm" method="POST" action="{% url 'erp:editar_ficha_servicio' servicio_id=ficha_servicio.id %}">
       {% csrf_token %}
   
       <input type="hidden" name="nombre_motonave" value="{{ motonave.nombre }}"/>
@@ -207,5 +207,5 @@
   </script>
   <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 
-  <script src="{% static "js/FichaServicio/ficha.js" %}"></script>
+  <script src="{% static "js/FichaServicio/editar.js" %}"></script>
 {% endblock %}
