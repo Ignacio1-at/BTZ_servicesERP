@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Verificar si se ha seleccionado un conductor y un vehículo
         if (conductorId && vehiculoId && conductorId !== '') {
-            // Verificar si el conductor ya está vinculado al vehículo
             if (conductoresVinculadosVehiculo.some(conductor => conductor.id === conductorId)) {
                 alert('El conductor ya está vinculado a este vehículo.');
                 return;
@@ -71,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
 
-                // Si el tipo es 'vehiculo'
                 if (type === 'vehiculo') {
                     const conductoresVinculadosVehiculo = conductoresVinculados[selectedOption.value] || [];
                     const conductoresIds = conductoresVinculadosVehiculo.map(conductor => conductor.id).join(',');
@@ -200,7 +198,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         break;
                 }
 
-                // Eliminar la opción seleccionada del select
                 select.removeChild(selectedOption);
 
                 // Agregar evento de clic al botón de eliminar
@@ -216,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         if (estaVinculado) {
                             event.preventDefault();
-                            personalVinculadoAlertShown = true; // Establecer la variable a true
+                            personalVinculadoAlertShown = true;
                             alert('No se puede eliminar este personal porque está vinculado a un vehículo.');
                             return;
                         }
@@ -394,8 +391,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('fichaServicioForm');
     form.addEventListener('submit', function (event) {
         if (personalVinculadoAlertShown) {
-            event.preventDefault(); // Detener el envío del formulario
-            personalVinculadoAlertShown = false; // Reiniciar la variable de control
+            event.preventDefault();
+            personalVinculadoAlertShown = false;
             return;
         }
 

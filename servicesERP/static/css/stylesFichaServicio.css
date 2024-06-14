@@ -17,33 +17,25 @@ span::after {
     width: 0;
     height: 0;
     border-left: 37px solid transparent;
-    /* La mitad de 1136px */
     border-right: 375px solid transparent;
-    /* La mitad de 1136px */
     border-top: 15px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 
 .contenido-principal {
     height: calc(100vh - 12vh - 8vh);
-    /* Ajusta los valores según la altura del nav y el footer */
     margin-left: 5vw;
     font-family: 'mifuente';
     color: white;
     overflow-y: auto;
     overflow-x: hidden;
-    /* Agrega scroll vertical cuando el contenido excede la altura */
 }
 
 /* Estilos para el contenido principal */
 #contenidoPrincipal {
     flex-grow: 1;
-    /* Hace que el contenido principal ocupe todo el espacio disponible */
 }
 
 .datos-navio,
@@ -70,15 +62,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
-    /* La mitad de 1136px */
     border-right: 250px solid transparent;
-    /* La mitad de 1136px */
     border-top: 10px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 
@@ -110,7 +97,6 @@ span::after {
     display: grid;
     grid-template-columns: 2fr 1fr 1.2fr 2fr 2fr;
     gap: 2vw;
-    /* Espacio entre las celdas del grid */
     margin-right: 5vw;
 }
 
@@ -120,7 +106,6 @@ span::after {
     margin-top: 25px;
     margin-right: 20vw;
     gap: 2vw;
-    /* Espacio entre las celdas del grid */
 }
 
 /* DATOS SERVICIO*/
@@ -140,15 +125,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
-    /* La mitad de 1136px */
     border-right: 350px solid transparent;
-    /* La mitad de 1136px */
     border-top: 10px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 
@@ -180,7 +160,6 @@ span::after {
     display: grid;
     grid-template-columns: 3fr 3fr 1.5fr 3fr;
     gap: 2vw;
-    /* Espacio entre las celdas del grid */
     margin-right: 5vw;
 }
 
@@ -190,7 +169,6 @@ span::after {
     margin-top: 25px;
     margin-right: 20vw;
     gap: 2vw;
-    /* Espacio entre las celdas del grid */
 }
 
 /* BOTONES */
@@ -217,18 +195,13 @@ span::after {
     margin: 10px auto;
     margin-top: 6vh;
     margin-bottom: 6vh;
-    /* Centra la flecha horizontalmente */
     width: 0;
     height: 0;
     border-left: 20px solid transparent;
-    /* Ajusta el tamaño de la flecha */
     border-right: 20px solid transparent;
-    /* Ajusta el tamaño de la flecha */
     border-top: 30px solid #fff;
-    /* Color y tamaño de la flecha */
     position: relative;
     animation: arrowBounce 2s infinite;
-    /* Agrega animación a la flecha */
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 1));
 }
 
@@ -245,12 +218,10 @@ span::after {
 
     40% {
         transform: translateY(-10px);
-        /* Ajusta la altura del rebote */
     }
 
     60% {
         transform: translateY(-5px);
-        /* Ajusta la altura del rebote */
     }
 }
 
@@ -269,15 +240,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
-    /* La mitad de 1136px */
     border-right: 250px solid transparent;
-    /* La mitad de 1136px */
     border-top: 10px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 /* Estilos base del cuadro azul */
@@ -302,8 +268,6 @@ span::after {
 .columna h3 {
     padding: 20px;
     border-radius: 20px;
-    /* Reducimos el margen inferior del título */
-
     color: #fff;
     font-size: 3vh;
     font-weight: bold;
@@ -321,11 +285,9 @@ span::after {
 
 .columna-contenido {
     max-height: 48vh;
-    /* Altura máxima del contenido antes de que aparezca el scroll */
     margin-top: 2vh;
     overflow-y: auto;
     text-align: center;
-    /* Mostrar scroll vertical si el contenido excede la altura máxima */
 }
 
 .modal-content {

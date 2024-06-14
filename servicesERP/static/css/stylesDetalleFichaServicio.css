@@ -9,12 +9,9 @@ body {
 }
 
 .contenido-principal {
-    /* Ajusta los valores según la altura del nav y el footer */
     padding: 10px;
     width: 100%;
-    /* Ancho de página carta en puntos */
     height: 100%;
-    /* Altura de página carta en puntos */
     box-sizing: border-box;
     font-size: 22px;
     font-family: 'mifuente';
@@ -22,13 +19,11 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     background-color: #0b1f42;
-    /* Agrega scroll vertical cuando el contenido excede la altura */
 }
 
 /* Estilos para el contenido principal */
 #contenidoPrincipal {
     flex-grow: 1;
-    /* Hace que el contenido principal ocupe todo el espacio disponible */
 }
 
 .imprimirContenido {
@@ -38,7 +33,6 @@ body {
     background-position: center;
     margin-bottom: 1vh;
     padding: 40pt;
-    /* Agrega un relleno de 40 puntos en todos los lados */
     box-sizing: border-box;
     width: 70%;
     margin: 0 auto;
@@ -59,15 +53,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 37px solid transparent;
-    /* La mitad de 1136px */
     border-right: 780px solid transparent;
-    /* La mitad de 1136px */
     border-top: 15px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 .datos-navio,
@@ -95,15 +84,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
-    /* La mitad de 1136px */
     border-right: 250px solid transparent;
-    /* La mitad de 1136px */
     border-top: 10px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 .direccion-navio label {
@@ -149,15 +133,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
-    /* La mitad de 1136px */
     border-right: 350px solid transparent;
-    /* La mitad de 1136px */
     border-top: 10px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 .direccion-servicio select {
@@ -192,7 +171,6 @@ span::after {
     display: grid;
     grid-template-columns: 3fr 3fr 1.5fr 3fr;
     gap: 2vw;
-    /* Espacio entre las celdas del grid */
     margin-right: 5vw;
 }
 
@@ -202,7 +180,6 @@ span::after {
     margin-top: 25px;
     margin-right: 20vw;
     gap: 2vw;
-    /* Espacio entre las celdas del grid */
 }
 
 /* BOTONES */
@@ -248,7 +225,6 @@ span::after {
     font-family: 'mifuente';
     padding: 8px;
     font-size: 0.85vw;
-    /* Ajusta este valor según tus necesidades */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -276,7 +252,6 @@ span::after {
     font-family: 'mifuente';
     padding: 8px;
     font-size: 0.85vw;
-    /* Ajusta este valor según tus necesidades */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -299,15 +274,10 @@ span::after {
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
-    /* La mitad de 1136px */
     border-right: 200px solid transparent;
-    /* La mitad de 1136px */
     border-top: 10px solid rgb(169, 0, 28);
-    /* El color y la altura proporcionados */
     z-index: 6;
-    /* Mantenemos el z-index de Photoshop */
     background-color: transparent;
-    /* Asegura que no haya color de fondo */
 }
 
 /* Estilos para los rectángulos*/
@@ -319,7 +289,6 @@ span::after {
     text-align: center;
     display: inline-block;
     position: relative;
-    /* Agregado */
 }
 
 /* Estilos para el texto dentro de los rectángulos */

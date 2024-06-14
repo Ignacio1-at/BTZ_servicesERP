@@ -292,7 +292,6 @@ function guardarCambiosVehiculo() {
     });
 
     function enviarDatosAlServidor() {
-        // Obtener el token CSRF
         var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
         // Enviar los datos actualizados al servidor
@@ -326,13 +325,11 @@ function guardarCambiosVehiculo() {
                     });
                 } else {
                     console.log('Error al guardar los cambios:', response.message);
-                    // Mostrar un mensaje de error al usuario
                     alert('Error al guardar los cambios: ' + response.message);
                 }
             },
             error: function (xhr, status, error) {
                 console.log('Error en la solicitud:', error);
-                // Mostrar un mensaje de error genérico al usuario
                 alert('Ha ocurrido un error al guardar los cambios. Por favor, intenta nuevamente.');
             }
         });

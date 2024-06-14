@@ -11,7 +11,6 @@
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
     margin-right: 5vw;
     position: relative;
-    /* Para establecer la base del posicionamiento */
     width: 100vw;
     height: 65vh;
     padding: 1%;
@@ -21,22 +20,17 @@
 .table-header {
     position: sticky;
     top: 0;
-    /* Fija el encabezado en la parte superior */
     z-index: 1;
-    /* Asegura que el encabezado esté por encima del cuerpo */
     margin-bottom: -1rem !important;
 }
 
 .table-body {
     overflow-y: auto;
-    /* Permite el desplazamiento vertical solo en el cuerpo de la tabla */
     max-height: 55vh;
-    /* Establece la altura máxima del cuerpo de la tabla */
 }
 
 .table-wrapper {
     overflow-x: hidden;
-    /* Oculta el desplazamiento horizontal */
 }
 
 .table {
@@ -58,23 +52,16 @@
 /* Estilo para el fondo desenfocado cuando el modal está activo */
 .blur-background {
     backdrop-filter: blur(5px);
-    /* Aplica un desenfoque al fondo */
     pointer-events: none;
-    /* Permite hacer clic a través del fondo desenfocado */
     transition: filter 0.3s ease;
-    /* Agrega una transición suave */
 }
 
 /* Estilo del cuerpo de la página cuando el modal está activo */
 .modal-active {
     overflow: hidden;
-    /* Evita el desplazamiento de la página */
     position: fixed;
-    /* Fijar posición en la ventana */
     width: 100%;
-    /* Ocupa todo el ancho */
     height: 100%;
-    /* Ocupa toda la altura */
 }
 
 .modal-dialog.modal-dialog-centered {
@@ -138,26 +125,20 @@
     align-items: center;
     justify-content: center;
     padding: 10px;
-    /* Ajusta según sea necesario */
     color: white;
-    /* Color del texto */
-    font-size: 16px;
-    /* Ajusta según sea necesario */
+    font-size: 16px; 
     background-color: #860909c9;
     border-radius: 10px;
     margin-bottom: 60vh;
     margin-right: 5vw;
     border: none;
-    /* Quita el borde predeterminado */
     cursor: pointer;
-    /* Cambia el cursor al pasar sobre el botón */
 }
 
 .botonAgregarPersonal .icono-boton {
     width: 20px;
-    /* Ajusta el tamaño de la imagen según sea necesario */
     height: 20px;
-    /* Ajusta el tamaño de la imagen según sea necesario */
+
 }
 
 /* Estilos para los campos de entrada */
@@ -180,7 +161,6 @@
 /* Estilos para los botones */
 .modalDetallePersonal button {
     background-color: #860909c9;
-    /* Color de fondo verde */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -190,7 +170,6 @@
 
 .modalDetallePersonal button:hover {
     background-color: #860909c9;
-    /* Cambio de color de fondo al pasar el cursor */
 }
 
 
@@ -209,13 +188,11 @@
     flex-basis: 80%;
 }
 
-/*Aqui empeze a wear yo*/
-
 .textoDatosGenerales p{
-    padding-left: 30px; /* Ajusta este valor según sea necesario */
-    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
-    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
-    margin-bottom: 10px; /* Espacio entre los párrafos */
+    padding-left: 30px;
+    background: url('../images/Vineta.png') no-repeat left center;
+    background-size: auto 15px;
+    margin-bottom: 10px;
 }
 
 .textoDatosGenerales ul li{
@@ -239,11 +216,11 @@
     color: white;
     cursor: pointer;
     font-size: 14px;
-    padding: 0; /* Eliminar el relleno interno*/
+    padding: 0;
 }
 
 .eliminar-especialidad:hover {
-    color: red; /* Cambiar el color al pasar el mouse */
+    color: red;
 }
 
 #botonAgregar {
@@ -254,24 +231,23 @@
     height: 45px;
     border: none;
     cursor: pointer;
-    border-radius: 60%; /* Ajusta el borde redondeado según el tamaño de la imagen */
+    border-radius: 60%;
 }
 
 .buscador {
     color: #ffffff;
     background-color: #000e23;
     border: none;
-    padding: 15px 20px; /* Aumentar el espacio interno */
-    font-size: 16px; /* Tamaño de fuente */
-    width: 40vh; /* Ancho del buscador */
+    padding: 15px 20px;
+    font-size: 16px;
+    width: 40vh;
     height: 4vh;
-     /* Cambiar la ubicación vertical */
-    margin-left: 1vh; /* Cambiar la ubicación horizontal */
+    margin-left: 1vh;
 
-    background-image: url('../images/Buscar.png'); /* Ruta de la imagen de la lupa */
-    background-repeat: no-repeat; /* Evitar repetir la imagen */
-    background-position: 3% center; /* Ajustar la posición de la imagen */
-    background-size: 20px; /* Tamaño de la imagen */
+    background-image: url('../images/Buscar.png');
+    background-repeat: no-repeat;
+    background-position: 3% center;
+    background-size: 20px;
     text-indent: 3vh;
 }
 

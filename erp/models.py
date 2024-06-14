@@ -39,33 +39,29 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 #-------------------MOTONAVES ----------------------------------------------------------------------------------------------
 
 class Motonave(models.Model):
-    # Campos existentes
     nombre = models.CharField(max_length=100, unique=True)
-    cantidad_serviciosHistorial = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios realizados en su totalidad
-    cantidad_serviciosActual = models.PositiveIntegerField(default=0)  # Campo para almacenar la cantidad de servicios que se realizaran actual
+    cantidad_serviciosHistorial = models.PositiveIntegerField(default=0)
+    cantidad_serviciosActual = models.PositiveIntegerField(default=0)
     comentarioActual = models.TextField(null=True, blank=True)
     fecha_modificacion = models.DateTimeField(auto_now=True)
     fecha_nominacion = models.DateTimeField(auto_now_add=True)
     cantBodegas = models.CharField(max_length=50)
     numero_viaje = models.IntegerField(default=0)
        
-    # Nuevo campo para el estado del servicio
     ESTADOS_SERVICIO = (
         ('Nominado', 'Nominado'),
         ('En Proceso', 'En Proceso'),
         ('Terminado', 'Terminado'),
-        ('Disponible', 'Disponible'),  # Por defecto
+        ('Disponible', 'Disponible')
     )
     estado_servicio = models.CharField(max_length=20, choices=ESTADOS_SERVICIO, default='Disponible')
 
-    # Nuevos campos
     puerto = models.CharField(max_length=100, null=True, blank=True)
     prox_puerto = models.CharField(max_length=100, null=True, blank=True)
     procedenciaCarga = models.CharField(max_length=100, null=True, blank=True)
     armador = models.CharField(max_length=100, null=True, blank=True)
     agencia = models.CharField(max_length=100, null=True, blank=True)
 
-    
     def __str__(self):
         return self.nombre
     
@@ -121,9 +117,9 @@ class Personal(models.Model):
 
 class Quimico(models.Model):
 
-    fecha_ingreso = models.DateField()  # Campo para la fecha de ingreso (tipo DATE)
-    litros_ingreso = models.BigIntegerField()  # Campo para los litros de ingreso
-    numero_factura = models.BigIntegerField()  # Campo para el número de factura
+    fecha_ingreso = models.DateField()
+    litros_ingreso = models.BigIntegerField()
+    numero_factura = models.BigIntegerField()
 
     tipo_quimico_CHOICES = [
         ('Bidones OCN 01', 'Bidones OCN 01'),
@@ -140,7 +136,7 @@ class Quimico(models.Model):
     ]
     estado = models.CharField(max_length=20, choices=ESTADOS, default='Disponible')
 
-    tipo_quimico = models.CharField(max_length=100)  # Campo para el tipo de químico
+    tipo_quimico = models.CharField(max_length=100)
 
     def __str__(self):
         return self.tipo_quimico
@@ -218,13 +214,12 @@ class FichaServicio(models.Model):
         ('Nominado', 'Nominado'),
         ('En Proceso', 'En Proceso'),
         ('Terminado', 'Terminado'),
-        ('Disponible', 'Disponible'),  # Por defecto
+        ('Disponible', 'Disponible'),
     )
     estado_delServicio = models.CharField(max_length=20, choices=ESTADOS_delSERVICIO, default='Disponible')
     
     conductores_vinculados = models.JSONField(null=True, blank=True)
-    
-    # Relaciones de muchos a muchos con Personal, Vehiculo, Quimico y Vario
+
     personal_nominado = models.ManyToManyField(Personal, blank=True, related_name='fichas_servicio')
     vehiculos_nominados = models.ManyToManyField(Vehiculo, blank=True, related_name='fichas_servicio')
     quimicos_nominados = models.ManyToManyField(Quimico, blank=True, related_name='fichas_servicio')

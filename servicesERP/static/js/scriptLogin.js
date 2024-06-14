@@ -22,7 +22,7 @@ loginForm.addEventListener('submit', function (event) {
   }
 
   if (!isValid) {
-    event.preventDefault(); // Evita que el formulario se envíe si no es válido
+    event.preventDefault();
   }
 });
 

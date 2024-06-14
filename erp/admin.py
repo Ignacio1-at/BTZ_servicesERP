@@ -7,13 +7,13 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('is_active', 'is_staff')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Información Personal', {'fields': ('nombre',)}),  # Añade el campo 'nombre' aquí
+        ('Información Personal', {'fields': ('nombre',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'nombre'),  # Agrega 'nombre'
+            'fields': ('email', 'password1', 'password2', 'nombre'),
         }),
     )
 
@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
 
     get_nombre.short_description = 'Nombre'
 
-    search_fields = ('email', 'nombre')  # Permite buscar por 'nombre'
+    search_fields = ('email', 'nombre')
     ordering = ('email',)
 
 admin.site.register(CustomUser, CustomUserAdmin)

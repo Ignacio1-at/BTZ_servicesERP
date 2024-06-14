@@ -62,7 +62,6 @@ body {
 .home {
     position: relative;
     height: 100vh;
-    /* Ajusta la altura de la sección según tu necesidad */
     overflow: hidden;
 }
 
@@ -90,20 +89,16 @@ body {
 .title-container {
     position: absolute;
     bottom: 10%;
-    /* Ajusta la distancia desde la parte inferior según sea necesario */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     z-index: 1;
     color: #fff;
-    /* Color del texto */
 }
 
 .main-title {
     font-size: 56px;
-    /* Tamaño del título principal */
     margin-bottom: 5px;
-    /* Espacio entre los títulos */
     font-size: 20px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
@@ -112,31 +107,22 @@ body {
 
 .sub-title {
     font-size: 90px;
-    /* Tamaño del subtítulo */
     margin-top: 0;
-    /* Elimina cualquier margen superior del párrafo */
     font-weight: bold;
-    /* Hace el texto más llamativo */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-    /* Agrega sombra al texto */
 }
 
 /* Estilos para la flecha */
 .arrow-down {
     margin: 20px auto;
     margin-top: 50px;
-    /* Centra la flecha horizontalmente */
     width: 0;
     height: 0;
     border-left: 20px solid transparent;
-    /* Ajusta el tamaño de la flecha */
     border-right: 20px solid transparent;
-    /* Ajusta el tamaño de la flecha */
     border-top: 30px solid #fff;
-    /* Color y tamaño de la flecha */
     position: relative;
     animation: arrowBounce 2s infinite;
-    /* Agrega animación a la flecha */
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 1));
 }
 
@@ -153,12 +139,10 @@ body {
 
     40% {
         transform: translateY(-10px);
-        /* Ajusta la altura del rebote */
     }
 
     60% {
         transform: translateY(-5px);
-        /* Ajusta la altura del rebote */
     }
 }
 
@@ -175,7 +159,6 @@ body {
 .carousel-container {
     width: 1263px;
     height: 567.15px;
-    /* Mantén las mismas medidas que proporcionaste */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -229,11 +212,7 @@ body {
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     filter: invert(100%);
-    /* Invierte el color de las flechas */
 }
-
-
-
 
 /* seccion footer */
 footer {
@@ -243,9 +222,7 @@ footer {
     text-align: center;
     display: flex;
     justify-content: space-around;
-    /* Ajusta el espaciado entre las secciones */
     box-shadow: 0 -5px 10px #041831;
-    /* Sombra en la parte superior */
 }
 
 footer h3 {
@@ -275,7 +252,5 @@ footer p {
 
 .footer-copy img {
     width: 120px;
-    /* Ajusta el ancho de la imagen según tus necesidades */
     height: auto;
-    /* Permite que la altura se ajuste automáticamente para mantener la proporción */
 }

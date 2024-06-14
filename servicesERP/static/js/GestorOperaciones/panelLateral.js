@@ -1,15 +1,15 @@
 function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual, puerto, proxPuerto, procedencia_carga, armador, agencia) {
     $('#panelLateral').css('width', '30vw');
     $('#panelLateral').css('height', '100vh');
-    $('#panelNombre h4').text(nombreMotonave); // Establecer el nombre de la motonave
-    $('#viajeMotonave').text(viaje); // Establecer el valor del viaje
-    $('#fechaNominacionMotonave').text(fechaNominacion); // Mostrar la fecha de nominación
-    $('#cantidadServiciosActual').text(cantidad_serviciosActual); // Mostrar la cantidad de servicios actuales
-    $('#cargaMotonave').text(procedencia_carga); // Establecer el valor de la procedencia
-    $('#puertoMotonave').text(puerto); // Establecer el valor del puerto
-    $('#armadorMotonave').text(armador); // Establecer el valor del armador
-    $('#agenciaMotonave').text(agencia); // Establecer el valor de la agencia
-    $('#estadoMotonave').text(estado); // Establecer el valor del estado de la motonave
+    $('#panelNombre h4').text(nombreMotonave);
+    $('#viajeMotonave').text(viaje);
+    $('#fechaNominacionMotonave').text(fechaNominacion);
+    $('#cantidadServiciosActual').text(cantidad_serviciosActual);
+    $('#cargaMotonave').text(procedencia_carga);
+    $('#puertoMotonave').text(puerto);
+    $('#armadorMotonave').text(armador);
+    $('#agenciaMotonave').text(agencia);
+    $('#estadoMotonave').text(estado);
 
     $('#comentarioActual').val(comentarioActual);
 
@@ -52,7 +52,7 @@ function initDrag(e) {
 
 // Función para arrastrar el dragbar y ajustar el tamaño del panel
 function doDrag(e) {
-    panel.style.width = (startWidth + startX - e.clientX) + 'px'; // Invertir la dirección del cambio
+    panel.style.width = (startWidth + startX - e.clientX) + 'px';
 }
 
 
@@ -63,7 +63,7 @@ function stopDrag(e) {
 }
 
 function guardarNuevoComentario(nombreMotonave) {
-    var nuevoComentario = $('#comentarioActual').val(); // Obtener el valor del textarea
+    var nuevoComentario = $('#comentarioActual').val();
     var csrftoken = getCookie('csrftoken');
     $.ajax({
         type: 'POST',
@@ -71,12 +71,11 @@ function guardarNuevoComentario(nombreMotonave) {
         headers: { 'X-CSRFToken': csrftoken },
         data: {
             'nombre_motonave': nombreMotonave,
-            'comentarioActual': nuevoComentario // Asegúrate de que coincida con el nombre del campo en tu vista de Django
+            'comentarioActual': nuevoComentario
         },
         success: function (response) {
             console.log('Nuevo comentario guardado correctamente:', response);
-            // Realizar un refresh de la página después de guardar el comentario
-            actualizarTableroMotonaves(); // Llamar a la función para actualizar el tablero de motonaves
+            actualizarTableroMotonaves();
         },
         error: function (xhr, status, error) {
             console.error('Error al guardar el nuevo comentario:', error);

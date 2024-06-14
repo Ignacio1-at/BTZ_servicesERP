@@ -124,7 +124,7 @@ def actualizar_ficha_servicio_por_id(request, servicio_id):
             # Guardar los cambios en la ficha de servicio
             ficha_servicio.save()
             
-            # Obtener los datos adicionales de la motonave o navío
+            # Obtener los datos adicionales de la motonave
             puerto = request.POST.get('puerto')
             procedencia_carga = request.POST.get('procedencia_carga')
             armador = request.POST.get('armador')

@@ -17,8 +17,6 @@
     {% block module_styles %}
 
     {% endblock %}
-
-    <!-- hojas de estilo CSS si es necesario -->
   </head>
   <body>
     <!-- Navbar -->
@@ -27,7 +25,6 @@
       <!-- button -->
       <div class="btn-group ms-auto" style="margin-right: 5vw;">
         <button type="button" class="btn btn-personalizado dropdown-toggle text-white" data-bs-toggle="dropdown" aria-expanded="false">
-          <!-- CAMBIAR PARA QUE SE LEA DESDE LA BASE DE DATOS -->
           {{ nombre_usuario }}
         </button>
 
@@ -59,7 +56,7 @@
 
     {% endblock %}
 
-    <!-- Aquí los scripts de JavaScript -->
+    <!-- cripts de JavaScript -->
     <script src="{% static 'js/scriptBase.js' %}"></script>
 
     <!-- Scripts de Bootstrap -->

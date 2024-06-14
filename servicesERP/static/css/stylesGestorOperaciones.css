@@ -12,7 +12,7 @@
 
 /* Estilos para el contenido principal */
 #contenidoPrincipal {
-  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+  flex-grow: 1;
 }
 
 .container {
@@ -21,7 +21,6 @@
 
 .btn.btn-custom-color {
   background-color: #860909c9;;
-  /* Color del borde */
   color: white;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 
@@ -29,7 +28,6 @@
 
 .btn.btn-custom-color:hover {
   color: #01152a;
-  /* Color del texto al pasar el ratón */
 }
 
 .btn.btn-primary {
@@ -52,7 +50,6 @@
 
 .btn.btn-agregar:hover {
   color: black;
-  /* Color del texto al pasar el ratón */
 }
 
 /* Estilos base del cuadro azul */
@@ -62,8 +59,7 @@
   height: 65vh;
   border-radius: 10px;
   display: flex;
-  /* Utilizamos flexbox para alinear las columnas */
-  margin-right: 7vw; /* Centrar horizontalmente el cuadro */
+  margin-right: 7vw;
 }
 
 .columna {
@@ -80,7 +76,6 @@
   border-radius: 5px;
   background-color: #860909c9;
   box-shadow: 0px 0px 5px rgba(214, 1, 1, 0.9);
-  /* Reducimos el margen inferior del título */
   height: 12vh;
   color: #fff;
   font-size: 3vh;
@@ -90,10 +85,8 @@
 
 .columna-contenido {
   max-height: 50vh;
-  /* Altura máxima del contenido antes de que aparezca el scroll */
   margin-top: 2vh;
   overflow-y: auto;
-  /* Mostrar scroll vertical si el contenido excede la altura máxima */
 }
 
 .ficha-motonave {
@@ -116,9 +109,7 @@
 
 .modal-dialog {
   max-width: 50vw !important;
-  /* Ancho máximo del modal */
   min-width: 30vw !important;
-  /* Ancho mínimo del modal */
   max-height: 50vh !important;
 }
 
@@ -168,9 +159,7 @@
 /* Estilo para el enlace en estado hover */
 .dropdown-item:hover {
   color: #fff !important;
-  /* Cambiar color de texto al hacer hover */
   background-color: #001025 !important;
-  /* Cambiar color de fondo al hacer hover */
 }
 
 /* PANEL LATERAL */
@@ -179,7 +168,6 @@
   position: fixed;
   top: 0;
   right: 0;
-  /* Mantener right */
   width: 0;
   min-width: 0;
   max-width: 30vw;
@@ -223,7 +211,7 @@
   gap: 5px;
   width: 100%;
   height: 100%;
-  font-size: 17.5px; /* Tamaño de fuente inicial */
+  font-size: 17.5px;
 }
 
 .nuevo-info-container .info-item {
@@ -319,7 +307,6 @@
   position: absolute;
   top: 0;
   left: -4px;
-  /* Colocar en el lado izquierdo */
 }
 
 #dragbar:hover {

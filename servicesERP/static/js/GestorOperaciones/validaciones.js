@@ -76,10 +76,10 @@ function verificarNombreMotonaveExistente(nombreMotonave) {
         url: obtenerDetallesMotonaveURL,
         data: { 'nombre_motonave': nombreMotonave },
         success: function (data) {
-            console.log("Respuesta del servidor:", data); // Mostrar la respuesta del servidor en la consola
+            console.log("Respuesta del servidor:", data);
             if (data.error) {
                 // Si hay un error en la respuesta, significa que la motonave no existe
-                submitForm(); // Enviar el formulario
+                submitForm();
             } else {
                 // Si la respuesta no contiene un error, la motonave existe
                 alert('La motonave ya existe en el sistema.');
@@ -89,7 +89,7 @@ function verificarNombreMotonaveExistente(nombreMotonave) {
             // Manejo de errores: mostrar mensaje de alerta
             if (xhr.status === 404) {
                 // Si el código de estado es 404 (Not Found), significa que la motonave no existe
-                submitForm(); // Enviar el formulario
+                submitForm();
             } else {
                 alert('Error al verificar la existencia de la motonave.');
                 console.error('Error al verificar la existencia de la motonave:', error);

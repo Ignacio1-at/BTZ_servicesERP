@@ -77,10 +77,10 @@ menu{
 
 /* Estilo del cuerpo de la página cuando el modal está activo */
 .modal-active {
-    overflow: hidden; /* Evita el desplazamiento de la página */
-    position: fixed; /* Fijar posición en la ventana */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 100%; /* Ocupa toda la altura */
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 .modal-dialog.modal-dialog-centered{
@@ -148,10 +148,10 @@ menu{
 /* MODAL AGREGAR VEHICULO*/
 /* Estilo del cuerpo de la página cuando el modal está activo */
 .modalAgregarVehiculo.modal-active {
-    overflow: hidden; /* Evita el desplazamiento de la página */
-    position: fixed; /* Fijar posición en la ventana */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 100%; /* Ocupa toda la altura */
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 .modalAgregarVehiculo .modal-dialog.modal-dialog-centered{
@@ -258,103 +258,100 @@ menu{
 }
 
 .with-icon {
-    padding-left: 30px; /* Ajusta este valor según el ancho de tu imagen */
-    background: url('../images/IconoQuimico.png') no-repeat left center; /* Ruta a tu imagen */
-    background-size: auto 25px; /* Ajusta el tamaño de la imagen */
+    padding-left: 30px;
+    background: url('../images/IconoQuimico.png') no-repeat left center;
+    background-size: auto 25px;
 }
-
-/*Aqi empeze a waer Yo */
 
 /* Estilo para el campo de búsqueda */
 .buscador {
     color: #ffffff;
     background-color: #000e23;
     border: none;
-    padding: 15px 20px; /* Aumentar el espacio interno */
-    font-size: 16px; /* Tamaño de fuente */
-    width: 40vh; /* Ancho del buscador */
+    padding: 15px 20px;
+    font-size: 16px;
+    width: 40vh;
     height: 4vh;
-    margin-top: 20px; /* Cambiar la ubicación vertical */
-    margin-left: 8vh; /* Cambiar la ubicación horizontal */
+    margin-top: 20px;
+    margin-left: 8vh;
 
-    background-image: url('../images/Buscar.png'); /* Ruta de la imagen de la lupa */
-    background-repeat: no-repeat; /* Evitar repetir la imagen */
-    background-position: 3% center; /* Ajustar la posición de la imagen */
-    background-size: 20px; /* Tamaño de la imagen */
+    background-image: url('../images/Buscar.png');
+    background-repeat: no-repeat;
+    background-position: 3% center;
+    background-size: 20px;
     text-indent: 3vh;
 }
 
 .textoDatosGenerales p {
-    padding-left: 30px; /* Ajusta este valor según el ancho de tu imagen */
-    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
-    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
-    margin-bottom: 10px; /* Espacio entre los párrafos */
+    padding-left: 30px;
+    background: url('../images/Vineta.png') no-repeat left center;
+    background-size: auto 15px;
+    margin-bottom: 10px;
 }
 
 .bodyEstado p{
-    padding-left: 30px; /* Ajusta este valor según el ancho de tu imagen */
-    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
-    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
-    margin-bottom: 10px; /* Espacio entre los párrafos */
+    padding-left: 30px;
+    background: url('../images/Vineta.png') no-repeat left center;
+    background-size: auto 15px;
+    margin-bottom: 10px;
 }
 
 .grid-item-titulo {
-    padding-left: 30px; /* Ajusta este valor según sea necesario */
-    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
-    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
-    margin-bottom: 10px; /* Espacio entre los párrafos */
+    padding-left: 30px;
+    background: url('../images/Vineta.png') no-repeat left center;
+    background-size: auto 15px; 
+    margin-bottom: 10px;
 }
 
 
 /* Estilo para los párrafos dentro del contenido del modal */
 .inputTextoDatosGenerales p {
-    padding-left: 30px; /* Ajusta este valor según sea necesario */
-    background: url('../images/Vineta.png') no-repeat left center; /* Ruta a tu imagen */
-    background-size: auto 15px; /* Ajusta el tamaño de la imagen */
-    margin-bottom: 10px; /* Espacio entre los párrafos */
+    padding-left: 30px;
+    background: url('../images/Vineta.png') no-repeat left center;
+    background-size: auto 15px;
+    margin-bottom: 10px;
 }
 
-/* Estilo para los contenedores de grilla dentro del contenido del modal */
+/* Estilo para los contenedores de grid dentro del contenido del modal */
 .grid-container {
     display: grid;
     grid-template-columns: auto auto; 
-    grid-gap: 1px; /* Espacio entre los elementos de la grilla */
-    max-width: 1000px; /* Anchura máxima del contenedor */
+    grid-gap: 1px;
+    max-width: 1000px;
 }
 
 
-/* Estilos para los inputs en modo edición */
 /* Estilos para los inputs en modo edición */
 .modal-body input[type="number"],
 .modal-body input[type="text"],
 .modal-body input[type="date"],
 .modal-body select {
-    padding: 8px; /* Espaciado interno */
-    border: 1px solid #fff; /* Borde blanco */
-    border-radius: 15px; /* Borde redondeado */
-    margin-bottom: 10px; /* Espaciado inferior */
-    box-sizing: border-box;height: 35px; /* Incluir borde y relleno en el ancho total */
-    background-color: #fff; /* Fondo blanco */
+    padding: 8px;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;height: 35px;
+    background-color: #fff;
 }
 
 /*Estilo de Sub Rayado Rojo*/
 .Titulo-subRayado {
-    position: relative; /* Necesario para que el pseudo-elemento ::after se posicione correctamente */
-    display: inline-block; /* Asegura que el ancho se ajuste al contenido */
+    position: relative;
+    display: inline-block;
 }
-/* Estilos Pancho */
+
 /* Estilos para el subrayado */
 .Titulo-subRayado::after {
     content: '';
     position: absolute;
-    left: 15vh; /* Centra el subrayado horizontalmente */
-    bottom: 1vh; /* Ajusta el subrayado a la parte inferior del contenedor */
-    transform: translateX(-50%); /* Ajusta la posición central */
+    left: 15vh;
+    bottom: 1vh;
+    transform: translateX(-50%);
     width: 0;
     height: 0;
     border-left: 25px solid transparent;
     border-right: 230px solid transparent;
-    border-top: 10px solid rgb(169, 0, 28); /* Color y altura del borde superior */
-    z-index: 6; /* Mantiene el z-index de Photoshop */
-    background-color: transparent; /* Asegura que no haya color de fondo */
+    border-top: 10px solid rgb(169, 0, 28);
+    z-index: 6;
+    background-color: transparent;
 }

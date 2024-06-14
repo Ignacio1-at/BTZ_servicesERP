@@ -183,10 +183,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             conductoresVinculados[vehiculoId].push({ id: conductorId, nombre: conductorNombre });
 
-            // Imprimir el objeto conductoresVinculados en la consola
             console.log('Conductores vinculados:', conductoresVinculados);
 
-            // Actualizar la lista de conductores vinculados
             actualizarListaConductoresVinculados(vehiculoId);
 
             // Agregar el conductor al objeto conductoresOcupados si no está presente
@@ -263,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Conductores ocupados:', conductoresOcupados);
             }
     
-            // Actualizar la lista de conductores vinculados
             actualizarListaConductoresVinculados(vehiculoId);
         }
     }

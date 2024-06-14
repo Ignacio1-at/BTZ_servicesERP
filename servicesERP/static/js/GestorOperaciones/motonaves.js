@@ -53,15 +53,14 @@ function actualizarTablaMotonavesModal() {
 
             // Actualizar el contenido del tbody de la tabla con los nuevos datos
             var tablaMotonaves = $('#listaMotonaveModal table tbody');
-            tablaMotonaves.empty(); // Limpiar el contenido actual del tbody
-
+            tablaMotonaves.empty();
             // Iterar sobre los nuevos datos y agregar filas a la tabla
             $.each(data, function (index, motonave) {
 
                 var fila = $('<tr style="color: white;"></tr>');
                 fila.append('<td>' + motonave.nombre + '</td>');
                 fila.append('<td>' + motonave.estado_servicio + '</td>');
-                fila.append('<td>' + motonave.cantBodegas + '</td>'); // Agregar la cantidad de bodegas
+                fila.append('<td>' + motonave.cantBodegas + '</td>');
                 fila.append('<td>' + motonave.viaje + '</td>');
                 fila.append('<td><button type="button" class="editarMotonave" style="border: none; background: none;" title="Editar" data-motonave-id="' + motonave.id + '"><img src="/static/images/Editar.png" alt="Editar" width="40" height="40" style="cursor: pointer;" /></button><button type="button" class="eliminarMotonave" style="border: none; background: none;" title="Eliminar" data-motonave-id="' + motonave.id + '"><img src="/static/images/Basurero.png" alt="Eliminar" width="40" height="40" style="cursor: pointer;" /></button></td>');
                 tablaMotonaves.append(fila);
@@ -83,7 +82,6 @@ function asignarEventoClicFichasMotonave() {
 }
 
 function seleccionarMotonaveDesdeTablero(nombreMotonave) {
-    // Realizar una solicitud AJAX para obtener los detalles de la motonave seleccionada desde el tablero
     $.ajax({
         type: 'GET',
         url: obtenerDetallesMotonaveURL,
@@ -109,17 +107,15 @@ $('#formAgregarMotonave').submit(function (event) {
     var cantidadBodegas = $('#cantidadBodegas').val();
 
     if (!validarNombreMotonave(nombreMotonave)) {
-        // Mostrar mensaje de error si el nombre de la motonave no es válido
         alert('El nombre de la motonave no es válido. Debe contener solo letras y espacios.');
-        event.preventDefault(); // Evitar que se envíe el formulario
+        event.preventDefault();
     } else if (!validarCantidadBodegas(cantidadBodegas)) {
-        // Mostrar mensaje de error si la cantidad de bodegas no es válida
         alert('La cantidad de bodegas debe ser un número positivo no mayor a 15.');
-        event.preventDefault(); // Evitar que se envíe el formulario
+        event.preventDefault();
     } else {
         // Verificar si el nombre de la motonave ya existe antes de enviar el formulario
         verificarNombreMotonaveExistente(nombreMotonave);
-        event.preventDefault(); // Evitar que se envíe el formulario
+        event.preventDefault();
     }
 });
 
@@ -128,7 +124,7 @@ function submitForm() {
     var nombreMotonave = $('#nombreMotonave').val();
     var cantidadBodegas = $('#cantidadBodegas').val();
     var form = $('#formAgregarMotonave');
-    var csrfToken = form.find('input[name="csrfmiddlewaretoken"]').val(); // Obtener el token CSRF del formulario
+    var csrfToken = form.find('input[name="csrfmiddlewaretoken"]').val();
 
     $.ajax({
         type: form.attr('method'),
@@ -136,7 +132,7 @@ function submitForm() {
         data: {
             'nombreMotonave': nombreMotonave,
             'cantidadBodegas': cantidadBodegas,
-            'csrfmiddlewaretoken': csrfToken // Incluir el token CSRF en los datos de la solicitud
+            'csrfmiddlewaretoken': csrfToken
         },
         success: function (data) {
             $('#modalAgregarMotonave').modal('hide');
@@ -212,7 +208,6 @@ $('#formEditarMotonave').submit(function (event) {
             return;
         }
 
-        // Enviar el formulario
         $.ajax({
             url: modificarMotonaveURL,
             method: 'POST',

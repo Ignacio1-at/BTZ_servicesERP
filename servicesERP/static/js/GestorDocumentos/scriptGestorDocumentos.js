@@ -110,7 +110,6 @@ $('#modalSubirDocumento form').on('submit', function (e) {
     // Obtener los datos del formulario
     var formData = new FormData(this);
 
-    // Enviar la solicitud AJAX
     $.ajax({
         url: '/erp/gestor-documentos/',
         type: 'POST',
@@ -119,17 +118,14 @@ $('#modalSubirDocumento form').on('submit', function (e) {
         processData: false,
         success: function (response) {
             if (response.success) {
-                // La subida del documento fue exitosa
                 console.log('Documento subido exitosamente');
                 $('#modalSubirDocumento').modal('hide');
                 location.reload();
             } else {
-                // Hubo errores en el formulario
                 console.error('Errores en el formulario:', response.errors);
             }
         },
         error: function (xhr, status, error) {
-            // Manejar errores
             console.error(error);
         }
     });
@@ -145,7 +141,7 @@ $(document).ready(function () {
     });
 });
 
-//TRABAJANDO funcion para previzualisar documentos como en google drive
+/*TRABAJANDO funcion para previzualisar documentos como en google drive
 function verDocumento(documentoId) {
     // Obtener la URL del documento
     var documentoUrl = `/erp/gestor-documentos/obtener_documentos/?documento_id=${documentoId}`;
@@ -173,7 +169,7 @@ function verDocumento(documentoId) {
 
     // Abrir el modal
     $('#modalVerDocumento').modal('show');
-}
+}*/
 
 // Función para eliminar documento
 function eliminarDocumento(documentoId) {
@@ -225,7 +221,7 @@ function descargarDocumento(documentoId) {
     // Crear un elemento <a> temporal para iniciar la descarga
     var link = document.createElement('a');
     link.href = documentoUrl;
-    link.download = true; // Forzar la descarga en lugar de abrir en el navegador
+    link.download = true;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

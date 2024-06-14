@@ -53,7 +53,6 @@ body {
     border-radius: 30px;
     padding: 100px 50px;
     position: relative;
-    /* Agregado para contener los elementos posicionados absolutamente */
 }
 
 .card-title {
@@ -64,12 +63,10 @@ body {
 
 ::placeholder {
     color: #ffffff00;
-    /* Color del placeholder */
 }
 
 .input-group {
     position: relative;
-    /* Agregado para alinear correctamente */
     width: 100%;
     margin-bottom: 40px;
 }
@@ -83,9 +80,7 @@ body {
     font-size: 16px;
     color: rgb(255, 255, 255);
     padding: 0 20px;
-    /* Ajuste de padding */
     transition: background-color 0.3s ease, padding-top 0.3s ease;
-    /* Transición para la animación */
     outline: none;
 }
 
@@ -95,24 +90,19 @@ body {
     left: 20px;
     transform: translateY(-50%);
     transition: top 0.3s ease, font-size 0.3s ease;
-    /* Transiciones para animar el label */
     color: rgba(255, 255, 255, 0.7);
-    /* Color de label normal */
 }
 
 .input-group input:focus,
 .input-group input:not(:placeholder-shown) {
     background-color: rgba(255, 255, 255, 0.2);
-    /* Cambio de color de fondo */
 }
 
 .input-group input:focus+label,
 .input-group input:not(:placeholder-shown)+label {
     top: -8px;
     font-size: 12px;
-    /* Tamaño de fuente más pequeño cuando el label está arriba */
     color: rgba(255, 255, 255, 0.9);
-    /* Color de label cuando está arriba */
 }
 
 .forgot {
@@ -175,6 +165,5 @@ body {
 
 .close img {
     width: 12px;
-    /* Ajusta el tamaño de la imagen según sea necesario */
     height: 12px;
 }

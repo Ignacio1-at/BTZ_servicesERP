@@ -87,7 +87,6 @@ $(document).on('change', '.fecha-inicio-faena', function () {
           csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
         },
         success: function (response) {
-          // Manejar la respuesta del servidor si es necesario
         },
         error: function (error) {
           console.log(error);
@@ -108,10 +107,8 @@ function crearServicio() {
     var nombreMotonave = $('#btnCrearServicio').attr('data-nombre-motonave');
     console.log('Crear servicio para la motonave:', nombreMotonave);
 
-    // Obtener el token CSRF
     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
-    // Realizar una solicitud AJAX al servidor para crear el nuevo servicio
     $.ajax({
         url: crearServicioIndividualURL,
         type: 'POST',
@@ -166,7 +163,6 @@ function editarServicio(nombreMotonave, servicioId) {
 function eliminarServicio(nombreMotonave, servicioId) {
     console.log('Eliminar servicio con ID:', servicioId);
 
-    // Obtener el token CSRF
     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
     // Obtener la cantidad de servicios activos
@@ -198,7 +194,6 @@ function eliminarServicio(nombreMotonave, servicioId) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Realizar una solicitud AJAX al servidor para eliminar el servicio
             $.ajax({
                 url: eliminarServicioIndividualURL,
                 type: 'POST',
@@ -219,7 +214,6 @@ function eliminarServicio(nombreMotonave, servicioId) {
                         actualizarTablaMotonavesModal();
                         //Actualizar Tablero
                         actualizarTableroMotonaves();
-                        // Mostrar una alerta de éxito utilizando SweetAlert
                         Swal.fire(
                             '¡Eliminado!',
                             'El servicio ha sido eliminado correctamente.',
@@ -227,7 +221,6 @@ function eliminarServicio(nombreMotonave, servicioId) {
                         );
                     } else {
                         console.log('Error al eliminar el servicio:', response.message);
-                        // Mostrar una alerta de error utilizando SweetAlert
                         Swal.fire(
                             'Error',
                             response.error,
@@ -237,7 +230,6 @@ function eliminarServicio(nombreMotonave, servicioId) {
                 },
                 error: function (error) {
                     console.log(error);
-                    // Mostrar una alerta de error utilizando SweetAlert
                     Swal.fire(
                         'Error',
                         'Ha ocurrido un error al eliminar el servicio.',
@@ -274,10 +266,8 @@ $('#modalGestionarServicios').on('hidden.bs.modal', function () {
 function finalizarServicio(nombreMotonave, servicioId) {
     console.log('Finalizar servicio con ID:', servicioId);
 
-    // Obtener el token CSRF
     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
-    // Confirmar con el usuario si realmente desea finalizar el servicio
     Swal.fire({
         title: '¿Estás seguro?',
         text: '¿Quieres finalizar este servicio?',
@@ -289,7 +279,6 @@ function finalizarServicio(nombreMotonave, servicioId) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Realizar una solicitud AJAX al servidor para finalizar el servicio
             $.ajax({
                 url: finalizarServicioURL,
                 type: 'POST',
@@ -311,7 +300,6 @@ function finalizarServicio(nombreMotonave, servicioId) {
                         //Actualizar Tablero
                         actualizarTableroMotonaves()
 
-                        // Mostrar una alerta de éxito utilizando SweetAlert
                         Swal.fire(
                             '¡Finalizado!',
                             'El servicio ha sido finalizado correctamente.',

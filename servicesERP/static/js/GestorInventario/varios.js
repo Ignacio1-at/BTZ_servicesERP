@@ -127,7 +127,6 @@ function guardarCambiosVario(varioId) {
         success: function (response) {
             console.log('Cambios guardados exitosamente:', response);
             location.reload();
-            // Aquí puedes realizar acciones adicionales, como cerrar el modal o recargar la página
         },
         error: function (xhr, status, error) {
             console.error('Error al guardar los cambios:', error);
@@ -161,7 +160,6 @@ function getCookie(name) {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;

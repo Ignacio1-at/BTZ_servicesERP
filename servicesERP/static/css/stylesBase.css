@@ -15,13 +15,12 @@ nav {
 .fondo {
   background-image: url(../images/Fondonew.png);
   width: 100%;
-  min-height: calc(100vh - 12vh); /* Ajustar según la altura del footer */
+  min-height: calc(100vh - 12vh);
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
-/* stylesBase.css u otro archivo de estilos */
 .bg-blue {
   background-color: #01152a !important;
 }
@@ -29,7 +28,6 @@ nav {
 .btn-personalizado {
   color: white !important;
   border: none;
-  /* Cambia el color del texto a blanco */
   font-family: 'mifuente';
 }
 

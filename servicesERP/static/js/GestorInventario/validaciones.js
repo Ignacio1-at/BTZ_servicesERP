@@ -180,7 +180,7 @@ function validarFormularioAgregarVehiculo() {
 // Función para validar si un campo es único utilizando AJAX
 function validarCampoUnico(valor, campo) {
     var esUnico = true;
-    var csrftoken = getCookie('csrftoken'); // Obtener el token CSRF de una cookie
+    var csrftoken = getCookie('csrftoken');
 
     $.ajax({
         url: validarCampoUnicoVehiculoURL,
@@ -188,7 +188,7 @@ function validarCampoUnico(valor, campo) {
         data: {
             valor: valor,
             campo: campo,
-            csrfmiddlewaretoken: csrftoken // Incluir el token CSRF en los datos de la solicitud
+            csrfmiddlewaretoken: csrftoken
         },
         async: false,
         success: function (response) {

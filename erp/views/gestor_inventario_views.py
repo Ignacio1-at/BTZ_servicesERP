@@ -11,13 +11,10 @@ from django.urls import reverse
 def gestorInventario(request):
     nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
 
-    # Obtener todos los objetos de Químico desde la base de datos
     quimico_objects = Quimico.objects.all()
-    # Obtener todos los objetos de Vehículo desde la base de datos
     vehiculo_objects = Vehiculo.objects.all()
-    # Obtener todos los objetos de Varios desde la base de datos
     vario_objects = Vario.objects.all()
-    # Pasar los objetos de Químico, Vehículo y Varios al contexto
+
     return render(request, 'html/gestorInventario.html', {'quimico_list': quimico_objects, 'vehiculo_list': vehiculo_objects, 'vario_list': vario_objects, 'nombre_usuario': nombre_usuario})
 
 #-----------------Agregar Quimico
@@ -36,10 +33,8 @@ def agregar_quimico(request):
                 litros_ingreso=litros_ingreso,
                 numero_factura=numero_factura,
             )
-            # Redirigir a la página de gestión de inventario
             return redirect('erp:gestor-inventario')
 
-    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-inventario')
 
 #-----------------Agregar Vehiculo
@@ -84,10 +79,10 @@ def agregar_vehiculo(request):
                 seguro_nombre=seguro_nombre,
                 seguro_poliza=seguro_poliza
             )
-            # Redirigir a la página de gestión de inventario
+
             return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVehiculo')
 
-    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
+
     return redirect('erp:gestor-inventario')
 
 #---------------Valida campo UNICO EN VEHICULO.
@@ -96,8 +91,8 @@ def validar_campo_unicoVehiculo(request):
     if request.method == 'POST':
         valor = request.POST.get('valor')
         campo = request.POST.get('campo')
-        print("Campo:", campo)  # Agregar print statement
-        print("Valor:", valor)  # Agregar print statement
+        print("Campo:", campo)
+        print("Valor:", valor)
 
         if campo == 'numero_motor':
             existe = Vehiculo.objects.filter(numero_motor=valor).exists()
@@ -108,7 +103,7 @@ def validar_campo_unicoVehiculo(request):
         else:
             existe = False
 
-        print("Existe:", existe)  # Agregar print statement
+        print("Existe:", existe)
         return JsonResponse({'existe': existe})
 
     return JsonResponse({'error': 'Método no permitido'})
@@ -123,7 +118,6 @@ def validar_campo_unico_vehiculoCambio(request):
         vehiculo_id = request.POST.get('vehiculo_id')
 
         try:
-            # Excluir el vehículo actual de la validación
             vehiculos = Vehiculo.objects.exclude(id=vehiculo_id)
 
             if campo == 'numero_motor':
@@ -149,7 +143,6 @@ def obtener_detalle_vehiculo(request):
     if vehiculo_id:
         try:
             vehiculo = Vehiculo.objects.get(pk=vehiculo_id)
-            # Aquí puedes serializar el objeto vehículo a JSON o devolver los datos de otra manera que prefieras
             data = {
                 'id': vehiculo.id,
                 'marca': vehiculo.marca,
@@ -159,11 +152,11 @@ def obtener_detalle_vehiculo(request):
                 'numero_chasis': vehiculo.numero_chasis,
                 'cilindrada': vehiculo.cilindrada,
                 'tipo_vehiculo': vehiculo.tipo_vehiculo,
-                'primer_ingreso': vehiculo.primer_ingreso.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
+                'primer_ingreso': vehiculo.primer_ingreso.strftime('%Y-%m-%d'),
                 'patente': vehiculo.patente,
-                'fecha_permiso_circulacion': vehiculo.fecha_permiso_circulacion.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
-                'fecha_soap': vehiculo.fecha_soap.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
-                'fecha_revision_tecnica': vehiculo.fecha_revision_tecnica.strftime('%Y-%m-%d'), # Convierte el objeto DateField a cadena en formato YYYY-MM-DD
+                'fecha_permiso_circulacion': vehiculo.fecha_permiso_circulacion.strftime('%Y-%m-%d'),
+                'fecha_soap': vehiculo.fecha_soap.strftime('%Y-%m-%d'),
+                'fecha_revision_tecnica': vehiculo.fecha_revision_tecnica.strftime('%Y-%m-%d'),
                 'seguro_nombre': vehiculo.seguro_nombre,
                 'seguro_poliza': vehiculo.seguro_poliza,
                 'tipo_combustible': vehiculo.tipo_combustible,
@@ -245,46 +238,35 @@ def agregar_vario(request):
                 nombre=nombre,
                 fecha_ingreso=fecha_ingreso
             )
-            # Redirigir a la página de gestión de inventario
             return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVarios')
 
-    # En caso de que la solicitud no sea POST o falte algún campo, redirigir a la misma página
     return redirect('erp:gestor-inventario')
 
 #------------------Eliminar Quimico
 @login_required
 def eliminar_quimico(request, quimico_id):
-    # Obtener el objeto Quimico correspondiente al ID
     quimico = get_object_or_404(Quimico, id=quimico_id)
 
-    # Eliminar el objeto Quimico
     quimico.delete()
 
-    # Devolver una respuesta JSON indicando que el objeto se ha eliminado correctamente
     return redirect('erp:gestor-inventario')
 
 #-------------------Eliminar Vehiculo
 @login_required
 def eliminar_vehiculo(request, vehiculo_id):
-    # Obtener el objeto Vehiculo correspondiente al ID
     vehiculo = get_object_or_404(Vehiculo, id=vehiculo_id)
 
-    # Eliminar el objeto Vehiculo
     vehiculo.delete()
 
-    # Redirigir a la página del gestor de inventario
     return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVehiculo')
 
-#------------------------Eliminar Vario
+#------------------------Eliminar Var
 @login_required
 def eliminar_vario(request, vario_id):
-    # Obtener el objeto Vario correspondiente al ID
     vario = get_object_or_404(Vario, id=vario_id)
 
-    # Eliminar el objeto Vario
     vario.delete()
 
-    # Redirigir a la página del gestor de inventario
     return redirect(reverse('erp:gestor-inventario') + '?lastVisitedTab=tablaVarios')
 
 #-------------------------Obtener detalles VARIO

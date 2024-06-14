@@ -47,47 +47,45 @@ $(document).ready(function () {
         // Validar que los valores sean números enteros positivos
         if (isNaN(cantidadServicios) || cantidadServicios <= 0 || !Number.isInteger(cantidadServicios) ||
             isNaN(numeroViaje) || numeroViaje <= 0 || !Number.isInteger(numeroViaje)) {
-            // Mostrar un mensaje de error al usuario
             alert('Por favor, ingrese números validos para servicios y viaje.');
-            return; // Detener la ejecución del código
+            return;
         }
 
         // Validar que se haya seleccionado un puerto
         var puerto = $('#puerto').val();
         if (puerto === '') {
             alert('Por favor, seleccione un puerto válido.');
-            return; // Detener la ejecución del código
+            return; 
         }
 
         // Validar que se haya seleccionado un próximo puerto
         var proxPuerto = $('#proxPuerto').val();
         if (proxPuerto === '') {
             alert('Por favor, seleccione un próximo puerto válido.');
-            return; // Detener la ejecución del código
+            return;
         }
 
         // Validar que se haya ingresado una procedencia de carga
         var procedenciaCarga = $('#procedenciaCarga').val();
         if (procedenciaCarga === '') {
             alert('Por favor, ingrese la procedencia de la carga.');
-            return; // Detener la ejecución del código
+            return;
         }
 
         // Validar que se haya ingresado un armador
         var armador = $('#armador').val();
         if (armador === '') {
             alert('Por favor, ingrese el armador.');
-            return; // Detener la ejecución del código
+            return;
         }
 
         // Validar que se haya ingresado una agencia
         var agencia = $('#agencia').val();
         if (agencia === '') {
             alert('Por favor, ingrese la agencia.');
-            return; // Detener la ejecución del código
+            return;
         }
 
-        // Si la validación es exitosa, enviar la solicitud AJAX
         // Obtener los datos del formulario
         var formData = $('#formCrearServicio').serialize();
 
@@ -106,12 +104,10 @@ $(document).ready(function () {
             method: 'POST',
             data: formData,
             success: function (response) {
-                // Manejar la respuesta del servidor aquí
                 console.log('Respuesta del servidor:', response);
 
                 // Si la respuesta del servidor es verdadera (true), abrir el modal de gestión de servicios
                 if (response.success) {
-                    // Obtener el nombre de la motonave desde los datos del formulario
                     var formData = $('#formCrearServicio').serialize();
                     var nombreMotonave = getParameterByName('nombreMotonave', formData);
                     abrirModalGestionServicios(nombreMotonave);
@@ -136,21 +132,17 @@ function getParameterByName(name, url) {
 }
 
 function abrirModalGestionServicios(nombreMotonave) {
-    // Abrir el modal
     $('#modalGestionarServicios').modal('show');
 
-    // Establecer el título del modal con el nombre de la motonave
     $('#nombreMotonaveSeleccionada').text(nombreMotonave);
-    // Cargar los servicios de la motonave
+
     obtenerServiciosMotonave(nombreMotonave);
 }
 
 // Función para eliminar el servicio
 function eliminarServicioMotonave(nombreMotonave) {
-    // Obtener el token CSRF de las cookies
     var csrftoken = getCookie('csrftoken');
 
-    // Confirmar con el usuario si realmente desea eliminar el servicio
     Swal.fire({
         title: '¿Estás seguro?',
         text: '¿Quieres eliminar este servicio?',
@@ -162,11 +154,10 @@ function eliminarServicioMotonave(nombreMotonave) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Realizar la petición AJAX para eliminar el servicio
             $.ajax({
                 url: eliminarServicioURL,
                 type: 'POST',
-                headers: { 'X-CSRFToken': csrftoken }, // Incluir el token CSRF en los headers de la solicitud
+                headers: { 'X-CSRFToken': csrftoken },
                 data: {
                     nombreMotonave: nombreMotonave
                 },
@@ -178,7 +169,6 @@ function eliminarServicioMotonave(nombreMotonave) {
                             'El servicio ha sido eliminado correctamente.',
                             'success'
                         );
-                        // Aquí podrías realizar otras acciones necesarias después de eliminar el servicio
                         location.reload();
                     } else {
                         // Error al eliminar el servicio, mostrar un mensaje de error

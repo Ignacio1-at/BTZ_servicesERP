@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     break;
                 case 'vehiculoModal':
                     resetVehiculoModal();
-                    limpiarVinculacionesConductoresVehiculo(); // Llamar a la nueva función
+                    limpiarVinculacionesConductoresVehiculo();
                     break;
                 case 'quimicoModal':
                     resetQuimicoModal();
