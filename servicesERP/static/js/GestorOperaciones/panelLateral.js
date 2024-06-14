@@ -1,4 +1,5 @@
 function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, cantidad_serviciosActual, comentarioActual, puerto, proxPuerto, procedencia_carga, armador, agencia) {
+    actualizarEstadoBotonFinalizarMotonave(estado);
     $('#panelLateral').css('width', '30vw');
     $('#panelLateral').css('height', '100vh');
     $('#panelNombre h4').text(nombreMotonave);
@@ -30,7 +31,7 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, canti
     });
 
     // Agregar evento de clic al botón de finalizar para capturar el nombre de la motonave
-    $('#BotonFinalizarMotonave').off('click').on('click', function () {
+    $('#btnFinalizarMotonave').off('click').on('click', function () {
         finalizarMotonave(nombreMotonave);
     });
 }
@@ -90,30 +91,77 @@ $(document).mouseup(function (e) {
     }
 });
 
-function finalizarMotonave(nombreMotonave) {
-    // Realizar una solicitud AJAX para finalizar la motonave
-    $.ajax({
-        url: '/erp/gestor-operaciones/finalizar-motonave/',
-        type: 'POST',
-        data: {
-            'nombre_motonave': nombreMotonave,
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        success: function(response) {
-            if (response.success) {
-                // La motonave se finalizó correctamente
-                console.log('La motonave se finalizó correctamente');
+function finalizarMotonave(nombreMotonave, estadoMotonave) {
+    // Mostrar una confirmación antes de finalizar la motonave
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres finalizar esta motonave?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8d000e',
+        cancelButtonColor: '#01152a',
+        confirmButtonText: 'Sí, finalizar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Realizar una solicitud AJAX para finalizar la motonave
+            $.ajax({
+                url: '/erp/gestor-operaciones/finalizar-motonave/',
+                type: 'POST',
+                data: {
+                    'nombre_motonave': nombreMotonave,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // La motonave se finalizó correctamente
+                        console.log('La motonave se finalizó correctamente');
 
-                // Llamar a la función actualizarTableroMotonaves
-                actualizarTableroMotonaves();
-            } else {
-                // Hubo un error al finalizar la motonave
-                console.error(response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            // Manejar errores de la solicitud AJAX
-            console.error('Error al finalizar la motonave:', error);
+                        // Actualizar tabla motonaves
+                        actualizarTablaMotonavesModal();
+
+                        // Llamar a la función actualizarTableroMotonaves
+                        actualizarTableroMotonaves();
+
+                        // Mostrar una alerta de éxito
+                        Swal.fire(
+                            '¡Finalizada!',
+                            'La motonave ha sido finalizada correctamente.',
+                            'success'
+                        );
+                    } else {
+                        // Hubo un error al finalizar la motonave
+                        console.error(response.message);
+                        // Mostrar una alerta de error
+                        Swal.fire(
+                            'Error',
+                            'Hubo un error al finalizar la motonave.',
+                            'error'
+                        );
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Manejar errores de la solicitud AJAX
+                    console.error('Error al finalizar la motonave:', error);
+                    // Mostrar una alerta de error
+                    Swal.fire(
+                        'Error',
+                        'Hubo un error al finalizar la motonave.',
+                        'error'
+                    );
+                }
+            });
         }
     });
+}
+
+function actualizarEstadoBotonFinalizarMotonave(estadoMotonave) {
+    const botonFinalizarMotonave = document.getElementById('btnFinalizarMotonave');
+
+    // Verifica si el estado de la motonave está "terminado"
+    const motonaveTerminada = estadoMotonave === 'Terminado';
+
+    // Actualiza el botón según el estado de la motonave
+    botonFinalizarMotonave.disabled = !motonaveTerminada;
+    botonFinalizarMotonave.style.opacity = motonaveTerminada ? '1' : '0.5';
 }

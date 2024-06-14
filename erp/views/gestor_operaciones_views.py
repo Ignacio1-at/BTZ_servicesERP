@@ -317,7 +317,7 @@ def eliminar_servicio_individual(request):
             ficha_servicio = FichaServicio.objects.get(id=servicio_id)
             motonave = ficha_servicio.motonave
             
-            if motonave.cantidad_serviciosActual == 1:
+            if motonave.fichas_servicio.count() == 1:
                 return JsonResponse({'error': 'No se puede eliminar el último servicio de la motonave.'}, status=400)
             
             ficha_en_proceso = ficha_servicio.estado_delServicio == 'En Proceso'
@@ -338,7 +338,7 @@ def eliminar_servicio_individual(request):
             
             for i, servicio in enumerate(servicios_restantes, start=1):
                 servicio.numero_servicio = i
-                servicio.save()
+                servicio.save()      
             
             if fichas_servicio_motonave.exists():
                 if all(ficha.estado_delServicio == 'Terminado' for ficha in fichas_servicio_motonave):
@@ -365,7 +365,7 @@ def eliminar_servicio_individual(request):
             return JsonResponse({'error': 'El servicio especificado no existe.'}, status=404)
     else:
         return JsonResponse({'error': 'La solicitud debe ser de tipo POST.'}, status=405)
-
+    
 #-------------------OBTENER SERVICIOS
 @login_required
 def obtener_servicios_motonave(request):
@@ -456,39 +456,42 @@ def actualizar_fecha_inicio_faena(request):
 def finalizar_motonave(request):
     if request.method == 'POST':
         nombre_motonave = request.POST.get('nombre_motonave')
-
-        if nombre_motonave:
-            try:
-                motonave = Motonave.objects.get(nombre=nombre_motonave)
-            except Motonave.DoesNotExist:
-                return JsonResponse({'success': False, 'message': 'La motonave especificada no existe.'})
-
-            fichas_servicio = FichaServicio.objects.filter(motonave=motonave)
-
-            for ficha in fichas_servicio:
-                historial_servicio = HistorialServicio(
+        
+        try:
+            motonave = get_object_or_404(Motonave, nombre=nombre_motonave)
+            
+            # Obtener todas las fichas de servicio relacionadas con la motonave
+            fichas_servicio = motonave.fichas_servicio.all()
+            
+            # Crear instancias de HistorialServicio a partir de las fichas de servicio
+            historiales_servicio = [
+                HistorialServicio(
+                    motonave=ficha.motonave,
                     numero_servicio=ficha.numero_servicio,
                     tipo_servicio=ficha.tipo_servicio,
-                    motonave=motonave,
                     fecha_inicio_faena=ficha.fecha_inicioFaena,
-                    fecha_fin=ficha.fecha_fin,
+                    fecha_fin=ficha.fecha_fin
                 )
-                historial_servicio.save()
-
+                for ficha in fichas_servicio
+            ]
+             
+            # Guardar los historiales de servicio en la base de datos
+            HistorialServicio.objects.bulk_create(historiales_servicio)
+            
+            # Eliminar las fichas de servicio relacionadas con la motonave
+            fichas_servicio.delete()
+            
+            motonave.cantidad_serviciosActual = 0
+            # Actualizar el estado de la motonave a "Terminado"
             motonave.estado_servicio = 'Disponible'
             motonave.save()
-
-            fichas_servicio.delete()
-
-            motonave.cantidad_serviciosActual = 0
-            motonave.save()
-
-
+            
             return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'message': 'No se proporcionó el nombre de la motonave.'})
-    else:
-        return JsonResponse({'success': False, 'message': 'Método no permitido.'})
+        
+        except Motonave.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'La motonave especificada no existe.'})
+    
+    return JsonResponse({'success': False, 'message': 'Método no permitido.'})
 
 #-------------------Historial Servicios
 @login_required

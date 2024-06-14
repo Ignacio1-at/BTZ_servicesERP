@@ -28,20 +28,20 @@ function obtenerServiciosMotonave(nombreMotonave) {
                     '<td><input type="date" class="fecha-inicio-faena" value="' + (servicio.fecha_inicioFaena || '') + '" data-servicio-id="' + servicio.id + '"></td>' +
                     '<td>' + (servicio.estado_delServicio || '') + '</td>' +
                     '<td class="d-flex justify-content-center">' +
-                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' ? '1' : '0.5') + ';" title="Agregar" onclick="agregarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' ? '' : 'disabled') + '>' +
-                    '<img src="' + staticUrls.agregar + '" alt="Agregar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' ? 'pointer' : 'not-allowed') + ';" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' && servicio.fecha_inicioFaena ? '1' : '0.5') + ';" title="Agregar" onclick="agregarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' && servicio.fecha_inicioFaena ? '' : 'disabled') + '>' +
+                    '<img src="' + staticUrls.agregar + '" alt="Agregar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' && servicio.fecha_inicioFaena ? 'pointer' : 'not-allowed') + ';" />' +
                     '</button> ' +
-                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' ? '0.5' : '1') + ';" title="Editar" onclick="editarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' ? 'disabled' : '') + '>' +
-                    '<img src="' + staticUrls.editar + '" alt="Editar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' ? 'not-allowed' : 'pointer') + ';" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' || !servicio.fecha_inicioFaena ? '0.5' : '1') + ';" title="Editar" onclick="editarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' || !servicio.fecha_inicioFaena ? 'disabled' : '') + '>' +
+                    '<img src="' + staticUrls.editar + '" alt="Editar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' || !servicio.fecha_inicioFaena ? 'not-allowed' : 'pointer') + ';" />' +
                     '</button> ' +
                     '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Terminado' ? '0.5' : '1') + ';" title="Eliminar" onclick="eliminarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Terminado' ? 'disabled' : '') + '>' +
                     '<img src="' + staticUrls.eliminar + '" alt="Eliminar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Terminado' ? 'not-allowed' : 'pointer') + ';" />' +
                     '</button> ' +
-                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' ? '0.5' : '1') + ';" title="Visualizar" onclick="visualizarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' ? 'disabled' : '') + '>' +
-                    '<img src="' + staticUrls.visualizar + '" alt="Visualizar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' ? 'not-allowed' : 'pointer') + ';" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'Nominado' || !servicio.fecha_inicioFaena ? '0.5' : '1') + ';" title="Visualizar" onclick="visualizarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio === 'Nominado' || !servicio.fecha_inicioFaena ? 'disabled' : '') + '>' +
+                    '<img src="' + staticUrls.visualizar + '" alt="Visualizar" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'Nominado' || !servicio.fecha_inicioFaena ? 'not-allowed' : 'pointer') + ';" />' +
                     '</button>' +
-                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'En Proceso' ? '1' : '0.5') + ';" title="Finalizar Servicio" onclick="finalizarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio !== 'En Proceso' ? 'disabled' : '') + '>' +
-                    '<img src="' + staticUrls.check + '" alt="Finalizar Servicio" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'En Proceso' ? 'pointer' : 'not-allowed') + ';" />' +
+                    '<button type="button" style="border: none; background: none; opacity: ' + (servicio.estado_delServicio === 'En Proceso' && servicio.fecha_inicioFaena ? '1' : '0.5') + ';" title="Finalizar Servicio" onclick="finalizarServicio(\'' + nombreMotonave + '\', ' + servicio.id + ')" ' + (servicio.estado_delServicio !== 'En Proceso' || !servicio.fecha_inicioFaena ? 'disabled' : '') + '>' +
+                    '<img src="' + staticUrls.check + '" alt="Finalizar Servicio" width="40" height="40" style="cursor: ' + (servicio.estado_delServicio === 'En Proceso' && servicio.fecha_inicioFaena ? 'pointer' : 'not-allowed') + ';" />' +
                     '</button>' +
                     '</td>' +
                     '</tr>';
@@ -67,33 +67,48 @@ $(document).on('change', '.fecha-inicio-faena', function () {
     var fechaInicioFaena = new Date($(this).val());
     var servicioId = $(this).data('servicio-id');
     var fechaArriboCuadrilla = new Date($(this).closest('tr').find('td:eq(2)').text());
-  
+
     if (fechaInicioFaena >= fechaArriboCuadrilla) {
-      Swal.fire({
-        title: 'Error',
-        text: 'La fecha de inicio de faena debe ser anterior a la fecha de arribo de cuadrilla.',
-        icon: 'error',
-        confirmButtonColor: '#8d000e'
-      });
-      $(this).val(''); // Limpiar el valor del campo de fecha de inicio de faena
+        Swal.fire({
+            title: 'Error',
+            text: 'La fecha de inicio de faena debe ser anterior a la fecha de arribo de cuadrilla.',
+            icon: 'error',
+            confirmButtonColor: '#8d000e'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Limpiar el valor del campo de fecha de inicio de faena
+                $(this).val('');
+
+                // Obtener el nombre de la motonave actual
+                var nombreMotonave = $('#nombreMotonaveSeleccionada').text();
+
+                // Actualizar la tabla de servicios después de limpiar la fecha de inicio de faena
+                obtenerServiciosMotonave(nombreMotonave);
+            }
+        });
     } else {
-      // Realizar una solicitud AJAX para actualizar la fecha de inicio de faena en el servidor
-      $.ajax({
-        url: actualizarFechaInicioFaenaURL,
-        type: 'POST',
-        data: {
-          servicio_id: servicioId,
-          fecha_inicio_faena: $(this).val(),
-          csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
-        },
-        success: function (response) {
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      });
+        // Realizar una solicitud AJAX para actualizar la fecha de inicio de faena en el servidor
+        $.ajax({
+            url: actualizarFechaInicioFaenaURL,
+            type: 'POST',
+            data: {
+                servicio_id: servicioId,
+                fecha_inicio_faena: $(this).val(),
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function (response) {
+                // Obtener el nombre de la motonave actual
+                var nombreMotonave = $('#nombreMotonaveSeleccionada').text();
+
+                // Actualizar la tabla de servicios después de establecer la fecha de inicio de faena
+                obtenerServiciosMotonave(nombreMotonave);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
-  });
+});
 
 $(document).ready(function () {
     // Manejar el evento de clic del botón "Crear Servicio"
@@ -162,20 +177,16 @@ function editarServicio(nombreMotonave, servicioId) {
 
 function eliminarServicio(nombreMotonave, servicioId) {
     console.log('Eliminar servicio con ID:', servicioId);
-
     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
 
-    // Obtener la cantidad de servicios activos
-    var serviciosActivos = $('#tablaServicios tbody tr').filter(function () {
-        var estado = $(this).find('td').eq(3).text();
-        return estado !== 'Terminado';
-    }).length;
+    // Obtener la cantidad total de servicios
+    var serviciosTotales = $('#tablaServicios tbody tr').length;
 
-    // Si hay un solo servicio activo, mostrar una alerta y no proceder con la eliminación
-    if (serviciosActivos <= 1) {
+    // Si hay un solo servicio en total, mostrar una alerta y no proceder con la eliminación
+    if (serviciosTotales <= 1) {
         Swal.fire({
             title: 'Error',
-            text: 'No se puede eliminar el último servicio activo.',
+            text: 'No se puede eliminar el último servicio.',
             icon: 'error',
             confirmButtonColor: '#8d000e'
         });
