@@ -26,7 +26,7 @@
               <button type="button" class="btn btn-primary" style="width: 100%;" href="#" data-bs-toggle="modal" data-bs-target="#listaMotonaveModal" title="Lista de Motonaves"><img src="{% static 'images/ListaServicios.png' %}" class="btn-image" style="width: 4vh; height: 4vh;" /> <span class="btn-text" style="font-size: 0.9em">Lista de Motonave</span></button>
             </div>
             <div style="align-items: center;">
-              <button type="button" class="btn btn-custom-color" style="width: 100%;" title="Historial de Motonaves"><img src="{% static 'images/HistorialServicios.png' %}" class="btn-image" style="width: 4vh; height: 4vh" /> <span class="btn-text" style="font-size: 0.9em">Historial de Servicios</span></button>
+              <button type="button" class="btn btn-custom-color" onclick="window.location.href='{% url 'erp:historial_Servicio' %}'" style="width: 100%;" title="Historial de Motonaves"><img src="{% static 'images/HistorialServicios.png' %}" class="btn-image" style="width: 4vh; height: 4vh" /> <span class="btn-text" style="font-size: 0.9em">Historial de Servicios</span></button>
             </div>
           </div>
         </div>
@@ -387,6 +387,7 @@
         </div>
         <div>
           <button id="BotonEliminacionNomina">Eliminar Nominación</button>
+          <button id="BotonFinalizarMotonave" class="btn btn-primary">Finalizar Motonave</button>
         </div>
         <div id="dragbar"></div>
       </div>
@@ -450,6 +451,7 @@
     var obtenerServicioMotonaveURL = "{% url 'erp:obtener_servicios_motonave' %}"
     var fichaServicioURL = "{% url 'erp:ficha_servicio' servicio_id=0 %}".slice(0, -2)
     var finalizarServicioURL = "{% url 'erp:finalizar_servicio' %}"
+    var actualizarFechaInicioFaenaURL = "{% url 'erp:actualizar_fecha_inicio_faena' %}"
     
     document.addEventListener('DOMContentLoaded', function () {
       // Llamar a la función para actualizar el tablero de motonaves cuando el DOM esté completamente cargado

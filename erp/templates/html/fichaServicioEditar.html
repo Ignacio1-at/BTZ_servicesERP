@@ -1,0 +1,211 @@
+{% extends 'html/base.html' %}
+
+{% block title %}
+  Editar Ficha de Servicio
+{% endblock %}
+
+{% block module_styles %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesFichaServicio.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylesBase.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <div id="contenidoPrincipal" class="contenido-principal">
+    <div class="row">
+      <div class="col-md-3" style="width: 100vw; margin-top: 2vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center;">
+            <span style="color: white; margin-left: 1vw; font-size: 2.5em; margin-right: 5vw;">Nueva Ficha</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <form id="fichaServicioForm" method="POST" action="{% url 'erp:editar_ficha_servicio' servicio_id=ficha_servicio.id %}">
+      {% csrf_token %}
+  
+      <input type="hidden" name="nombre_motonave" value="{{ motonave.nombre }}"/>
+      <div class="datos-navio">
+        <h3>DATOS NAVÍO</h3>
+        <div class="direccion-navio">
+          <div class="fila-unoNavio">
+            <div>
+              <input type="text" name="nombre_mn" value="{{ motonave.nombre }}" readonly />
+              <label>NOMBRE MN</label>
+            </div>
+            <div>
+              <input type="text" name="n_viaje" value="{{ motonave.numero_viaje }}" readonly />
+              <label>N VIAJE</label>
+            </div>
+            <div>
+              <input type="text" name="bodegas_totales" value="{{ motonave.cantBodegas }}" readonly />
+              <label>BODEGAS TOTALES</label>
+            </div>
+            <div>
+              {% with puerto_selected=motonave.puerto %}
+                <select name="puerto" id="puerto" required>
+                  <option value="Puerto de Ancud" {% if puerto_selected == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
+                  <option value="Puerto de Antofagasta" {% if puerto_selected == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
+                  <option value="Puerto de Arica" {% if puerto_selected == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
+                  <option value="Puerto de Chañaral" {% if puerto_selected == 'Puerto de Chañaral' %}selected{% endif %}>Puerto de Chañaral</option>
+                  <option value="Puerto de Calbuco" {% if puerto_selected == 'Puerto de Calbuco' %}selected{% endif %}>Puerto de Calbuco</option>
+                  <option value="Puerto de Caleta Coloso" {% if puerto_selected == 'Puerto de Caleta Coloso' %}selected{% endif %}>Puerto de Caleta Coloso</option>
+                  <option value="Puerto de Coquimbo" {% if puerto_selected == 'Puerto de Coquimbo' %}selected{% endif %}>Puerto de Coquimbo</option>
+                  <option value="Puerto de Caldera" {% if puerto_selected == 'Puerto de Caldera' %}selected{% endif %}>Puerto de Caldera</option>
+                  <option value="Puerto de Coronel" {% if puerto_selected == 'Puerto de Coronel' %}selected{% endif %}>Puerto de Coronel</option>
+                  <option value="Puerto de Corral" {% if puerto_selected == 'Puerto de Corral' %}selected{% endif %}>Puerto de Corral</option>
+                  <option value="Puerto Guacolda II" {% if puerto_selected == 'Puerto Guacolda II' %}selected{% endif %}>Puerto Guacolda II</option>
+                  <option value="Puerto de Huasco" {% if puerto_selected == 'Puerto de Huasco' %}selected{% endif %}>Puerto de Huasco</option>
+                  <option value="Puerto de Iquique" {% if puerto_selected == 'Puerto de Iquique' %}selected{% endif %}>Puerto de Iquique</option>
+                  <option value="Puerto de Lirquén" {% if puerto_selected == 'Puerto de Lirquén' %}selected{% endif %}>Puerto de Lirquén</option>
+                  <option value="Puerto de Lota" {% if puerto_selected == 'Puerto de Lota' %}selected{% endif %}>Puerto de Lota</option>
+                  <option value="Puerto de Mejillones" {% if puerto_selected == 'Puerto de Mejillones' %}selected{% endif %}>Puerto de Mejillones</option>
+                  <option value="Puerto de Las Ventanas" {% if puerto_selected == 'Puerto de Las Ventanas' %}selected{% endif %}>Puerto de Las Ventanas</option>
+                  <option value="Puerto Montt" {% if puerto_selected == 'Puerto Montt' %}selected{% endif %}>Puerto Montt</option>
+                  <option value="Puerto de Punta Arenas" {% if puerto_selected == 'Puerto de Punta Arenas' %}selected{% endif %}>Puerto de Punta Arenas</option>
+                  <option value="Puerto de Quintero" {% if puerto_selected == 'Puerto de Quintero' %}selected{% endif %}>Puerto de Quintero</option>
+                  <option value="Puerto de San Antonio" {% if puerto_selected == 'Puerto de San Antonio' %}selected{% endif %}>Puerto de San Antonio</option>
+                  <option value="Puerto de San Vicente" {% if puerto_selected == 'Puerto de San Vicente' %}selected{% endif %}>Puerto de San Vicente</option>
+                  <option value="Puerto de Talcahuano" {% if puerto_selected == 'Puerto de Talcahuano' %}selected{% endif %}>Puerto de Talcahuano</option>
+                  <option value="Puerto de Taltal" {% if puerto_selected == 'Puerto de Taltal' %}selected{% endif %}>Puerto de Taltal</option>
+                  <option value="Puerto de Tocopilla" {% if puerto_selected == 'Puerto de Tocopilla' %}selected{% endif %}>Puerto de Tocopilla</option>
+                  <option value="Puerto de Valparaíso" {% if puerto_selected == 'Puerto de Valparaíso' %}selected{% endif %}>Puerto de Valparaíso</option>
+                </select>
+              {% endwith %}
+              <label>PUERTO</label>
+            </div>
+            <div>
+              <input type="text" name="procedencia_carga" value="{{ motonave.procedenciaCarga }}" required/>
+              <label>PROCEDENCIA CARGA</label>
+            </div>
+          </div>
+          <div class="fila-dosNavio">
+            <div>
+              <input type="text" name="armador" value="{{ motonave.armador }}" required/>
+              <label>ARMADOR</label>
+            </div>
+            <div>
+              <input type="text" name="agencia" value="{{ motonave.agencia }}" required/>
+              <label>AGENCIA</label>
+            </div>
+            <div>
+              {% with prox_puerto_selected=motonave.prox_puerto %}
+                <select name="prox puerto" id="proxPuerto" required>
+                  <option value="Puerto de Ancud" {% if prox_puerto_selected == 'Puerto de Ancud' %}selected{% endif %}>Puerto de Ancud</option>
+                  <option value="Puerto de Antofagasta" {% if prox_puerto_selected == 'Puerto de Antofagasta' %}selected{% endif %}>Puerto de Antofagasta</option>
+                  <option value="Puerto de Arica" {% if prox_puerto_selected == 'Puerto de Arica' %}selected{% endif %}>Puerto de Arica</option>
+                  <option value="Puerto de Chañaral" {% if prox_puerto_selected == 'Puerto de Chañaral' %}selected{% endif %}>Puerto de Chañaral</option>
+                  <option value="Puerto de Calbuco" {% if prox_puerto_selected == 'Puerto de Calbuco' %}selected{% endif %}>Puerto de Calbuco</option>
+                  <option value="Puerto de Caleta Coloso" {% if prox_puerto_selected == 'Puerto de Caleta Coloso' %}selected{% endif %}>Puerto de Caleta Coloso</option>
+                  <option value="Puerto de Coquimbo" {% if prox_puerto_selected == 'Puerto de Coquimbo' %}selected{% endif %}>Puerto de Coquimbo</option>
+                  <option value="Puerto de Caldera" {% if prox_puerto_selected == 'Puerto de Caldera' %}selected{% endif %}>Puerto de Caldera</option>
+                  <option value="Puerto de Coronel" {% if prox_puerto_selected == 'Puerto de Coronel' %}selected{% endif %}>Puerto de Coronel</option>
+                  <option value="Puerto de Corral" {% if prox_puerto_selected == 'Puerto de Corral' %}selected{% endif %}>Puerto de Corral</option>
+                  <option value="Puerto Guacolda II" {% if prox_puerto_selected == 'Puerto Guacolda II' %}selected{% endif %}>Puerto Guacolda II</option>
+                  <option value="Puerto de Huasco" {% if prox_puerto_selected == 'Puerto de Huasco' %}selected{% endif %}>Puerto de Huasco</option>
+                  <option value="Puerto de Iquique" {% if prox_puerto_selected == 'Puerto de Iquique' %}selected{% endif %}>Puerto de Iquique</option>
+                  <option value="Puerto de Lirquén" {% if prox_puerto_selected == 'Puerto de Lirquén' %}selected{% endif %}>Puerto de Lirquén</option>
+                  <option value="Puerto de Lota" {% if prox_puerto_selected == 'Puerto de Lota' %}selected{% endif %}>Puerto de Lota</option>
+                  <option value="Puerto de Mejillones" {% if prox_puerto_selected == 'Puerto de Mejillones' %}selected{% endif %}>Puerto de Mejillones</option>
+                  <option value="Puerto de Las Ventanas" {% if prox_puerto_selected == 'Puerto de Las Ventanas' %}selected{% endif %}>Puerto de Las Ventanas</option>
+                  <option value="Puerto Montt" {% if prox_puerto_selected == 'Puerto Montt' %}selected{% endif %}>Puerto Montt</option>
+                  <option value="Puerto de Punta Arenas" {% if prox_puerto_selected == 'Puerto de Punta Arenas' %}selected{% endif %}>Puerto de Punta Arenas</option>
+                  <option value="Puerto de Quintero" {% if prox_puerto_selected == 'Puerto de Quintero' %}selected{% endif %}>Puerto de Quintero</option>
+                  <option value="Puerto de San Antonio" {% if prox_puerto_selected == 'Puerto de San Antonio' %}selected{% endif %}>Puerto de San Antonio</option>
+                  <option value="Puerto de San Vicente" {% if prox_puerto_selected == 'Puerto de San Vicente' %}selected{% endif %}>Puerto de San Vicente</option>
+                  <option value="Puerto de Talcahuano" {% if prox_puerto_selected == 'Puerto de Talcahuano' %}selected{% endif %}>Puerto de Talcahuano</option>
+                  <option value="Puerto de Taltal" {% if prox_puerto_selected == 'Puerto de Taltal' %}selected{% endif %}>Puerto de Taltal</option>
+                  <option value="Puerto de Tocopilla" {% if prox_puerto_selected == 'Puerto de Tocopilla' %}selected{% endif %}>Puerto de Tocopilla</option>
+                  <option value="Puerto de Valparaíso" {% if prox_puerto_selected == 'Puerto de Valparaíso' %}selected{% endif %}>Puerto de Valparaíso</option>
+                  <option value="NO APLICA" {% if prox_puerto_selected == 'NO APLICA' %}selected{% endif %}>NO APLICA</option>
+                </select>
+              {% endwith %}
+              <label>PRÓXIMO PUERTO</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="datos-servicio">
+        <h3>DATOS DEL SERVICIO</h3>
+        <div class="direccion-servicio">
+          <div class="fila-unoServicio">
+            <div>
+              <input type="text" name="tipo_servicio" value="{{ ficha_servicio.tipo_servicio }}" required />
+              <label>TIPO SERVICIO</label>
+            </div>
+            <div>
+              <input type="date" name="fecha_arribo_cuadrilla" value="{{ ficha_servicio.fecha_arribo_cuadrilla|date:'Y-m-d' }}" required />
+              <label>FECHA ARRIBO CUADRILLA</label>
+            </div>
+            <div>
+              <input type="number" name="bodegas_a_realizar" value="{{ ficha_servicio.bodegas_a_realizar }}" required />
+              <label>BODEGAS A REALIZAR</label>
+            </div>
+            <div>
+              <select name="hospedaje" id="hospedaje" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI" {% if ficha_servicio.hospedaje == 'SI' %}selected{% endif %}>SI</option>
+                <option value="NO" {% if ficha_servicio.hospedaje == 'NO' %}selected{% endif %}>NO</option>
+                <option value="NO_APLICA" {% if ficha_servicio.hospedaje == 'NO_APLICA' %}selected{% endif %}>NO APLICA</option>
+              </select>
+              <label>HOSPEDAJE</label>
+            </div>
+          </div>
+          <div class="fila-dosServicio">
+            <div>
+              <select name="lancha" id="lancha" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI" {% if ficha_servicio.lancha == 'SI' %}selected{% endif %}>SI</option>
+                <option value="NO" {% if ficha_servicio.lancha == 'NO' %}selected{% endif %}>NO</option>
+                <option value="NO_APLICA" {% if ficha_servicio.lancha == 'NO_APLICA' %}selected{% endif %}>NO APLICA</option>
+              </select>
+              <label>LANCHA</label>
+            </div>
+            <div>
+              <select name="grua" id="grua" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI" {% if ficha_servicio.grua == 'SI' %}selected{% endif %}>SI</option>
+                <option value="NO" {% if ficha_servicio.grua == 'NO' %}selected{% endif %}>NO</option>
+                <option value="NO_APLICA" {% if ficha_servicio.grua == 'NO_APLICA' %}selected{% endif %}>NO APLICA</option>
+              </select>
+              <label>GRÚA</label>
+            </div>
+            <div>
+              <select name="arriendo_bomba" id="arriendo_bomba" required>
+                <option value="">Seleccione una opción</option>
+                <option value="SI" {% if ficha_servicio.arriendo_bomba == 'SI' %}selected{% endif %}>SI</option>
+                <option value="NO" {% if ficha_servicio.arriendo_bomba == 'NO' %}selected{% endif %}>NO</option>
+                <option value="NO_APLICA" {% if ficha_servicio.arriendo_bomba == 'NO_APLICA' %}selected{% endif %}>NO APLICA</option>
+              </select>
+              <label>ARRIENDO BOMBA</label>
+            </div>
+            <div>
+              <input type="text" name="navegacion" value="{{ ficha_servicio.navegacion }}" required />
+              <label>NAVEGACIÓN</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="botones">
+        <button type="button" onclick="goBack()" style="border: none; background: none;">
+          <img src="{% static 'images/Volver.png' %}" alt="Volver" width="40" height="40" style="margin-right: 2vw; cursor: pointer;" />
+        </button>
+        <button type="submit" class="guardar">GUARDAR</button>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}
+
+{% block module_scripts %}
+  <script>
+    function goBack() {
+      history.back();
+    }
+  </script>
+  <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+
+  <script src="{% static "js/FichaServicio/ficha.js" %}"></script>
+{% endblock %}

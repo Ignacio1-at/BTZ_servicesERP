@@ -1,0 +1,74 @@
+.contenido-principal {
+    height: 80vh;
+    width: 90vw;
+    font-family: 'mifuente';
+    padding: 25px;
+}
+
+.btn-volver {
+    border: none;
+    background: none;
+    margin-right: 2vw;
+    cursor: pointer;
+}
+
+.historial-img {
+    vertical-align: middle;
+    margin-right: 1vw;
+}
+
+.text-historial {
+    color: white;
+    vertical-align: middle;
+    font-size: 1.2em;
+    margin-right: 5%;
+}
+
+.buscador {
+    background-color: #000e23;
+    color: white;
+    border: none;
+    width: 20vw;
+    padding: 0.3%;
+    margin-left: 50px;
+    border-radius: 20px;
+    background-image: url('../images/Buscar.png');
+    background-repeat: no-repeat;
+    background-position: 3% center;
+    background-size: 20px;
+    text-indent: 4vh;
+}
+
+
+/*Tabla*/
+.tablaContenido {
+    color: white !important;
+    width: 65vw;
+    height: 65vh;
+    background-color: #000e23;
+    border-radius: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-left: 3vw;
+    padding: 20px;
+}
+
+.contenido {
+    display: none;
+}
+
+.contenido.active {
+    display: block;
+}
+
+.table {
+    color: white;
+}
+
+.table td{
+    border-color: #1a2b3f;
+} 
+
+.table>:not(:last-child)>:last-child>*{
+    border-color: #1a2b3f;
+}

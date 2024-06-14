@@ -3,18 +3,18 @@
     src: url('../font/IronFist-KqrD.ttf') format('opentype');
 }
 
-body {
-    font-family: "mifuente";
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
 }
 
 .video-background {
-    position: fixed;
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     top: 0;
     left: 0;
     width: 100%;
@@ -23,108 +23,131 @@ body {
     z-index: -1;
 }
 
-.login-wrapper {
-    width: 400px;
-    min-height: 450px;
-    padding: 2rem;
-    border-radius: 2rem;
-    font-size: 1rem;
+.video-background video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+body {
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'mifuente';
+}
+
+.login-wrapper {
+    width: 430px;
+    height: 520px;
     background: rgba(0, 0, 0, 0.58);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
+    color: white;
+    border-radius: 30px;
+    padding: 100px 50px;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1;
+    /* Agregado para contener los elementos posicionados absolutamente */
 }
 
 .card-title {
-    position: absolute;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    font-size: 23px;
-    margin: 0;
-    /* Asegura que no haya margen */
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 40px;
 }
 
-.errorlist {
-    color: red;
-    list-style-type: none;
-    padding: 0;
-    margin-bottom: 1.5rem;
+::placeholder {
+    color: #ffffff00;
+    /* Color del placeholder */
 }
 
 .input-group {
-    width: 100%;
-    margin-bottom: 30px;
     position: relative;
-    margin-top: 20px;
+    /* Agregado para alinear correctamente */
+    width: 100%;
+    margin-bottom: 40px;
 }
 
 .input-group input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid transparent;
-    /* Ajusta según sea necesario */
+    width: 100%;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.13);
+    border: none;
     border-radius: 20px;
-    outline: none;
     font-size: 16px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-    margin-top: 141px;
+    color: rgb(255, 255, 255);
+    padding: 0 20px;
+    /* Ajuste de padding */
+    transition: background-color 0.3s ease, padding-top 0.3s ease;
+    /* Transición para la animación */
+    outline: none;
 }
 
 .input-group label {
     position: absolute;
-    top: 31px;
-    left: 10px;
-    padding: 0 5px;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    transition: top 0.3s ease, font-size 0.3s ease;
+    /* Transiciones para animar el label */
+    color: rgba(255, 255, 255, 0.7);
+    /* Color de label normal */
+}
+
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Cambio de color de fondo */
+}
+
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label {
+    top: -8px;
     font-size: 12px;
-    color: #ffffff;
-}
-
-.submit-button {
-    position: relative;
-    width: calc(100% - 69px);
-    padding: 13px 35px;
-    background-color: #8d000e;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    text-align: center;
-    font-size: 16px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    margin-left: 12%;
-}
-
-.submit-button:hover {
-    filter: brightness(110%);
+    /* Tamaño de fuente más pequeño cuando el label está arriba */
+    color: rgba(255, 255, 255, 0.9);
+    /* Color de label cuando está arriba */
 }
 
 .forgot {
-    margin-top: 20px;
-    margin-bottom: 30px;
-    color: #ffffff;
+    padding: 10px;
+}
+
+.forgot a {
+    color: white;
     text-decoration: none;
-    font-size: 12px;
-    transition: filter 0.3s;
+    font-size: 13px;
 }
 
-.forgot:hover {
-    filter: brightness(150%);
+.forgot a:hover {
+    text-decoration: underline;
 }
 
-.logo-container {
+.login-wrapper .submit-button {
+    width: 100%;
+    height: 45px;
+    background: #8d000e;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+}
+
+.logo-container img {
+    display: flex;
+    justify-content: center;
     position: absolute;
-    top: -74px;
-    left: 137px;
-    z-index: 1;
+    top: -75px;
+    right: 128px;
 }
 
 .back-button {
@@ -136,28 +159,22 @@ body {
 
 .alert {
     position: relative;
-    padding: 10px;
-    width: 95%;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border: 1px solid #faebcc;
+    padding: 15px 15px;
+    border-radius: 15px;
+    color: #ffffff;
+    background-color: rgb(219 199 0 / 80%);
+    backdrop-filter: blur(5px);
+    top: -21px;
+    
 }
 
-.alert .close {
-    position: absolute;
-    top: 5px;
-    right: 10px;
+.close {
     background: none;
     border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: #8a6d3b;
 }
 
-.alert .close:hover {
-    color: #66512c;
+.close img {
+    width: 12px;
+    /* Ajusta el tamaño de la imagen según sea necesario */
+    height: 12px;
 }

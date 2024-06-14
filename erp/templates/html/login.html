@@ -22,32 +22,32 @@
 
     <!-- Contenedor principal del formulario de inicio de sesión -->
     <div class="login-wrapper card">
+      <div class="logo-container">
+        <img src="{% static 'images/logopng.png' %}" class="logo" alt="Logo" style="width: 180px; height: auto;" />
+      </div>
       <form id="login-form" class="form login-form" method="post" action="{% url 'erp:login' %}">
         <!-- Contenedor del logo -->
-        <div class="logo-container">
-          <img src="{% static 'images/logopng.png' %}" class="logo" alt="Logo" style="width: 180px; height: auto;" />
-        </div>
 
         {% csrf_token %}
         <!-- Título del formulario -->
-        <h2 class="card-title">Inicio de Sesión</h2>
+        <h1 class="card-title">Inicio de Sesión</h1>
 
         <!-- Campo de correo electrónico -->
         <div class="input-group">
-          <label for="loginUser" style="margin-top: 90px;">E-mail</label>
-          <input type="text" name="email" id="loginUser" required />
+          <input type="text" name="email" id="loginUser" required placeholder="E-mail" />
+          <label for="loginUser">E-mail</label>
         </div>
 
         <!-- Campo de contraseña -->
         <div class="input-group">
+          <input type="password" name="password" id="loginpassword" requiered placeholder="Contraseña" />
           <label for="loginpassword">Contraseña</label>
-          <input type="password" name="password" id="loginpassword" required style="margin-top: 50px;" />
         </div>
 
         {% if messages %}
           <div class="alert alert-warning">
-            <button type="button" class="close" onclick="closeAlert()"><i class="zmdi zmdi-close"></i></button>
-            <span id="spn_texto">
+            <button type="button" class="close" onclick="closeAlert()"><img src="{% static 'images/Xerror.png' %}" alt="Cerrar" style="margin-right: 8px;" /></button>
+            <span id="spn_texto" class="errorText">
               {% for message in messages %}
                 {{ message }}
               {% endfor %}
@@ -56,10 +56,12 @@
         {% endif %}
 
         <!-- Botón de enviar formulario -->
-        <button type="submit" class="submit-button" style="margin-top: 15px;">ACCEDER</button>
+        <button type="submit" class="submit-button">ACCEDER</button>
 
         <!-- Enlace para recuperación de contraseña -->
-        <a href="{% url 'erp:password_reset_request' %}" class="forgot">¿Olvidaste tu contraseña?</a>
+        <div class="forgot">
+          <a href="{% url 'erp:password_reset_request' %}" class="forgot">¿Olvidaste tu contraseña?</a>
+        </div>
       </form>
     </div>
 

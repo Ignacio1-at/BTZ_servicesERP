@@ -14,13 +14,11 @@ function cerrarModalAgregarPersonal() {
 function mostrarTipoLicencia() {
     var conductor = document.getElementById('conductor').value;
     var campoTipoLicencia = document.getElementById('campoTipoLicencia');
-    var tipoLicenciaInput = document.getElementById('tipoLicencia');
 
     if (conductor === 'Si') {
         campoTipoLicencia.style.display = 'block';
     } else {
         campoTipoLicencia.style.display = 'none';
-        tipoLicenciaInput.value = '--'; // Asigna el valor '--' al campo
     }
 }
 

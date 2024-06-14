@@ -2,8 +2,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views.general_views import home, menu_view
 from .views.auth_views import login_view, password_reset_request, password_reset_confirm
-from .views.gestor_operaciones_views import gestorOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, crear_servicio_individual, eliminar_servicio, eliminar_servicio_individual, obtener_servicios_motonave, renderizar_formulario, finalizar_servicio
-from .views.ficha_servicio_views import ficha_servicio, actualizar_ficha_servicio_por_id, detalle_ficha_servicio
+from .views.gestor_operaciones_views import gestorOperaciones, crear_motonave, eliminar_motonave, modificar_motonave, obtener_detalles_motonave, guardar_comentarios, obtener_tabla_motonaves, crear_servicio, crear_servicio_individual, eliminar_servicio, eliminar_servicio_individual, obtener_servicios_motonave, renderizar_formulario, finalizar_servicio, actualizar_fecha_inicio_faena, historial_Servicio, finalizar_motonave
+from .views.ficha_servicio_views import ficha_servicio, actualizar_ficha_servicio_por_id, detalle_ficha_servicio, editar_ficha_servicio
 from .views.gestor_personal_views import gestorPersonal, crear_personal, validar_rut, eliminar_personal, obtener_personal, obtener_nombres_especialidades, obtener_lista_especialidades, actualizar_informacion_personal
 from .views.gestor_inventario_views import gestorInventario, agregar_quimico, agregar_vehiculo, validar_campo_unicoVehiculo, validar_campo_unico_vehiculoCambio, agregar_vario, eliminar_quimico, eliminar_vehiculo, eliminar_vario, obtener_detalle_vehiculo, guardar_cambios_vehiculo, obtener_detalles_vario, actualizar_vario, obtener_detalles_quimico, guardar_cambios_quimico
 from .views.gestor_documentos_views import gestor_documentos, obtener_documentos, eliminar_documento
@@ -17,6 +17,7 @@ urlpatterns = [
     path('password_reset/', password_reset_request, name='password_reset_request'),
     path('password_reset/confirm/<uidb64>/<token>/', password_reset_confirm, name='password_reset_confirm'),
     path('logout/', auth_views.LogoutView.as_view(next_page='erp:home'), name='logout'),
+    #Operaciones
     path('gestor-operaciones/', gestorOperaciones, name='gestor-operaciones'),
     path('gestor-operaciones/crear_motonave/', crear_motonave, name='crear_motonave'),
     path('gestor-operaciones/modificar-motonave/', modificar_motonave, name='modificar_motonave'),
@@ -34,6 +35,11 @@ urlpatterns = [
     path('gestor-operaciones/ficha-servicio/<int:servicio_id>/', ficha_servicio, name='ficha_servicio'),
     path('gestor-operaciones/ficha-servicio/actualizar-ficha-servicio/<int:servicio_id>/', actualizar_ficha_servicio_por_id, name='actualizar_ficha_servicio_por_id'),
     path('gestor-operaciones/detalle_ficha_servicio/<int:servicio_id>/', detalle_ficha_servicio, name='detalle_ficha_servicio'),
+    path('gestor-operaciones/ficha-servicio/<int:servicio_id>/editar/', editar_ficha_servicio, name='editar_ficha_servicio'),
+    path('gestor-operaciones/actualizar-fecha-inicio-faena/', actualizar_fecha_inicio_faena, name='actualizar_fecha_inicio_faena'),
+    path('gestor-operaciones/historial_Servicio/', historial_Servicio, name='historial_Servicio'),
+    path('gestor-operaciones/finalizar-motonave/', finalizar_motonave, name='finalizar_motonave'),
+    #Personal
     path('gestor-personal/', gestorPersonal, name='gestor-personal'),
     path('gestor-personal/agregar_personal', crear_personal, name='crear_personal'),
     path('gestor-personal/agregar_personal/validar_rut/', validar_rut, name='validar_rut'),
@@ -42,6 +48,7 @@ urlpatterns = [
     path('gestor-personal/obtener-nombres-especialidades/', obtener_nombres_especialidades, name='obtener_nombres_especialidades'),
     path('gestor-personal/obtener-lista-especialidades/', obtener_lista_especialidades, name='obtener_lista_especialidades'),
     path('gestor-personal/actualizar-informacion-personal/', actualizar_informacion_personal, name='actualizar_informacion_personal'),
+    #Inventario
     path('gestor-inventario/', gestorInventario, name='gestor-inventario'),
     path('gestor-inventario/agregar_quimico/', agregar_quimico, name='agregar_quimico'),
     path('gestor-inventario/agregar_vehiculo/', agregar_vehiculo, name='agregar_vehiculo'),
@@ -57,6 +64,7 @@ urlpatterns = [
     path('gestor-inventario/actualizar_vario/', actualizar_vario, name='actualizar_vario'),
     path('gestor-inventario/obtener_detalles_quimico/', obtener_detalles_quimico, name='obtener_detalles_quimico'),
     path('gestor-inventario/guardar_cambios_quimico/', guardar_cambios_quimico, name='guardar_cambios_quimico'),
+    #Documento
     path('gestor-documentos/', gestor_documentos, name='gestor-documentos'),
     path('gestor-documentos/obtener_documentos/', obtener_documentos, name='obtener-documentos'),
     path('gestor-documentos/eliminar_documento/<int:documento_id>/',eliminar_documento, name='eliminar-documento'),

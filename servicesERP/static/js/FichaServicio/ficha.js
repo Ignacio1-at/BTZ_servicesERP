@@ -64,6 +64,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         conductoresNominados.push(selectedOption.value);
                         console.log('Conductores nominados:', conductoresNominados);
                     }
+
+                    if (selectedOption.value === ''){
+                        alert('Seleccione una opción correcta.')
+                        return
+                    }
                 }
 
                 // Si el tipo es 'vehiculo'
@@ -81,6 +86,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     fichaElemento.setAttribute('data-conductores', conductoresIds);
                     console.log('Conductores nominados:', conductoresNominados);
                     console.log('Conductores asignados al vehículo:', conductoresIds);
+                }
+
+                if (type === 'quimico'){
+                    if (selectedOption.value === ''){
+                        alert('Seleccione una opción correcta.')
+                        return
+                    }
+                }
+
+                if (type === 'vario'){
+                    if (selectedOption.value === ''){
+                        alert('Seleccione una opción correcta.')
+                        return
+                    }
                 }
 
                 // Crear el HTML personalizado según el tipo de elemento

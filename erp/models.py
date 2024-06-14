@@ -269,3 +269,14 @@ class Documento(models.Model):
         if self.seccion == 'Otros' and self.sub_seccion is not None:
             raise ValueError("Sub Sección debe ser nula para la Sección Otros")
         super().save(*args, **kwargs)
+        
+#----------------------HISTORIAL SERVICIOS----------------------------------------------------------------------------------------
+class HistorialServicio(models.Model):
+    numero_servicio = models.IntegerField()
+    tipo_servicio = models.CharField(max_length=100)
+    motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='historial_servicios')
+    fecha_inicio_faena = models.DateField(null=True, blank=True)
+    fecha_fin = models.DateField()
+
+    def __str__(self):
+        return f"Servicio {self.numero_servicio} - {self.motonave.nombre}"        

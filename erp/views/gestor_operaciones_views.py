@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
-from ..models import Motonave, FichaServicio
+from ..models import Motonave, FichaServicio, HistorialServicio
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -233,7 +233,8 @@ def crear_servicio(request):
                 numero_servicio=numero_servicio_inicio + i,
                 tipo_servicio='',
                 fecha_fin=fecha_nominacion.date(),
-                estado_delServicio='Nominado'
+                estado_delServicio='Nominado',
+                navegacion=''
             )
             ficha_servicio.save()
 
@@ -346,7 +347,9 @@ def crear_servicio_individual(request):
             numero_servicio=numero_servicio,
             tipo_servicio='',
             fecha_fin=fecha_nominacion.date(),
-            estado_delServicio='Nominado'
+            estado_delServicio='Nominado',
+            navegacion=''
+            
         )
         ficha_servicio.save()
 
@@ -507,3 +510,80 @@ def renderizar_formulario(request):
     
     # Devolver los nombres de las motonaves disponibles como una respuesta JSON
     return JsonResponse({'nombres_motonaves_disponibles': nombres_motonaves_disponibles})
+
+#-------------------ACTUALIZAR FECHA INICIO DE FAENA
+@csrf_exempt
+def actualizar_fecha_inicio_faena(request):
+    if request.method == 'POST':
+        servicio_id = request.POST.get('servicio_id')
+        fecha_inicio_faena = request.POST.get('fecha_inicio_faena')
+
+        if servicio_id and fecha_inicio_faena:
+            try:
+                ficha_servicio = get_object_or_404(FichaServicio, id=servicio_id)
+                ficha_servicio.fecha_inicioFaena = fecha_inicio_faena
+                ficha_servicio.save()
+                return JsonResponse({'success': True})
+            except FichaServicio.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'No se encontró la ficha de servicio.'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Faltan parámetros requeridos.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Método no permitido.'})
+    
+#-------------------Finalizar Motonave
+@csrf_exempt
+@login_required
+def finalizar_motonave(request):
+    if request.method == 'POST':
+        nombre_motonave = request.POST.get('nombre_motonave')
+
+        if nombre_motonave:
+            try:
+                motonave = Motonave.objects.get(nombre=nombre_motonave)
+            except Motonave.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'La motonave especificada no existe.'})
+
+            # Obtener las fichas de servicio asociadas a la motonave
+            fichas_servicio = FichaServicio.objects.filter(motonave=motonave)
+
+            # Crear entradas en la tabla HistorialServicio
+            for ficha in fichas_servicio:
+                historial_servicio = HistorialServicio(
+                    numero_servicio=ficha.numero_servicio,
+                    tipo_servicio=ficha.tipo_servicio,
+                    motonave=motonave,
+                    fecha_inicio_faena=ficha.fecha_inicioFaena,
+                    fecha_fin=ficha.fecha_fin,
+                )
+                historial_servicio.save()
+
+            # Finalizar la motonave
+            motonave.estado_servicio = 'Disponible'
+            motonave.save()
+
+            # Eliminar las fichas de servicio asociadas a la motonave
+            fichas_servicio.delete()
+
+            # Resetear el numero_servicio de la motonave
+            motonave.cantidad_serviciosActual = 0
+            motonave.save()
+
+
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'message': 'No se proporcionó el nombre de la motonave.'})
+    else:
+        return JsonResponse({'success': False, 'message': 'Método no permitido.'})
+
+#-------------------Historial Servicios
+@login_required
+def historial_Servicio(request):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    historial_servicios = HistorialServicio.objects.all()
+
+    context = {
+        'nombre_usuario': nombre_usuario,
+        'historial_servicios': historial_servicios
+    }
+    return render(request, 'html/historialServicio.html', context)    

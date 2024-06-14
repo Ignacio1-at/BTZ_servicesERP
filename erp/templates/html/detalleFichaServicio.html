@@ -122,10 +122,13 @@
           <div class="seccion">
             <h3>Personal</h3>
             <div class="contenedor">
-              {% for personal in ficha_servicio.personal_nominado.all %}
+              {% for persona in personal %}
                 <div class="rectangulo">
-                  <p>{{ personal.nombre }}</p>
-                  <p>{{ personal.cargo }}</p>
+                  <p>{{ persona.nombre }}</p>
+                  <p>{{ persona.cargo }}</p>
+                  {% if persona.id in conductores_vinculados_ids %}
+                    <img src="{% static 'images/ChoferEncendido.png' %}" alt="Conductor Nominado" class="icono-conductor-nominado" />
+                  {% endif %}
                 </div>
               {% endfor %}
             </div>
@@ -134,10 +137,19 @@
           <div class="seccion">
             <h3>Vehículos</h3>
             <div class="contenedor">
-              {% for vehiculo in ficha_servicio.vehiculos_nominados.all %}
+              {% for vehiculo in vehiculos %}
                 <div class="rectangulo">
                   <p>{{ vehiculo.tipo_vehiculo }}</p>
                   <p>{{ vehiculo.patente }}</p>
+                  <div class="conductores-vinculados">
+                    {% for conductor in vehiculo.conductores %}
+                      <div class="burbuja-conductor">
+                        {% for nombre in conductor.nombre.split %}
+                          {{ nombre.0 }}
+                        {% endfor %}
+                      </div>
+                    {% endfor %}
+                  </div>
                 </div>
               {% endfor %}
             </div>
@@ -181,66 +193,8 @@
       function goBack() {
         history.back()
       }
-      
-      async function generatePDF() {
-        const { jsPDF } = window.jspdf
-        const doc = new jsPDF('p', 'pt', 'a4')
-      
-        const element = document.getElementById('imprimirContenido')
-        if (!element) {
-          console.error('Element with id "contenidoPrincipal" not found')
-          return
-        }
-      
-        // Ocultar el elemento con la clase 'arrow-down' antes de capturar el contenido
-        const arrowDownElement = document.querySelector('.arrow-down')
-        if (arrowDownElement) {
-          arrowDownElement.style.display = 'none'
-        }
-      
-        const canvas = await html2canvas(element, { scale: 2, useCORS: true })
-        const imgData = canvas.toDataURL('image/png')
-      
-        // Restaurar la visibilidad del elemento después de capturar el contenido
-        if (arrowDownElement) {
-          arrowDownElement.style.display = ''
-        }
-      
-        const imgProps = doc.getImageProperties(imgData)
-        const pdfWidth = doc.internal.pageSize.getWidth()
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width
-      
-        // Ajustar el tamaño de la página del PDF según la altura del contenido
-        doc.internal.pageSize.setHeight(pdfHeight)
-      
-        doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-      
-        const fichaServicioElement = document.getElementById('fichaServicio')
-        if (!fichaServicioElement) {
-          console.error('Element with id "fichaServicio" not found')
-          return
-        }
-      
-        const fichaId = fichaServicioElement.getAttribute('data-id')
-        if (!fichaId) {
-          console.error('Attribute "data-id" not found on element with id "fichaServicio"')
-          return
-        }
-      
-        const nombreMotonaveElement = document.getElementById('nombre_mn')
-        if (!nombreMotonaveElement) {
-          console.error('Element with id "nombre_mn" not found')
-          return
-        }
-      
-        const nombreMotonave = nombreMotonaveElement.value
-      
-        const fileName = `detalleFichaServicio_${nombreMotonave}_${fichaId}.pdf`
-      
-        doc.save(fileName)
-      }
     </script>
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-    <script src="{% static 'js/GestorOperaciones/gestionarServicios.js' %}"></script>
+    <script src="{% static 'js/FichaServicio/detalleFichaServicio.js' %}"></script>
   </body>
 </html>

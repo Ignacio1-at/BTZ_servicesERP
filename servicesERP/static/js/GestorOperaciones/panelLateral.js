@@ -28,6 +28,11 @@ function abrirPanelLateral(nombreMotonave, estado, viaje, fechaNominacion, canti
         abrirModalGestionServicios(nombreMotonave);
         $('#panelLateral').css('width', '0');
     });
+
+    // Agregar evento de clic al botón de finalizar para capturar el nombre de la motonave
+    $('#BotonFinalizarMotonave').off('click').on('click', function () {
+        finalizarMotonave(nombreMotonave);
+    });
 }
 
 var panel = document.getElementById('panelLateral');
@@ -85,3 +90,31 @@ $(document).mouseup(function (e) {
         panelLateral.css('width', '0');
     }
 });
+
+function finalizarMotonave(nombreMotonave) {
+    // Realizar una solicitud AJAX para finalizar la motonave
+    $.ajax({
+        url: '/erp/gestor-operaciones/finalizar-motonave/',
+        type: 'POST',
+        data: {
+            'nombre_motonave': nombreMotonave,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function(response) {
+            if (response.success) {
+                // La motonave se finalizó correctamente
+                console.log('La motonave se finalizó correctamente');
+
+                // Llamar a la función actualizarTableroMotonaves
+                actualizarTableroMotonaves();
+            } else {
+                // Hubo un error al finalizar la motonave
+                console.error(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            // Manejar errores de la solicitud AJAX
+            console.error('Error al finalizar la motonave:', error);
+        }
+    });
+}

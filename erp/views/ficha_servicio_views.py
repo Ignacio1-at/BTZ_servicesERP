@@ -181,16 +181,28 @@ def detalle_ficha_servicio(request, servicio_id):
         motonave = ficha_servicio.motonave
 
         # Obtener los datos para mostrar en el formulario de nominación
-        personal = Personal.objects.all()
-        vehiculos = Vehiculo.objects.all()
-        quimicos = Quimico.objects.all()
-        varios = Vario.objects.all()
+        personal = ficha_servicio.personal_nominado.all()
+        vehiculos = ficha_servicio.vehiculos_nominados.all()
+        quimicos = ficha_servicio.quimicos_nominados.all()
+        varios = ficha_servicio.varios_nominados.all()
+
+        # Obtener los conductores vinculados a cada vehículo y sus IDs
+        conductores_vinculados = ficha_servicio.conductores_vinculados
+        conductores_vinculados_ids = []
+        for vehiculo in vehiculos:
+            vehiculo.conductores = []
+            if conductores_vinculados:
+                for conductor_data in conductores_vinculados.get(str(vehiculo.id), []):
+                    conductor = Personal.objects.get(id=conductor_data['id'])
+                    vehiculo.conductores.append(conductor)
+                    conductores_vinculados_ids.append(conductor.id)
 
         context = {
             'ficha_servicio': ficha_servicio,
             'motonave': motonave,
             'nombre_usuario': nombre_usuario,
             'personal': personal,
+            'conductores_vinculados_ids': conductores_vinculados_ids,
             'vehiculos': vehiculos,
             'quimicos': quimicos,
             'varios': varios,
@@ -205,3 +217,76 @@ def detalle_ficha_servicio(request, servicio_id):
             'nombre_usuario': nombre_usuario
         }
         return render(request, 'html/detalleFichaServicio.html', context)
+
+
+#-------------------OBTENER Y EDITAR FICHA SERVICIO    
+@login_required
+def editar_ficha_servicio(request, servicio_id):
+    nombre_usuario = request.user.nombre if request.user.is_authenticated else "Invitado"
+    try:
+        ficha_servicio = FichaServicio.objects.get(id=servicio_id)
+        motonave = ficha_servicio.motonave
+        
+        if request.method == 'GET':
+            
+            context = {
+                'ficha_servicio': ficha_servicio,
+                'motonave': motonave,
+                'nombre_usuario': nombre_usuario,
+                'servicio_id': servicio_id,
+            }
+            return render(request, 'html/fichaServicioEditar.html', context)
+        
+        elif request.method == 'POST':
+            tipo_servicio = request.POST.get('tipo_servicio')
+            fecha_arribo_cuadrilla = request.POST.get('fecha_arribo_cuadrilla')
+            bodegas_a_realizar = request.POST.get('bodegas_a_realizar')
+            hospedaje = request.POST.get('hospedaje')
+            lancha = request.POST.get('lancha')
+            grua = request.POST.get('grua')
+            arriendo_bomba = request.POST.get('arriendo_bomba')
+            navegacion = request.POST.get('navegacion')
+            
+            # Actualizar los campos de la ficha de servicio
+            ficha_servicio.tipo_servicio = tipo_servicio
+            ficha_servicio.fecha_arribo_cuadrilla = fecha_arribo_cuadrilla
+            ficha_servicio.bodegas_a_realizar = bodegas_a_realizar
+            ficha_servicio.hospedaje = hospedaje
+            ficha_servicio.lancha = lancha
+            ficha_servicio.grua = grua
+            ficha_servicio.arriendo_bomba = arriendo_bomba
+            ficha_servicio.navegacion = navegacion
+                        
+            # Guardar los cambios en la ficha de servicio
+            ficha_servicio.save()
+            
+            # Obtener los datos adicionales de la motonave o navío
+            puerto = request.POST.get('puerto')
+            procedencia_carga = request.POST.get('procedencia_carga')
+            armador = request.POST.get('armador')
+            agencia = request.POST.get('agencia')
+            prox_puerto = request.POST.get('prox puerto')
+            
+            # Actualizar los campos de la motonave
+            motonave = ficha_servicio.motonave
+            motonave.puerto = puerto
+            motonave.procedenciaCarga = procedencia_carga
+            motonave.armador = armador
+            motonave.agencia = agencia
+            motonave.prox_puerto = prox_puerto
+            motonave.save()
+            
+            messages.success(request, 'La ficha de servicio se ha actualizado correctamente.')
+            
+            # Obtener el nombre de la motonave
+            nombre_motonave = ficha_servicio.motonave.nombre
+            
+            url = reverse('erp:gestor-operaciones') + '?open_modal=true&nombre_motonave=' + nombre_motonave
+            return redirect(url)
+    
+    except FichaServicio.DoesNotExist:
+        # Manejar el caso en que no se encuentre la ficha de servicio
+        context = {
+            'nombre_usuario': nombre_usuario
+        }
+        return render(request, 'html/fichaServicioEditar.html', context)    
