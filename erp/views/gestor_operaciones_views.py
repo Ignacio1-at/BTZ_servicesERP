@@ -467,7 +467,7 @@ def finalizar_motonave(request):
 
             for ficha in fichas_servicio:
                 historial_servicio = HistorialServicio(
-                    numero_servicio=ficha.numero_servicio,
+                    id_servicio=ficha.id,
                     tipo_servicio=ficha.tipo_servicio,
                     motonave=motonave,
                     fecha_inicio_faena=ficha.fecha_inicioFaena,

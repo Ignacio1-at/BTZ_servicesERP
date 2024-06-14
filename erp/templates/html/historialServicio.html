@@ -17,14 +17,14 @@
         <!-- Botón Volver -->
         <button type="button" onclick="goBack()" class="btn-volver"><img src="{% static 'images/Volver.png' %}" alt="Volver" width="50" height="40" style="margin-left: 2.5vh;" /></button>
         <!-- Logo y texto "Documentos" -->
-        <img src="{% static 'images/HistorialServicios.png' %}" alt="Historial" class="historial-img" width="50" height="40" />
+        <img src="{% static 'images/HistorialServicios.png' %}" alt="Historial" class="historial-img" width="50" height="auto" />
         <span class="text-historial">Historial de Servicios</span>
         <!-- Buscador -->
         <input class="buscador rounded-pill" type="text" id="Buscar" placeholder="Buscar" oninput="buscarHistorial()" />
       </div>
 
       <div class="col-md-12 d-flex" style="margin-left: 5vw; margin-top: 3vh;">
-        <div class="contenedor-principal">
+        <div class="contenedor-principal" style="margin-left:160px">
           <div class="tablaContenido" id="contenidoTablas">
             <table class="table" id="tabla-historial">
               <thead>
@@ -38,7 +38,7 @@
               <tbody>
                 {% for servicio in historial_servicios %}
                   <tr>
-                    <td>{{ servicio.numero_servicio }}</td>
+                    <td>{{ servicio.id_servicio }}</td>
                     <td>{{ servicio.tipo_servicio }}</td>
                     <td>{{ servicio.motonave.nombre }}</td>
                     <td>{{ servicio.fecha_fin }}</td>
