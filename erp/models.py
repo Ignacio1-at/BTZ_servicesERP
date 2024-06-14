@@ -267,11 +267,11 @@ class Documento(models.Model):
         
 #----------------------HISTORIAL SERVICIOS----------------------------------------------------------------------------------------
 class HistorialServicio(models.Model):
-    numero_servicio = models.IntegerField()
+    id_servicio = models.IntegerField()
     tipo_servicio = models.CharField(max_length=100)
     motonave = models.ForeignKey(Motonave, on_delete=models.CASCADE, related_name='historial_servicios')
     fecha_inicio_faena = models.DateField(null=True, blank=True)
     fecha_fin = models.DateField()
 
     def __str__(self):
-        return f"Servicio {self.numero_servicio} - {self.motonave.nombre}"        
+        return f"Servicio {self.id_servicio} - {self.motonave.nombre}"        

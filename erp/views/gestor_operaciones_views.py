@@ -456,6 +456,7 @@ def actualizar_fecha_inicio_faena(request):
 def finalizar_motonave(request):
     if request.method == 'POST':
         nombre_motonave = request.POST.get('nombre_motonave')
+<<<<<<< HEAD
         
         try:
             motonave = get_object_or_404(Motonave, nombre=nombre_motonave)
@@ -468,6 +469,20 @@ def finalizar_motonave(request):
                 HistorialServicio(
                     motonave=ficha.motonave,
                     numero_servicio=ficha.numero_servicio,
+=======
+
+        if nombre_motonave:
+            try:
+                motonave = Motonave.objects.get(nombre=nombre_motonave)
+            except Motonave.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'La motonave especificada no existe.'})
+
+            fichas_servicio = FichaServicio.objects.filter(motonave=motonave)
+
+            for ficha in fichas_servicio:
+                historial_servicio = HistorialServicio(
+                    id_servicio=ficha.id,
+>>>>>>> a04317fc5d88dc7eb5e59929f7a1277fdd89e0f7
                     tipo_servicio=ficha.tipo_servicio,
                     fecha_inicio_faena=ficha.fecha_inicioFaena,
                     fecha_fin=ficha.fecha_fin
